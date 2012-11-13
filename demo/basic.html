@@ -4,25 +4,34 @@
 		<meta charset="utf-8" />
 
 		<title>jQuery Validade - Basic demo</title>
+
+		<script src="../vendor/jquery-1.8.2.min.js"></script>
+
+		<script src="../jquery-validate.js"></script>
+
+		<script>
+			$(function() {
+
+				$('form').validate();
+			});
+		</script>
 	</head>
 
 	<body>
 		<form action="" method="post">
 			<div>
-				<label for="name">Name</label>
+				<label for="title">Title</label>
 
-				<input type="text" id="name" data-required="true" />
+				<input type="text" id="title" data-required="true" />
+			</div>
+
+			<div>
+				<label for="price">Price</label>
+
+				<input type="text" id="price" data-pattern="^(?i:R\$[\s\t]*)?([0-9]+)(?:([\.,])([0-9]+))?$" data-mask="R$ ${1}${2}${3}" />
 			</div>
 
 			<button type="submit">Send</button>
 		</form>
-
-		<script src="../vendor/jquery-1.8.2.js"></script>
-
-		<script src="../jquery-validate.js"></script>
-
-		<script>
-			$('form').validate();
-		</script>
 	</body>
 </html>

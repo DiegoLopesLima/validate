@@ -13,6 +13,7 @@
 			}
 		},
 
+		// 
 		config = {
 			namespace : 'validate',
 			dataAttribute : 'validate'
@@ -27,10 +28,67 @@
 		// 
 		validateField = function(event) {
 
-			if(event.type == 'keyup') {
+			var
 
-				//
+				// 
+				status = {
+					pattern : true,
+					conditional : true,
+					required : true
+				},
+
+				// 
+				field = $(this),
+
+				// 
+				fieldValue = field.val(),
+
+				// 
+				fieldPrepare = field.data('prepare'),
+
+				// 
+				fieldPattern = field.data('pattern'),
+
+				// 
+				fieldIgnoreCase = field.data('ignore-case'),
+
+				// 
+				fieldMask = field.data('mask'),
+
+				// 
+				fieldConditional = field.data('conditional'),
+
+				// 
+				fieldRequired = field.data('required');
+
+			// Verifico se o padrão não está no formato RegExp
+			if(!fieldPattern.exec == 'function') {
+
+				// Converto o padrão informado para o formato RegExp
+				fieldPattern = RegExp(fieldPattern.replace(/\\/g, '\\'));
 			}
+
+			// Verifico se o valor do campo é fiel ao padrão informado
+			if(fieldPattern.test(fieldValue)) {
+
+				// Verifico se o evento não é keyup e se uma máscara foi passada
+				if(event.type != 'keyup' && fieldMask != undefined) {
+
+					var matches = fieldValue.match(fieldPattern);
+
+					for(var i = 0, len = matches.length; i < len; i++) {
+
+						fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:[^\\{\\}]*)?\\}/'), matches[i]);
+					}
+
+					field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
+				}
+			} else {
+
+				status.pattern = false;
+			}
+
+			return status;
 		};
 
 	$.extend({
@@ -53,29 +111,33 @@
 
 			options = $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
 
-			return $(this).each(function() {
+			return $(this).validateDestroy().each(function() {
 
-				var form = $(this).validateDestroy();
+				var form = $(this);
 
 				if(form.is('form')) {
 
-					form.data(config.dataAttribute, options);
+					form.data(config.dataAttribute, {
+						options : options
+					});
 
 					var fields = form.find(allTypes);
 
 					if(form.is('[id]')) {
 
-						fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
+						fields = fields.add('[form="' + form.attr('id') + '"]').filter(allTypes);
 					}
 
+					// Verifico se deve validar ao soltar a tecla
 					if(!!options.on.keyup) {
 
-						fields.on('keyup.' + options.namespace, function(event) {
+						fields.filter(type[0]).on('keyup.' + options.namespace, function(event) {
 
 							validateField.call(this, event);
 						});
 					}
 
+					// Verifico se devo validar ao desfocar um campo
 					if(!!options.on.blur) {
 
 						fields.on('blur.' + options.namespace, function(event) {
@@ -84,14 +146,37 @@
 						});
 					}
 
+					// Verifico se devo validar ao submeter o formulário
 					if(!!options.on.submit) {
 
 						form.on('submit.' + options.namespace, function(event) {
 
+							var formValid = true;
+
 							fields.each(function() {
 
-								validateField.call(this, event);
+								var status = validateField.call(this, event);
+
+								if(!(status.pattern || status.conditional || status.required)) {
+
+									formValid = false;
+								}
 							});
+
+							// Verifico se os dados do formulário são válidos
+							if(formValid) {
+
+								// Verifico se devo impedir que o formulário seja submetido
+								if(!options.sendForm) {
+
+									// Evita que o formulário seja submetido
+									event.preventDefault();
+								}
+							} else {
+
+								// Evita que o formulário seja submetido
+								event.preventDefault();
+							}
 						});
 					}
 				}
@@ -101,9 +186,21 @@
 		// 
 		validateDestroy : function() {
 
-			var form = $(this).removeData(config.dataAttribute);
+			var
 
-			form.find(allTypes).andSelf().add($('[form="' + form.attr('id') + '"]').filter(allTypes)).off('.' + config.namespace);
+				// 
+				form = $(this).removeData(config.dataAttribute),
+
+				// 
+				fields = form.find(allTypes);
+
+			// 
+			if(form.is('[id]')) {
+
+				fields = fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
+			}
+
+			fields.add(form).off('.' + config.namespace);
 
 			return form;
 		}
