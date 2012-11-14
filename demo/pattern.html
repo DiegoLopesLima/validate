@@ -3,15 +3,21 @@
 	<head>
 		<meta charset="utf-8" />
 
-		<title>jQuery Validade - Basic demo</title>
+		<title>jQuery Validade - Pattern</title>
 	</head>
 
 	<body>
-		<form action="" method="post">
+		<form method="post">
 			<div>
-				<label for="required">Required</label>
+				<label for="intenger">Intenger</label>
 
-				<input type="text" id="required" data-required="true" />
+				<input type="text" id="intenger" data-pattern="^[0-9]+$" />
+			</div>
+
+			<div>
+				<label for="float">Float</label>
+
+				<input type="text" id="float" data-pattern="^[0-9]+(?:\.[0-9]+)?$" />
 			</div>
 
 			<button type="submit">Send</button>

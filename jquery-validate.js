@@ -10,17 +10,12 @@
 				submit : true,
 				keyup : false,
 				blur : false
-			}
+			},
+			nameSpace : 'validate'
 		},
 
 		// 
-		config = {
-			namespace : 'validate',
-			dataAttribute : 'validate'
-		},
-
-		// 
-		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="time"],[type="url"],[type="week"],textarea' , 'select', '[type="checkbox"],[type="radio"]'],
+		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea','select','[type="checkbox"],[type="radio"]'],
 
 		// 
 		allTypes = type.join(','),
@@ -46,13 +41,13 @@
 				// 
 				fieldPrepare = field.data('prepare'),
 
-				// 
-				fieldPattern = field.data('pattern'),
+				// Expressão regular para validar o campo
+				fieldPattern = (field.data('pattern') || /(?:)/),
 
-				// 
+				// Boleano que especifica se a expressão regular será sensivel ao case
 				fieldIgnoreCase = field.data('ignore-case'),
 
-				// 
+				// Mascara para o campo do formulário baseada na expressão regula passada
 				fieldMask = field.data('mask'),
 
 				// 
@@ -62,30 +57,44 @@
 				fieldRequired = field.data('required');
 
 			// Verifico se o padrão não está no formato RegExp
-			if(!fieldPattern.exec == 'function') {
+			if(typeof fieldPattern != 'object' && fieldPattern.exec != 'function') {
+
+				fieldIgnoreCase = (fieldIgnoreCase == 'false' || fieldIgnoreCase == false) ? false : true;
 
 				// Converto o padrão informado para o formato RegExp
-				fieldPattern = RegExp(fieldPattern.replace(/\\/g, '\\'));
+				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern.replace(/\\/g, '\\'), 'i') : RegExp(fieldPattern.replace(/\\/g, '\\'));
 			}
 
-			// Verifico se o valor do campo é fiel ao padrão informado
-			if(fieldPattern.test(fieldValue)) {
+			// Verifico se é um tipo de campo cujo o texto deve ser validado
+			if(field.is(type[0])) {
 
-				// Verifico se o evento não é keyup e se uma máscara foi passada
-				if(event.type != 'keyup' && fieldMask != undefined) {
+				// Verifico se o valor do campo é fiel ao padrão informado
+				if(fieldPattern.test(fieldValue)) {
 
-					var matches = fieldValue.match(fieldPattern);
+					// Verifico se o evento não é keyup e se uma máscara foi passada
+					if(event.type != 'keyup' && fieldMask != undefined) {
 
-					for(var i = 0, len = matches.length; i < len; i++) {
+						var matches = fieldValue.match(fieldPattern);
 
-						fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:[^\\{\\}]*)?\\}/'), matches[i]);
+						for(var i = 0, len = matches.length; i < len; i++) {
+
+							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:([^\\{\\}\\:]*))?\\}'), (matches[i] !== undefined ? matches[i] : '$1'));
+						}
+
+						field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
 					}
+				} else {
 
-					field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
+					status.pattern = false;
 				}
+			}
+
+			if(field.is(type[0] + ',' + type[1])) {
+
+				//
 			} else {
 
-				status.pattern = false;
+				//
 			}
 
 			return status;
@@ -97,12 +106,6 @@
 		validateSetup : function(options) {
 
 			return $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
-		},
-
-		// 
-		validateConfig : function(options) {
-
-			return $.isPlainObject(options) ? $.extend(config, options) : config;
 		}
 	}).fn.extend({
 
@@ -117,7 +120,7 @@
 
 				if(form.is('form')) {
 
-					form.data(config.dataAttribute, {
+					form.data('validate', {
 						options : options
 					});
 
@@ -129,7 +132,7 @@
 					}
 
 					// Verifico se deve validar ao soltar a tecla
-					if(!!options.on.keyup) {
+					if(!!(options.on.keyup || false)) {
 
 						fields.filter(type[0]).on('keyup.' + options.namespace, function(event) {
 
@@ -138,7 +141,7 @@
 					}
 
 					// Verifico se devo validar ao desfocar um campo
-					if(!!options.on.blur) {
+					if(!!(options.on.blur || false)) {
 
 						fields.on('blur.' + options.namespace, function(event) {
 
@@ -147,7 +150,7 @@
 					}
 
 					// Verifico se devo validar ao submeter o formulário
-					if(!!options.on.submit) {
+					if(!!(options.on.submit || true)) {
 
 						form.on('submit.' + options.namespace, function(event) {
 
@@ -157,7 +160,7 @@
 
 								var status = validateField.call(this, event);
 
-								if(!(status.pattern || status.conditional || status.required)) {
+								if(!status.pattern || !status.conditional || !status.required) {
 
 									formValid = false;
 								}
@@ -188,19 +191,30 @@
 
 			var
 
-				// 
-				form = $(this).removeData(config.dataAttribute),
+				//
+				form = $(this),
 
 				// 
-				fields = form.find(allTypes);
+				dataValidate = form.data('validate');
 
-			// 
-			if(form.is('[id]')) {
+			if(form.is('form') && typeof dataValidate == 'object' && typeof(dataValidate.options.nameSpace) != 'undefined') {
 
-				fields = fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
+				var
+
+					// 
+					nameSpace = dataValidate.nameSpace,
+
+					// 
+					fields = form.removeData('validate').find(allTypes).andSelf();
+
+				// 
+				if(form.is('[id]')) {
+
+					fields = fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
+				}
+
+				fields.off('.' + nameSpace);
 			}
-
-			fields.add(form).off('.' + config.namespace);
 
 			return form;
 		}
