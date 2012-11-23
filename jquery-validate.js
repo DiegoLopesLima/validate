@@ -9,19 +9,26 @@
 			on : {
 				submit : true,
 				keyup : false,
-				blur : false
+				blur : false,
+				change : false
 			},
-			nameSpace : 'validate'
+			nameSpace : 'validate',
+			conditionals : {},
+			eachField : $.noop,
+			eachInvalidField : $.noop,
+			eachValidField : $.noop,
+			invalid : $.noop,
+			valid : $.noop
 		},
 
 		// 
-		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea','select','[type="checkbox"],[type="radio"]'],
+		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea', 'select', '[type="checkbox"],[type="radio"]'],
 
 		// 
 		allTypes = type.join(','),
 
 		// 
-		validateField = function(event) {
+		validateField = function(event, options) {
 
 			var
 
@@ -32,13 +39,13 @@
 					required : true
 				},
 
-				// 
+				// O campo atual
 				field = $(this),
 
-				// 
+				// O valor do campo atual
 				fieldValue = field.val(),
 
-				// 
+				// ?
 				fieldPrepare = field.data('prepare'),
 
 				// Expressão regular para validar o campo
@@ -50,51 +57,117 @@
 				// Mascara para o campo do formulário baseada na expressão regula passada
 				fieldMask = field.data('mask'),
 
-				// 
+				// Um índice dentro do objeto conditionals contendo uma função que será convertida em Boleano para validar o campo
 				fieldConditional = field.data('conditional'),
 
-				// 
-				fieldRequired = field.data('required');
+				// Um Boleano que diz se o campo é obrigatório
+				fieldRequired = field.data('required'),
 
-			// Verifico se o padrão não está no formato RegExp
+				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
+				fieldTrim = field.data('trim');
+
+			// Verifica se o padrão não está no formato RegExp
 			if(typeof fieldPattern != 'object' && fieldPattern.exec != 'function') {
 
 				fieldIgnoreCase = (fieldIgnoreCase == 'false' || fieldIgnoreCase == false) ? false : true;
 
 				// Converto o padrão informado para o formato RegExp
-				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern.replace(/\\/g, '\\'), 'i') : RegExp(fieldPattern.replace(/\\/g, '\\'));
+				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
 			}
 
-			// Verifico se é um tipo de campo cujo o texto deve ser validado
-			if(field.is(type[0])) {
+			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
+			if(/^(?:true|1|)$/i.test(fieldTrim)) {
 
-				// Verifico se o valor do campo é fiel ao padrão informado
-				if(fieldPattern.test(fieldValue)) {
+				fieldValue = $.trim(fieldValue);
+			}
 
-					// Verifico se o evento não é keyup e se uma máscara foi passada
-					if(event.type != 'keyup' && fieldMask != undefined) {
+			if(typeof fieldConditional == 'function') {
 
-						var matches = fieldValue.match(fieldPattern);
+				status.conditional = !!fieldConditional();
+			} else {
 
-						for(var i = 0, len = matches.length; i < len; i++) {
+				status.conditional = !!options.conditionals[fieldConditional];
+			}
 
-							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:([^\\{\\}\\:]*))?\\}'), (matches[i] !== undefined ? matches[i] : '$1'));
-						}
+			fieldRequired = /^(?:true|1|)$/i.test(fieldRequired) ? true : false;
 
-						field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
+			// Verifica se o campo é obrigatório
+			if(fieldRequired) {
+
+				if(field.is(type[0] + ',' + type[1])) {
+
+					if(!fieldValue.length > 0) {
+
+						status.required = false;
 					}
-				} else {
+				} else if(field.is(type[2]) && field.is('[name]')) {
 
-					status.pattern = false;
+					if($('[name="' + field.attr('name') + '"]:checked').length == 0) {
+
+						status.required = false;
+					}
 				}
 			}
 
-			if(field.is(type[0] + ',' + type[1])) {
+			// Verifica se é um tipo de campo cujo o texto deve ser validado
+			if(field.is(type[0])) {
 
-				//
+				// Verifica se o valor do campo é fiel ao padrão informado
+				if(fieldPattern.test(fieldValue)) {
+
+					// Verifica se o evento não é keyup e se uma máscara foi passada
+					if(event.type != 'keyup' && fieldMask != undefined) {
+
+						var
+
+							// Uso o pattern informado para capturar os grupos de caracteres
+							matches = fieldValue.match(fieldPattern);
+
+						// Percorro todos os grupos de caracteres
+						for(var i = 0, len = matches.length; i < len; i++) {
+
+							// Substituo as ocorrências dos grupos na mascara informada
+							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:([^\\{\\}\\:]*))?\\}'), (matches[i] !== undefined ? matches[i] : '$1'));
+						}
+
+						// Verifica se o valor construido com a mascara é válido
+						if(fieldPattern.test(fieldMask)) {
+
+							// Atualizo o valor do campo
+							field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
+						}
+					}
+				} else {
+
+					// Verifica se o campo é obrigatório
+					if(fieldRequired) {
+
+						// Define o campo como inválido pelo pattern
+						status.pattern = false;
+					} else {
+
+						// Verifica se algo foi preenchido
+						if(!fieldValue.length > 0) {
+
+							// Define o campo como inválido pelo pattern
+							status.pattern = false;
+						}
+					}
+				}
+			}
+
+			// Chama o callback eachField
+			options.eachField.call(field, event, status, options);
+
+			// Verifica se o campo é válido
+			if(status.required || status.pattern || status.conditional) {
+
+				// Chama o callback eachValidField
+				options.eachValidField.call(field, event, status, options);
 			} else {
 
-				//
+				// Chama o callback eachInvalidField
+				options.eachInvalidField.call(field, event, options);
 			}
 
 			return status;
@@ -131,25 +204,34 @@
 						fields = fields.add('[form="' + form.attr('id') + '"]').filter(allTypes);
 					}
 
-					// Verifico se deve validar ao soltar a tecla
+					// Verifica se deve validar ao soltar a tecla
 					if(!!(options.on.keyup || false)) {
 
 						fields.filter(type[0]).on('keyup.' + options.namespace, function(event) {
 
-							validateField.call(this, event);
+							validateField.call(this, event, options);
 						});
 					}
 
-					// Verifico se devo validar ao desfocar um campo
+					// Verifica se devo validar ao desfocar um campo
 					if(!!(options.on.blur || false)) {
 
 						fields.on('blur.' + options.namespace, function(event) {
 
-							validateField.call(this, event);
+							validateField.call(this, event, options);
 						});
 					}
 
-					// Verifico se devo validar ao submeter o formulário
+					// Verifica se devo validar ao alterar o valor de um campo
+					if(!!(options.on.change || false)) {
+
+						fields.on('change.' + options.namespace, function(event) {
+
+							validateField.call(this, event, options);
+						});
+					}
+
+					// Verifica se devo validar ao submeter o formulário
 					if(!!(options.on.submit || true)) {
 
 						form.on('submit.' + options.namespace, function(event) {
@@ -158,7 +240,7 @@
 
 							fields.each(function() {
 
-								var status = validateField.call(this, event);
+								var status = validateField.call(this, event, options);
 
 								if(!status.pattern || !status.conditional || !status.required) {
 
@@ -166,19 +248,29 @@
 								}
 							});
 
-							// Verifico se os dados do formulário são válidos
+							// Verifica se os dados do formulário são válidos
 							if(formValid) {
 
-								// Verifico se devo impedir que o formulário seja submetido
+								// Verifica se devo impedir que o formulário seja submetido
 								if(!options.sendForm) {
 
 									// Evita que o formulário seja submetido
 									event.preventDefault();
 								}
+
+								if(typeof(options.valid) == 'function') {
+
+									options.valid.call(form, event, options);
+								}
 							} else {
 
 								// Evita que o formulário seja submetido
 								event.preventDefault();
+
+								if(typeof(options.invalid) == 'function') {
+
+									options.invalid.call(form, event, options);
+								}
 							}
 						});
 					}
