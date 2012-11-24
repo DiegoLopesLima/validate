@@ -2,37 +2,64 @@
 
 	var
 
-		// 
+		// Parametros padrões do método jQuery.fn.validate
 		defaults = {
+
+			// Define se o formulário deve ser enviado caso esteja inválido
 			sendForm : true,
+
+			// Define se propiedades WAi-ARIA devem ser modificadas conforme a validação
 			waiAria : true,
-			on : {
-				submit : true,
-				keyup : false,
-				blur : false,
-				change : false
-			},
+
+			// Define se o formulário deve ser validado no submit
+			onSubmit : true,
+
+			// Define se cada campo deve ser validado eu precionar uma tecla
+			onKeyup : false,
+
+			// Define se cada campo deve ser validado ao perder o foco
+			onBlur : false,
+
+			// Define se cada campo deve ser validado ao ser alterado
+			onChange : false,
+
+			// Define um name space que será incluido na delegação dos eventos
 			nameSpace : 'validate',
+
+			// Um objeto contendo funções com retorno boleano para validar os campos
 			conditionals : {},
+
+			// Uma função chamada para cada campo validado
 			eachField : $.noop,
+
+			// Uma função chamada para cada campo inválido
 			eachInvalidField : $.noop,
+
+			// Uma função chamada para cada campo válido
 			eachValidField : $.noop,
+
+			// Uma função chamada quando o formulário for inválido
 			invalid : $.noop,
-			valid : $.noop
+
+			// Uma função chamada quando o formulário é válido
+			valid : $.noop,
+
+			// Uma função ou seletor para filtrar os campos que deverão ser validados
+			filter : '*'
 		},
 
-		// 
+		// Divide os tipos de campos em grupos conforme o tipo de validação
 		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea', 'select', '[type="checkbox"],[type="radio"]'],
 
-		// 
+		// Define uma variável contendo todos os tipos de campos
 		allTypes = type.join(','),
 
-		// 
+		// Método para validar campos individuais
 		validateField = function(event, options) {
 
 			var
 
-				// 
+				// Define os status padrão do campo
 				status = {
 					pattern : true,
 					conditional : true,
@@ -81,27 +108,24 @@
 				fieldValue = $.trim(fieldValue);
 			}
 
-			if(typeof fieldConditional == 'function') {
-
-				status.conditional = !!fieldConditional();
-			} else {
-
-				status.conditional = !!options.conditionals[fieldConditional];
-			}
+			status.conditional = (typeof fieldConditional == 'function') ? !!fieldConditional() : (options.conditionals[fieldConditional] != undefined ? !!options.conditionals[fieldConditional] : true);
 
 			fieldRequired = /^(?:true|1|)$/i.test(fieldRequired) ? true : false;
 
 			// Verifica se o campo é obrigatório
 			if(fieldRequired) {
 
+				// Verifica o tipo de campo
 				if(field.is(type[0] + ',' + type[1])) {
 
+					// Verifica se o campo foi preenchido
 					if(!fieldValue.length > 0) {
 
 						status.required = false;
 					}
 				} else if(field.is(type[2]) && field.is('[name]')) {
 
+					// Verifica se algum dos campos foi marcado
 					if($('[name="' + field.attr('name') + '"]:checked').length == 0) {
 
 						status.required = false;
@@ -160,29 +184,47 @@
 			options.eachField.call(field, event, status, options);
 
 			// Verifica se o campo é válido
-			if(status.required || status.pattern || status.conditional) {
+			if(status.required && status.pattern && status.conditional) {
+
+				// Verifica se propriedades WAi-ARIA podem ser alteradas
+				if(!!options.waiAria) {
+
+					field.attr('aria-invalid', false);
+				}
 
 				// Chama o callback eachValidField
 				options.eachValidField.call(field, event, status, options);
 			} else {
 
+				// Verifica se propriedades WAi-ARIA podem ser alteradas
+				if(!!options.waiAria) {
+
+					field.attr('aria-invalid', true);
+				}
+
 				// Chama o callback eachInvalidField
 				options.eachInvalidField.call(field, event, options);
 			}
 
+			// Retorna os status do campo
 			return status;
 		};
 
 	$.extend({
 
-		// 
+		// Método para alterar as opções padrões do método jQuery.fn.validate
 		validateSetup : function(options) {
 
 			return $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
+		},
+
+		// Objeto com informações sobre o plugin
+		validate : {
+			version : '1b'
 		}
 	}).fn.extend({
 
-		// 
+		// Método para validação de formulários
 		validate : function(options) {
 
 			options = $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
@@ -191,6 +233,7 @@
 
 				var form = $(this);
 
+				// Verifica se o elemento encapsulado é um formulário
 				if(form.is('form')) {
 
 					form.data('validate', {
@@ -199,13 +242,16 @@
 
 					var fields = form.find(allTypes);
 
+					// verifica se o formulário possui o atributo is
 					if(form.is('[id]')) {
 
 						fields = fields.add('[form="' + form.attr('id') + '"]').filter(allTypes);
 					}
 
+					fields = fields.filter(options.filter);
+
 					// Verifica se deve validar ao soltar a tecla
-					if(!!(options.on.keyup || false)) {
+					if(!!options.onKeyup) {
 
 						fields.filter(type[0]).on('keyup.' + options.namespace, function(event) {
 
@@ -214,7 +260,7 @@
 					}
 
 					// Verifica se devo validar ao desfocar um campo
-					if(!!(options.on.blur || false)) {
+					if(!!options.onBlur) {
 
 						fields.on('blur.' + options.namespace, function(event) {
 
@@ -223,7 +269,7 @@
 					}
 
 					// Verifica se devo validar ao alterar o valor de um campo
-					if(!!(options.on.change || false)) {
+					if(!!options.onChange) {
 
 						fields.on('change.' + options.namespace, function(event) {
 
@@ -232,7 +278,7 @@
 					}
 
 					// Verifica se devo validar ao submeter o formulário
-					if(!!(options.on.submit || true)) {
+					if(!!options.onSubmit) {
 
 						form.on('submit.' + options.namespace, function(event) {
 
@@ -240,6 +286,7 @@
 
 							fields.each(function() {
 
+								// Armazena os status do campo percorrido atualmente
 								var status = validateField.call(this, event, options);
 
 								if(!status.pattern || !status.conditional || !status.required) {
@@ -258,6 +305,7 @@
 									event.preventDefault();
 								}
 
+								// Verifica se o callback valid foi definido e é uma função
 								if(typeof(options.valid) == 'function') {
 
 									options.valid.call(form, event, options);
@@ -267,6 +315,7 @@
 								// Evita que o formulário seja submetido
 								event.preventDefault();
 
+								// Verifica se o callback invalid foi definido e é uma função
 								if(typeof(options.invalid) == 'function') {
 
 									options.invalid.call(form, event, options);
@@ -278,36 +327,40 @@
 			});
 		},
 
-		// 
+		// Metodo destrutor para o método jQuery.validate
 		validateDestroy : function() {
 
 			var
 
-				//
+				// Formulário que terá a função de validação destruida
 				form = $(this),
 
-				// 
+				// Armazena os dados de validação contidos no campo
 				dataValidate = form.data('validate');
 
+			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
 			if(form.is('form') && typeof dataValidate == 'object' && typeof(dataValidate.options.nameSpace) != 'undefined') {
 
 				var
 
-					// 
+					// Armazena o name space que foi usado na delegação dos eventos
 					nameSpace = dataValidate.nameSpace,
 
-					// 
+					// Armazenas os campos filhos do formulário e remove os dados da validação
 					fields = form.removeData('validate').find(allTypes).andSelf();
 
-				// 
+				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {
 
+					// Procura por campos fora do formulário porém que são parte do mesmo
 					fields = fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
 				}
 
+				// Desliga os eventos com o name space usado
 				fields.off('.' + nameSpace);
 			}
 
+			// Retorna o proprio elemento selecionado para proporcionar encadeamento
 			return form;
 		}
 	});
