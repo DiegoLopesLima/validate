@@ -1,3 +1,4 @@
+/*  */
 (function($, window, document, undefined) {
 
 	var
@@ -110,7 +111,7 @@
 
 			status.conditional = (typeof fieldConditional == 'function') ? !!fieldConditional() : (options.conditionals[fieldConditional] != undefined ? !!options.conditionals[fieldConditional] : true);
 
-			fieldRequired = /^(?:true|1|)$/i.test(fieldRequired) ? true : false;
+			fieldRequired = /^(?:true|1|required|)$/i.test(fieldRequired) ? true : false;
 
 			// Verifica se o campo é obrigatório
 			if(fieldRequired) {
@@ -123,12 +124,18 @@
 
 						status.required = false;
 					}
-				} else if(field.is(type[2]) && field.is('[name]')) {
+				} else if(field.is(type[2])) {
 
-					// Verifica se algum dos campos foi marcado
-					if($('[name="' + field.attr('name') + '"]:checked').length == 0) {
+					if(field.is('[name]')) {
 
-						status.required = false;
+						// Verifica se algum dos campos foi marcado
+						if($('[name="' + field.attr('name') + '"]:checked').length == 0) {
+
+							status.required = false;
+						}
+					} else {
+
+						status.required = field.is(':checked');
 					}
 				}
 			}
@@ -171,7 +178,7 @@
 					} else {
 
 						// Verifica se algo foi preenchido
-						if(!fieldValue.length > 0) {
+						if(fieldValue.length > 0) {
 
 							// Define o campo como inválido pelo pattern
 							status.pattern = false;
