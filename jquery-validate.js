@@ -334,7 +334,7 @@
 								}
 
 								// Dispara o evento valid para o formulário
-								field.trigger('valid', [options]);
+								form.trigger('valid', [options]);
 							} else {
 
 								// Evita que o formulário seja submetido
@@ -347,7 +347,7 @@
 								}
 
 								// Dispara o evento invalid para o formulário
-								field.trigger('invalid', [options]);
+								form.trigger('invalid', [options]);
 							}
 						});
 					}
