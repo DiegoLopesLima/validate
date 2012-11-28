@@ -1,4 +1,4 @@
-/*  */
+/* https://github.com/DiegoLopesLima/jquery-validate */
 (function($, window, document, undefined) {
 
 	var
@@ -28,7 +28,10 @@
 			nameSpace : 'validate',
 
 			// Um objeto contendo funções com retorno boleano para validar os campos
-			conditionals : {},
+			conditional : {},
+
+			// Um objeto contendo funções para tratar o valor dos campos antes da validação
+			prepare : {},
 
 			// Uma função chamada para cada campo validado
 			eachField : $.noop,
@@ -85,7 +88,7 @@
 				// Mascara para o campo do formulário baseada na expressão regula passada
 				fieldMask = field.data('mask'),
 
-				// Um índice dentro do objeto conditionals contendo uma função que será convertida em Boleano para validar o campo
+				// Um índice dentro do objeto conditional contendo uma função que será convertida em Boleano para validar o campo
 				fieldConditional = field.data('conditional'),
 
 				// Um Boleano que diz se o campo é obrigatório
@@ -94,22 +97,25 @@
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
 				fieldTrim = field.data('trim');
 
-			// Verifica se o padrão não está no formato RegExp
-			if(typeof fieldPattern != 'object' && fieldPattern.exec != 'function') {
-
-				fieldIgnoreCase = (fieldIgnoreCase == 'false' || fieldIgnoreCase == false) ? false : true;
-
-				// Converto o padrão informado para o formato RegExp
-				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
-			}
-
 			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
 			if(/^(?:true|1|)$/i.test(fieldTrim)) {
 
 				fieldValue = $.trim(fieldValue);
 			}
 
-			status.conditional = (typeof fieldConditional == 'function') ? !!fieldConditional() : (options.conditionals[fieldConditional] != undefined ? !!options.conditionals[fieldConditional] : true);
+			// Executo a a função de preparo para o valor do campo se está existir
+			fieldValue = (typeof fieldPrepare == 'function') ? String(fieldPrepare.call(field, fieldValue)) : (typeof options.prepare[fieldPrepare] == 'function' ? options.prepare[fieldPrepare].call(field, fieldValue) : fieldValue);
+
+			// Verifica se o padrão não está no formato RegExp
+			if($.type(fieldPattern) != 'regexp') {
+
+				fieldIgnoreCase = /^(?:false|0)$/i.test(fieldIgnoreCase) ? false : true;
+
+				// Converto o padrão informado para o formato RegExp
+				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
+			}
+
+			status.conditional = (typeof fieldConditional == 'function') ? !!fieldConditional() : (options.conditional[fieldConditional] != undefined ? !!options.conditional[fieldConditional] : true);
 
 			fieldRequired = /^(?:true|1|required|)$/i.test(fieldRequired) ? true : false;
 
@@ -190,6 +196,9 @@
 			// Chama o callback eachField
 			options.eachField.call(field, event, status, options);
 
+			// Dispara o evento validated para o campo atual
+			field.trigger('validated', [status, options]);
+
 			// Verifica se o campo é válido
 			if(status.required && status.pattern && status.conditional) {
 
@@ -201,6 +210,9 @@
 
 				// Chama o callback eachValidField
 				options.eachValidField.call(field, event, status, options);
+
+				// Dispara o evento valid para o campo atual
+				field.trigger('valid', [status, options]);
 			} else {
 
 				// Verifica se propriedades WAi-ARIA podem ser alteradas
@@ -210,7 +222,10 @@
 				}
 
 				// Chama o callback eachInvalidField
-				options.eachInvalidField.call(field, event, options);
+				options.eachInvalidField.call(field, event, status, options);
+
+				// Dispara o evento invalid para o campo atual
+				field.trigger('invalid', [status, options]);
 			}
 
 			// Retorna os status do campo
@@ -317,6 +332,9 @@
 
 									options.valid.call(form, event, options);
 								}
+
+								// Dispara o evento valid para o formulário
+								field.trigger('valid', [options]);
 							} else {
 
 								// Evita que o formulário seja submetido
@@ -327,6 +345,9 @@
 
 									options.invalid.call(form, event, options);
 								}
+
+								// Dispara o evento invalid para o formulário
+								field.trigger('invalid', [options]);
 							}
 						});
 					}
