@@ -1,4 +1,4 @@
-/* https://github.com/DiegoLopesLima/jquery-validate */
+/* http://diegolopeslima.github.com/jQuery-AnyForm */
 (function($, window, document, undefined) {
 
 	var
@@ -9,7 +9,7 @@
 			// Define se o formulário deve ser enviado caso esteja inválido
 			sendForm : true,
 
-			// Define se propiedades WAi-ARIA devem ser modificadas conforme a validação
+			// Define se propiedades WAI-ARIA devem ser modificadas conforme a validação
 			waiAria : true,
 
 			// Define se o formulário deve ser validado no submit
@@ -76,7 +76,7 @@
 				// O valor do campo atual
 				fieldValue = field.val(),
 
-				// ?
+				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
 				fieldPrepare = field.data('prepare'),
 
 				// Expressão regular para validar o campo
@@ -95,29 +95,68 @@
 				fieldRequired = field.data('required'),
 
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
-				fieldTrim = field.data('trim');
+				fieldTrim = field.data('trim'),
+
+				reTrue = /^(true|1|)$/i,
+
+				reFalse = /^(false|0)$/i;
 
 			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
-			if(/^(?:true|1|)$/i.test(fieldTrim)) {
+			if(reTrue.test(fieldTrim)) {
 
 				fieldValue = $.trim(fieldValue);
 			}
 
-			// Executo a a função de preparo para o valor do campo se está existir
-			fieldValue = (typeof fieldPrepare == 'function') ? String(fieldPrepare.call(field, fieldValue)) : (typeof options.prepare[fieldPrepare] == 'function' ? options.prepare[fieldPrepare].call(field, fieldValue) : fieldValue);
+			// Verifica se fieldPrepare está no formato de função
+			if($.isFunction(fieldPrepare)) {
+
+				// Atualisa o valor a ser validado para o valor de retorno da função
+				fieldValue = String(fieldPrepare.call(field, fieldValue));
+			} else {
+
+				// Verifica se existe a função de preparo passada
+				if($.isFunction(options.prepare[fieldPrepare])) {
+
+					// Atualisa o valor a ser validado para o valor de retorno da função
+					fieldValue = String(options.prepare[fieldPrepare].call(field, fieldValue));
+				}
+			}
 
 			// Verifica se o padrão não está no formato RegExp
 			if($.type(fieldPattern) != 'regexp') {
 
-				fieldIgnoreCase = /^(?:false|0)$/i.test(fieldIgnoreCase) ? false : true;
+				fieldIgnoreCase = reFalse.test(fieldIgnoreCase) ? false : true;
 
 				// Converto o padrão informado para o formato RegExp
 				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
 			}
 
-			status.conditional = (typeof fieldConditional == 'function') ? !!fieldConditional() : (options.conditional[fieldConditional] != undefined ? !!options.conditional[fieldConditional] : true);
+			// Verifico se existe uma condicional
+			if(fieldConditional != undefined) {
 
-			fieldRequired = /^(?:true|1|required|)$/i.test(fieldRequired) ? true : false;
+				// Verifico se a condiocinal está no formato de função
+				if($.isFunction(fieldConditional)) {
+
+					status.conditional = !!fieldConditional.call(field, event, options);
+				} else {
+
+					var
+
+						// Divido as condiocionais em um Array
+						conditionals = fieldConditional.split(/[\s\t]+/);
+
+					// Percorro todas as condicionais
+					for(var counter = 0, len = conditionals.length; counter < len; counter++) {
+
+						if(conditionals[counter] in options.conditional && !options.conditional[conditionals[counter]].call(field, event, options)) {
+
+							status.conditional = false;
+						}
+					}
+				}
+			}
+
+			fieldRequired = reTrue.test(fieldRequired) ? true : false;
 
 			// Verifica se o campo é obrigatório
 			if(fieldRequired) {
@@ -197,7 +236,7 @@
 			options.eachField.call(field, event, status, options);
 
 			// Dispara o evento validated para o campo atual
-			field.trigger('validated', [status, options]);
+			field.trigger('validated', [options]);
 
 			// Verifica se o campo é válido
 			if(status.required && status.pattern && status.conditional) {
@@ -212,7 +251,7 @@
 				options.eachValidField.call(field, event, status, options);
 
 				// Dispara o evento valid para o campo atual
-				field.trigger('valid', [status, options]);
+				field.trigger('valid', [options]);
 			} else {
 
 				// Verifica se propriedades WAi-ARIA podem ser alteradas
@@ -225,7 +264,7 @@
 				options.eachInvalidField.call(field, event, status, options);
 
 				// Dispara o evento invalid para o campo atual
-				field.trigger('invalid', [status, options]);
+				field.trigger('invalid', [options]);
 			}
 
 			// Retorna os status do campo
@@ -317,6 +356,9 @@
 								}
 							});
 
+							// Dispara o evento validated para o formulário
+							form.trigger('validated', [options]);
+
 							// Verifica se os dados do formulário são válidos
 							if(formValid) {
 
@@ -328,7 +370,7 @@
 								}
 
 								// Verifica se o callback valid foi definido e é uma função
-								if(typeof(options.valid) == 'function') {
+								if($.isFunction(options.valid)) {
 
 									options.valid.call(form, event, options);
 								}
@@ -341,7 +383,7 @@
 								event.preventDefault();
 
 								// Verifica se o callback invalid foi definido e é uma função
-								if(typeof(options.invalid) == 'function') {
+								if($.isFunction(options.invalid)) {
 
 									options.invalid.call(form, event, options);
 								}
@@ -355,7 +397,7 @@
 			});
 		},
 
-		// Metodo destrutor para o método jQuery.validate
+		// Metodo destrutor para o método jQuery.fn.validate
 		validateDestroy : function() {
 
 			var
@@ -367,7 +409,7 @@
 				dataValidate = form.data('validate');
 
 			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
-			if(form.is('form') && typeof dataValidate == 'object' && typeof(dataValidate.options.nameSpace) != 'undefined') {
+			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) != 'undefined') {
 
 				var
 
