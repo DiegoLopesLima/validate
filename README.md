@@ -1,8 +1,8 @@
-# jQuery AnyForm
+# [jQuery AnyForm](https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar)
 -
 O jQuery AnyForm é um plugin para validação de formulários HTML de forma fácil, rápida e avançada.
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca [jQuery](http://jquery.com/) igual ou superior a `1.7` e o arquivo [jquery-anyform.min.js](https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js), que pode ser baixado [clicando aqui](https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar).
+Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo <a href="https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js" target="_blank">jquery-anyform.min.js</a>, que pode ser baixado <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar" target="_blank">clicando aqui</a>.
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
@@ -10,7 +10,7 @@ Veja um exemplo:
 
 	<script>jQuery('form').validate();</script>
 
-Depois de chamar o método validate você pode fazer a maioria das validações mais usadas usando [atributos de dados](http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes), que são totalmente válidos para o [HTML5](http://www.w3.org/TR/html5/) segundo as especificações da [W3C](http://www.w3.org/).
+Depois de chamar o método validate você pode fazer a maioria das validações mais usadas usando <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
 
 Veja um exemplo de como tornar um campo obrigatório:
 
@@ -18,12 +18,12 @@ Veja um exemplo de como tornar um campo obrigatório:
 		<input type="text" data-required />
 	</form>
 
-jQuery AnyForm suporta todos os campos do [HTML5](http://www.w3.org/TR/html5/) e utiliza [WAI-ARIA](http://www.w3.org/WAI/PF/aria/) para tornar a validação acessível a leitores de tela. Além disso esta ferramenta dispõe de vários attributos e parâmetros para te ajudar desde as situações mais simples até as mais complexas.
+jQuery AnyForm suporta todos os campos do <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> e utiliza <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> para tornar a validação acessível a leitores de tela. Além disso esta ferramenta dispõe de vários attributos e parâmetros para te ajudar desde as situações mais simples até as mais complexas.
 
 ## Attributos suportados
 
 ### data-conditional
-Aceita um índice que será procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. Deve conter uma função de retorno boleano que será usada para verificar o campo (Leia [`conditional`](#conditional)).
+Aceita um índice que será procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. Deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional" target="_blank">`conditional`</a>).
 
 ### data-ignore-case
 Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem ser tratadas como iguais.
@@ -37,7 +37,7 @@ Aceita uma mascara que será usada para alterar o valor do campo após ser verif
 Aceita uma expressão regular para comparar com o valor do campo.
 
 ### data-prepare
-Aceita um índice que será procurado no objeto do parâmetro `prepare` do método `jQuery.fn.validate`. Deve conter uma função para retornar o valor do campo tratado (Leia [`prepare`](#prepare)).
+Aceita um índice que será procurado no objeto do parâmetro `prepare` do método `jQuery.fn.validate`. Deve conter uma função para retornar o valor do campo tratado (Leia <a href="#prepare" target="_blank">`prepare`</a>).
 
 ### data-required
 Aceita valores boleanos e especifica se o campo é obrigatório. O valor padrão é true.
@@ -47,7 +47,7 @@ Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do
 
 #### Observações
 * Os campos que não possuem nenhum atributo são tratados como válidos.
-* Você pode usar os métodos [`jQuery.fn.data`](http://api.jquery.com/data/) e [`jQuery.data`](http://api.jquery.com/jQuery.data/) para configurar os campos.
+* Você pode usar os métodos <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> para configurar os campos.
 
 Veja um exemplo:
 
@@ -69,7 +69,7 @@ Veja um exemplo:
 ## Parâmetros suportados por `jQuery.fn.validate`
 
 ### conditional
-Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia [data-conditional](#data-conditional)).
+Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional" target="_blank">data-conditional</a>).
 
 Veja um exemplo:
 
@@ -131,16 +131,16 @@ Aceita um valor boleado que especifica se os campos devem ser verificados ao pre
 Aceita um valor boleado que especifica se os campos devem ser verificados no envio do formulário. Por padrão seu valor é `true`.
 
 ### prepare
-Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia [data-prepare](#data-prepare)).
+Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare" target="_blank">data-prepare</a>).
 
 ### sendForm
-Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por [AJAX](http://api.jquery.com/jQuery.ajax/)). Por padrão seu valor é `true`.
+Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). Por padrão seu valor é `true`.
 
 ### valid
 Aceita uma função que será executada sempre que o formulário for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
 
 ### waiAria
-Aceita um valor boleado que especifica se [WAI-ARIA](http://www.w3.org/WAI/PF/aria/) pode ser usado e modificado.
+Aceita um valor boleado que especifica se <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> pode ser usado e modificado.
 
 
 ## Retirando a validação do formulário
