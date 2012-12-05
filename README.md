@@ -2,7 +2,7 @@
 -
 O jQuery AnyForm é um plugin para validação de formulários HTML de forma fácil, rápida e avançada.
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca [jQuery](http://jquery.com/) igual ou superior a `1.7` e o arquivo [jquery-anyform.js](), que pode ser baixado [clicando aqui]().
+Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca [jQuery](http://jquery.com/) igual ou superior a `1.7` e o arquivo [jquery-anyform.min.js](https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js), que pode ser baixado [clicando aqui](https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar).
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
