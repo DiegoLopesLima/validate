@@ -39,6 +39,12 @@
 					<label for="age" class="add-on"><span class="icon-asterisk"></span> Age</label>
 				</div>
 
+				<div class="control-group input-append">
+					<input type="text" name="donate" id="donate" placeholder="R$ 0,00" data-pattern="^(?:R\$\s*)?([0-9]+)(,[0-9]+)?$" data-mask="R$ ${1}${2:,00}" />
+
+					<label for="donate" class="add-on">Donate</label>
+				</div>
+
 				<div class="btn-group">
 					<button type="submit" class="btn btn-primary">Send</button>
 
@@ -48,8 +54,6 @@
 		</div>
 
 		<script src="vendor/jquery-1.8.3.min.js"></script>
-
-		<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 
 		<script src="../jquery-anyform.js"></script>
 

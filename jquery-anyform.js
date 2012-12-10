@@ -1,5 +1,5 @@
 /* http://diegolopeslima.github.com/jQuery-AnyForm */
-(function($, window, document, undefined) {
+;(function($, window, undefined) {
 
 	var
 
@@ -235,9 +235,6 @@
 			// Chama o callback eachField
 			options.eachField.call(field, event, status, options);
 
-			// Dispara o evento validated para o campo atual
-			field.trigger('validated', [options]);
-
 			// Verifica se o campo é válido
 			if(status.required && status.pattern && status.conditional) {
 
@@ -249,9 +246,6 @@
 
 				// Chama o callback eachValidField
 				options.eachValidField.call(field, event, status, options);
-
-				// Dispara o evento valid para o campo atual
-				field.trigger('valid', [options]);
 			} else {
 
 				// Verifica se propriedades WAi-ARIA podem ser alteradas
@@ -262,9 +256,6 @@
 
 				// Chama o callback eachInvalidField
 				options.eachInvalidField.call(field, event, status, options);
-
-				// Dispara o evento invalid para o campo atual
-				field.trigger('invalid', [options]);
 			}
 
 			// Retorna os status do campo
@@ -281,7 +272,7 @@
 
 		// Objeto com informações sobre o plugin
 		validate : {
-			version : '1b'
+			version : '1.0'
 		}
 	}).fn.extend({
 
@@ -356,9 +347,6 @@
 								}
 							});
 
-							// Dispara o evento validated para o formulário
-							form.trigger('validated', [options]);
-
 							// Verifica se os dados do formulário são válidos
 							if(formValid) {
 
@@ -374,9 +362,6 @@
 
 									options.valid.call(form, event, options);
 								}
-
-								// Dispara o evento valid para o formulário
-								form.trigger('valid', [options]);
 							} else {
 
 								// Evita que o formulário seja submetido
@@ -387,9 +372,6 @@
 
 									options.invalid.call(form, event, options);
 								}
-
-								// Dispara o evento invalid para o formulário
-								form.trigger('invalid', [options]);
 							}
 						});
 					}
@@ -434,4 +416,4 @@
 			return form;
 		}
 	});
-})(jQuery, window, document);
+})(jQuery, window);

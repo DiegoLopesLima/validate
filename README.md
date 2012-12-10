@@ -1,8 +1,8 @@
-# [jQuery AnyForm](https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar)
+# <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar" target="_blank">jQuery AnyForm</a>
 -
 O jQuery AnyForm é um plugin para validação de formulários HTML de forma fácil, rápida e avançada.
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo <a href="https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js" target="_blank">jquery-anyform.min.js</a>, que pode ser baixado <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm.rar" target="_blank">clicando aqui</a>.
+Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo <a href="https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js" target="_blank">jquery-anyform.min.js</a>, que pode ser baixado <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar" target="_blank">clicando aqui</a>.
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
@@ -158,44 +158,5 @@ Veja o exemplo:
 	<script>
 		jQuery('form').validateSetup({
 			sendForm : false
-		});
-	</script>
-
-## Eventos
-Você pode usar os eventos para executar funções durante a validação
-
-### validated
-O evento `validated` é executado ao terminar a validação do campo ou formulário.
-
-Exemplo de uso:
-
-	<script>
-		jQuery('[type="text"]').on('validated', function(options) {
-
-			console.log(this, options);
-		});
-	</script>
-
-### valid
-O evento `valid` é executado ao verificar um campo ou formulário e concluir que este é válido.
-
-Exemplo de uso:
-
-	<script>
-		jQuery('[type="text"]').on('valid', function(options) {
-
-			console.log(this, options);
-		});
-	</script>
-
-### invalid
-O evento `invalid` é executado ao verificar um campo ou formulário e concluir que este é inválido.
-
-Exemplo de uso:
-
-	<script>
-		jQuery('[type="text"]').on('invalid', function(options) {
-
-			console.log(this, options);
 		});
 	</script>
