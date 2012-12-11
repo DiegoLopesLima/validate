@@ -1,0 +1,30 @@
+@import "compass";
+
+@import "sprite/*.png";
+
+@import "_reset.scss";
+
+// @include font-face(FontFamilyRegular, "../font/font-family/regular/font-family");
+
+// @include font-face(FontFamilyBold, "../font/font-family/bold/font-family");
+
+// @include font-face(FontFamilyItalic, "../font/font-family/italic/font-family");
+
+// @include font-face(FontFamilyBoldItalic, "../font/font-family/bold-italic/font-family");
+
+$images : "../img";
+
+.shifted-out {
+	position : absolute;
+	left : -1000em;
+}
+
+.shifted-into {
+	text-indent : -1000em;
+}
+
+.both:after {
+	content : "";
+	display : block;
+	clear : both;
+}
