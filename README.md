@@ -1,8 +1,12 @@
-# <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar" target="_blank">jQuery AnyForm</a>
--
-O jQuery AnyForm é um plugin para validação de formulários HTML de forma fácil, rápida e avançada.
+# jQuery AnyForm
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo <a href="https://raw.github.com/DiegoLopesLima/jQuery-AnyForm/master/jquery-validate.min.js" target="_blank">jquery-anyform.min.js</a>, que pode ser baixado <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar" target="_blank">clicando aqui</a>.
+* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.zip">Download jQuery AnyForm 1.0.zip</a>
+* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.tar">Download jQuery AnyForm 1.0.tar</a>
+* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar">Download jQuery AnyForm 1.0.rar</a>
+
+-
+
+Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo com o plugin, que pode ser baixado nos links acima.
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
@@ -10,7 +14,7 @@ Veja um exemplo:
 
 	<script>jQuery('form').validate();</script>
 
-Depois de chamar o método validate você pode fazer a maioria das validações mais usadas usando <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
+Depois de chamar o método validate você pode fazer a maioria das validações mais usadas com <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
 
 Veja um exemplo de como tornar um campo obrigatório:
 
