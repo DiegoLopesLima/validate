@@ -1,8 +1,8 @@
 # jQuery AnyForm
 
-* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.zip">Download jQuery AnyForm 1.0.zip</a>
-* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.tar">Download jQuery AnyForm 1.0.tar</a>
-* <a href="https://github.com/downloads/DiegoLopesLima/jQuery-AnyForm/jQuery%20AnyForm%201.0.rar">Download jQuery AnyForm 1.0.rar</a>
+* <a href="https://www.dropbox.com/s/e0uozcatlzrrd1f/jQuery%20AnyForm%201.0.zip">Download jQuery AnyForm 1.0.zip</a>
+* <a href="https://www.dropbox.com/s/x9kimxyxpudnuyw/jQuery%20AnyForm%201.0.tar">Download jQuery AnyForm 1.0.tar</a>
+* <a href="https://www.dropbox.com/s/0wzauwilgf4jm57/jQuery%20AnyForm%201.0.rar">Download jQuery AnyForm 1.0.rar</a>
 
 -
 
