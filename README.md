@@ -1,12 +1,12 @@
 # jQuery AnyForm
 
-* <a href="https://www.dropbox.com/s/e0uozcatlzrrd1f/jQuery%20AnyForm%201.0.zip">Download jQuery AnyForm 1.0.zip</a>
-* <a href="https://www.dropbox.com/s/x9kimxyxpudnuyw/jQuery%20AnyForm%201.0.tar">Download jQuery AnyForm 1.0.tar</a>
-* <a href="https://www.dropbox.com/s/0wzauwilgf4jm57/jQuery%20AnyForm%201.0.rar">Download jQuery AnyForm 1.0.rar</a>
-
 -
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo com o plugin, que pode ser baixado nos links acima.
+Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo com o plugin, que pode ser baixado nos links abaixo.
+
+* <a href="https://www.dropbox.com/s/e0uozcatlzrrd1f/jQuery%20AnyForm%201.0.zip" target="_blank">Download jQuery AnyForm 1.0.zip</a>
+* <a href="https://www.dropbox.com/s/x9kimxyxpudnuyw/jQuery%20AnyForm%201.0.tar" target="_blank">Download jQuery AnyForm 1.0.tar</a>
+* <a href="https://www.dropbox.com/s/0wzauwilgf4jm57/jQuery%20AnyForm%201.0.rar" target="_blank">Download jQuery AnyForm 1.0.rar</a>
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
@@ -96,15 +96,6 @@ Veja um exemplo:
 		});
 	</script>
 
-### eachField
-Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo.
-
-### eachInvalidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo.
-
-### eachValidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo.
-
 ### filter
 O parâmetro filter aceita um seletor para filtrar quais campos dentro do formulário devem ser vefrificados.
 
@@ -115,9 +106,6 @@ Exemplo:
 			filter : '[type="text"], textarea'
 		});
 	</script>
-
-### invalid
-Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`
 
 ### nameSpace
 Um name space que será atribuido na delegação de todos os eventos do plugin. Por padrão seu valor é `validate`.
@@ -140,11 +128,26 @@ Aceita um objeto que vai armazenar funções para preparar o valor dos campos do
 ### sendForm
 Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). Por padrão seu valor é `true`.
 
+### waiAria
+Aceita um valor boleado que especifica se <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> pode ser usado e modificado.
+
+
+## Callbacks
+
 ### valid
 Aceita uma função que será executada sempre que o formulário for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
 
-### waiAria
-Aceita um valor boleado que especifica se <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> pode ser usado e modificado.
+### invalid
+Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`
+
+### eachField
+Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo.
+
+### eachInvalidField
+Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo.
+
+### eachValidField
+Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo.
 
 
 ## Retirando a validação do formulário
