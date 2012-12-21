@@ -27,21 +27,23 @@ jQuery AnyForm suporta todos os campos do <a href="http://www.w3.org/TR/html5/" 
 ## Attributos suportados
 
 ### data-conditional
-Aceita um índice que será procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. Deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional" target="_blank">`conditional`</a>).
+Aceita um índice que será procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. Deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional">`conditional`</a>).
 
 ### data-ignore-case
 Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem ser tratadas como iguais.
 
 ### data-mask
-Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern`.
+Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern
 
-	<input type="text" data-pattern="^([0-9]+(?:\,[0-9]+)?)$" data-mask="R$ ${1:0,00}" />
+Veja o exemplo abaixo de um campo de preço:
+
+	<input type="text" name="price" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
 
 ### data-pattern
-Aceita uma expressão regular para comparar com o valor do campo.
+Aceita uma expressão regular para testar o valor do campo.
 
 ### data-prepare
-Aceita um índice que será procurado no objeto do parâmetro `prepare` do método `jQuery.fn.validate`. Deve conter uma função para retornar o valor do campo tratado (Leia <a href="#prepare" target="_blank">`prepare`</a>).
+Aceita um índice que será procurado no objeto do parâmetro `prepare` do método `jQuery.fn.validate`. Deve conter uma função para retornar o valor do campo tratado (Leia <a href="#prepare">`prepare`</a>).
 
 ### data-required
 Aceita valores boleanos e especifica se o campo é obrigatório. O valor padrão é true.
@@ -52,6 +54,7 @@ Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do
 #### Observações
 * Os campos que não possuem nenhum atributo são tratados como válidos.
 * Você pode usar os métodos <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> para configurar os campos.
+* Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
 
 Veja um exemplo:
 
@@ -73,9 +76,9 @@ Veja um exemplo:
 ## Parâmetros suportados por `jQuery.fn.validate`
 
 ### conditional
-Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional" target="_blank">data-conditional</a>).
+Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional">data-conditional</a>).
 
-Veja um exemplo:
+Veja um exemplo de confirmação de senha:
 
 	<form>
 		<input type="text" name="senha" />
@@ -97,9 +100,9 @@ Veja um exemplo:
 	</script>
 
 ### filter
-O parâmetro filter aceita um seletor para filtrar quais campos dentro do formulário devem ser vefrificados.
+O parâmetro filter aceita um seletor ou função para filtrar quais campos dentro do formulário devem ser verificados.
 
-Exemplo:
+Veja um exemplo de como validar apenas textarea's e campos do tipo texto:
 
 	<script>
 		jQuery('form').validate({
@@ -123,7 +126,7 @@ Aceita um valor boleado que especifica se os campos devem ser verificados ao pre
 Aceita um valor boleado que especifica se os campos devem ser verificados no envio do formulário. Por padrão seu valor é `true`.
 
 ### prepare
-Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare" target="_blank">data-prepare</a>).
+Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare">data-prepare</a>).
 
 ### sendForm
 Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). Por padrão seu valor é `true`.
@@ -138,16 +141,16 @@ Aceita um valor boleado que especifica se <a href="http://www.w3.org/WAI/PF/aria
 Aceita uma função que será executada sempre que o formulário for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
 
 ### invalid
-Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`
+Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
 
 ### eachField
-Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo.
+Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
 
 ### eachInvalidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo.
+Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
 
 ### eachValidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo.
+Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
 
 
 ## Retirando a validação do formulário
@@ -164,6 +167,7 @@ Veja o exemplo:
 
 	<script>
 		jQuery('form').validateSetup({
-			sendForm : false
+			sendForm : false,
+			onKeyup : true
 		});
 	</script>
