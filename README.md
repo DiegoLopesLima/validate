@@ -37,7 +37,7 @@ Aceita uma mascara que será usada para alterar o valor do campo após ser verif
 
 Veja o exemplo abaixo de um campo de preço:
 
-	<input type="text" name="price" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
+	<input type="text" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
 
 ### data-pattern
 Aceita uma expressão regular para testar o valor do campo.
@@ -144,13 +144,13 @@ Aceita uma função que será executada sempre que o formulário for verificado 
 Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
 
 ### eachField
-Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
+Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
 
 ### eachInvalidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
+Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
 
 ### eachValidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status`, `options`.
+Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
 
 
 ## Retirando a validação do formulário
