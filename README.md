@@ -11,16 +11,18 @@ Para usar jQuery AnyForm você só precisa ter incluido em seu código uma vers�
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
 Veja um exemplo:
-
-	<script>jQuery('form').validate();</script>
+```html
+<script>jQuery('form').validate();</script>
+```
 
 Depois de chamar o método validate você pode fazer a maioria das validações mais usadas com <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
 
 Veja um exemplo de como tornar um campo obrigatório:
-
-	<form>
-		<input type="text" data-required />
-	</form>
+```html
+<form>
+	<input type="text" data-required />
+</form>
+```
 
 jQuery AnyForm suporta todos os campos do <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> e utiliza <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> para tornar a validação acessível a leitores de tela. Além disso esta ferramenta dispõe de vários attributos e parâmetros para te ajudar desde as situações mais simples até as mais complexas.
 
@@ -36,8 +38,9 @@ Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem 
 Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern
 
 Veja o exemplo abaixo de um campo de preço:
-
-	<input type="text" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
+```html
+<input type="text" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
+```
 
 ### data-pattern
 Aceita uma expressão regular para testar o valor do campo.
@@ -57,21 +60,22 @@ Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do
 * Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
 
 Veja um exemplo:
+```html
+<form>
+	<input type="text" name="idade" />
 
-	<form>
-		<input type="text" name="idade" />
+	<button type="submit">Enviar</button>
+</form>
 
-		<button type="submit">Enviar</button>
-	</form>
+<script>
+	jQuery('form').validate();
 
-	<script>
-		jQuery('form').validate();
-
-		jQuery('[name="idade"]').data({
-			required : true,
-			pattern : /^[0-9]+$/
-		});
-	</script>
+	jQuery('[name="idade"]').data({
+		required : true,
+		pattern : /^[0-9]+$/
+	});
+</script>
+```
 
 ## Parâmetros suportados por `jQuery.fn.validate`
 
@@ -79,36 +83,38 @@ Veja um exemplo:
 Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional">data-conditional</a>).
 
 Veja um exemplo de confirmação de senha:
+```html
+<form>
+	<input type="text" name="senha" />
 
-	<form>
-		<input type="text" name="senha" />
+	<input type="text" name="confirma-senha" data-conditional="confirm-senha" />
 
-		<input type="text" name="confirma-senha" data-conditional="confirm-senha" />
+	<button type="submit">Enviar</button>
+</form>
 
-		<button type="submit">Enviar</button>
-	</form>
+<script>
+	jQuery('form').validate({
+		conditional : {
+			'confirm-senha' : function() {
 
-	<script>
-		jQuery('form').validate({
-			conditional : {
-				'confirm-senha' : function() {
-
-					return jQuery(this).val() == jQuery('[name="senha"]').val();
-				}
+				return jQuery(this).val() == jQuery('[name="senha"]').val();
 			}
-		});
-	</script>
+		}
+	});
+</script>
+```
 
 ### filter
 O parâmetro filter aceita um seletor ou função para filtrar quais campos dentro do formulário devem ser verificados.
 
 Veja um exemplo de como validar apenas textarea's e campos do tipo texto:
-
-	<script>
-		jQuery('form').validate({
-			filter : '[type="text"], textarea'
-		});
-	</script>
+```html
+<script>
+	jQuery('form').validate({
+		filter : '[type="text"], textarea'
+	});
+</script>
+```
 
 ### nameSpace
 Um name space que será atribuido na delegação de todos os eventos do plugin. Por padrão seu valor é `validate`.
@@ -157,17 +163,20 @@ Aceita uma função que será executada cada vez que um campo for verificado e e
 As vezes é necessário retirar a validação de um formulário em uma situação específica, para isso você pode utilizar o método `jQuery.fn.validateDestroy`.
 
 Veja o exemplo:
-
-	<script>jQuery('form').validateDestroy();</script>
+```html
+<script>jQuery('form').validateDestroy();</script>
+```
 
 ## Alterando as propriedades padrões do método `jQuery.fn.validate`
 Você pode alterar os valores padrões dos parâmetros passados para o método `jQuery.fn.validate` usando o método `jQuery.fn.validateSetup`.
 
 Veja o exemplo:
 
-	<script>
-		jQuery('form').validateSetup({
-			sendForm : false,
-			onKeyup : true
-		});
-	</script>
+```html
+<script>
+	jQuery('form').validateSetup({
+		sendForm : false,
+		onKeyup : true
+	});
+</script>
+```
