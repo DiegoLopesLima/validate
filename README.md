@@ -11,8 +11,8 @@ Para usar jQuery AnyForm você só precisa ter incluido em seu código uma vers�
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
 Veja um exemplo:
-```html
-<script>jQuery('form').validate();</script>
+```javascript
+jQuery('form').validate();
 ```
 
 Depois de chamar o método validate você pode fazer a maioria das validações mais usadas com <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
@@ -35,11 +35,11 @@ Aceita um índice que será procurado no objeto do parâmetro `conditional` do m
 Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem ser tratadas como iguais.
 
 ### data-mask
-Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern
+Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern` (Leia <a href="#data-pattern">`data-pattern`</a>).
 
 Veja o exemplo abaixo de um campo de preço:
 ```html
-<input type="text" data-pattern="^([0-9])(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1:0},${2:0}${3:0}" />
+<input type="text" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:'0'}${3:'0'}" />
 ```
 
 ### data-pattern
@@ -57,7 +57,6 @@ Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do
 #### Observações
 * Os campos que não possuem nenhum atributo são tratados como válidos.
 * Você pode usar os métodos <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> para configurar os campos.
-* Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
 
 Veja um exemplo:
 ```html
@@ -76,11 +75,12 @@ Veja um exemplo:
 	});
 </script>
 ```
+* Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
 
 ## Parâmetros suportados por `jQuery.fn.validate`
 
 ### conditional
-Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional">data-conditional</a>).
+Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional">`data-conditional`</a>).
 
 Veja um exemplo de confirmação de senha:
 ```html
@@ -108,12 +108,10 @@ Veja um exemplo de confirmação de senha:
 O parâmetro filter aceita um seletor ou função para filtrar quais campos dentro do formulário devem ser verificados.
 
 Veja um exemplo de como validar apenas textarea's e campos do tipo texto:
-```html
-<script>
-	jQuery('form').validate({
-		filter : '[type="text"], textarea'
-	});
-</script>
+```javascript
+jQuery('form').validate({
+	filter : '[type="text"], textarea'
+});
 ```
 
 ### nameSpace
@@ -132,7 +130,7 @@ Aceita um valor boleado que especifica se os campos devem ser verificados ao pre
 Aceita um valor boleado que especifica se os campos devem ser verificados no envio do formulário. Por padrão seu valor é `true`.
 
 ### prepare
-Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare">data-prepare</a>).
+Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare">`data-prepare`</a>).
 
 ### sendForm
 Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). Por padrão seu valor é `true`.
@@ -163,8 +161,8 @@ Aceita uma função que será executada cada vez que um campo for verificado e e
 As vezes é necessário retirar a validação de um formulário em uma situação específica, para isso você pode utilizar o método `jQuery.fn.validateDestroy`.
 
 Veja o exemplo:
-```html
-<script>jQuery('form').validateDestroy();</script>
+```javascript
+jQuery('form').validateDestroy();
 ```
 
 ## Alterando as propriedades padrões do método `jQuery.fn.validate`
@@ -172,11 +170,30 @@ Você pode alterar os valores padrões dos parâmetros passados para o método `
 
 Veja o exemplo:
 
+```javascript
+jQuery('form').validateSetup({
+	sendForm : false,
+	onKeyup : true
+});
+```
+
+## Observações
+* jQuery AnyForm disponibiliza o objeto `jQuery.AnyForm` para que você possa armazenar dados referentes ao uso do plugin. Você poder usar o objeto para recuperar a versão atual do plugin.
+
+Exemplo:
+```javascript
+jQuery.validate.version
+```
+* Os atributos ou qualquer propriedade dos campos podem ser alteradas a qualquer momento sem a necessidade de chamar `jQuery.fn.validate` novamente.
+* Não há necessidade de fazer nenhuma modificação para que a validação reconheça campos externos ao formulário que utilizem o atributo `form`.
+
+Exemplo:
 ```html
+<form id="my-form"></form>
+
+<input type="text" form="my-form" />
+
 <script>
-	jQuery('form').validateSetup({
-		sendForm : false,
-		onKeyup : true
-	});
+	jQuery('form').validate();
 </script>
 ```
