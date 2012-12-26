@@ -182,7 +182,7 @@ jQuery('form').validateSetup({
 
 Exemplo:
 ```javascript
-jQuery.validate.version
+jQuery.AnyForm.version
 ```
 * Os atributos ou qualquer propriedade dos campos podem ser alteradas a qualquer momento sem a necessidade de chamar `jQuery.fn.validate` novamente.
 * Não há necessidade de fazer nenhuma modificação para que a validação reconheça campos externos ao formulário que utilizem o atributo `form`.

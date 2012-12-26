@@ -125,7 +125,7 @@
 			// Verifica se o padrão não está no formato RegExp
 			if($.type(fieldPattern) != 'regexp') {
 
-				fieldIgnoreCase = reFalse.test(fieldIgnoreCase) ? false : true;
+				fieldIgnoreCase = !reFalse.test(fieldIgnoreCase);
 
 				// Converto o padrão informado para o formato RegExp
 				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
@@ -156,7 +156,7 @@
 				}
 			}
 
-			fieldRequired = reTrue.test(fieldRequired) ? true : false;
+			fieldRequired = reTrue.test(fieldRequired);
 
 			// Verifica se o campo é obrigatório
 			if(fieldRequired) {
@@ -273,7 +273,7 @@
 		},
 
 		// Objeto com informações sobre o plugin
-		validate : {
+		AnyForm : {
 			version : '1.0'
 		}
 	}).fn.extend({

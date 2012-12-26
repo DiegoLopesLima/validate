@@ -34,13 +34,13 @@
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="age" id="age" data-required="1" data-pattern="^[0-9]+$" />
+					<input type="text" name="age" id="age" data-required data-pattern="^[0-9]+$" />
 
 					<label for="age" class="add-on"><span class="icon-asterisk"></span> Age</label>
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="donate" id="donate" placeholder="R$ 0,00" data-pattern="^(?:R\$\s*)?([0-9]+)(,[0-9]+)?$" data-mask="R$ ${1}${2:,00}" />
+					<input type="text" name="donate" id="donate" placeholder="R$ 0,00" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:'0'}${3:'0'}" />
 
 					<label for="donate" class="add-on">Donate</label>
 				</div>
