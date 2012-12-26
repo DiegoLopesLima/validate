@@ -148,7 +148,7 @@
 					// Percorro todas as condicionais
 					for(var counter = 0, len = conditionals.length; counter < len; counter++) {
 
-						if(conditionals[counter] in options.conditional && !options.conditional[conditionals[counter]].call(field, event, options)) {
+						if(options.conditional.hasOwnProperty(conditionals[counter]) && !options.conditional[conditionals[counter]].call(field, event, options)) {
 
 							status.conditional = false;
 						}
@@ -174,7 +174,7 @@
 					if(field.is('[name]')) {
 
 						// Verifica se algum dos campos foi marcado
-						if($('[name="' + field.attr('name') + '"]:checked').length == 0) {
+						if($('[name="' + field.prop('name') + '"]:checked').length == 0) {
 
 							status.required = false;
 						}
@@ -203,14 +203,14 @@
 						for(var i = 0, len = matches.length; i < len; i++) {
 
 							// Substituo as ocorrências dos grupos na mascara informada
-							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:([^\\{\\}\\:]*))?\\}'), (matches[i] !== undefined ? matches[i] : '$1'));
+							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:(?:("|\'|)(.*)\\1))?\\}'), (matches[i] !== undefined ? matches[i] : '$2'));
 						}
 
 						// Verifica se o valor construido com a mascara é válido
 						if(fieldPattern.test(fieldMask)) {
 
 							// Atualizo o valor do campo
-							field.val(fieldMask.replace(/\$\{[0-9]+(?:\:([^\{\}]*))?\}/g, '$1'));
+							field.val(fieldMask.replace(/\$\{[0-9]+(?:\:(?:("|'|)(.*)\1))?\}/g, '$2'));
 						}
 					}
 				} else {
@@ -241,7 +241,7 @@
 				// Verifica se propriedades WAi-ARIA podem ser alteradas
 				if(!!options.waiAria) {
 
-					field.attr('aria-invalid', false);
+					field.prop('aria-invalid', false);
 				}
 
 				// Chama o callback eachValidField
@@ -251,7 +251,7 @@
 				// Verifica se propriedades WAi-ARIA podem ser alteradas
 				if(!!options.waiAria) {
 
-					field.attr('aria-invalid', true);
+					field.prop('aria-invalid', true);
 				}
 
 				// Chama o callback eachInvalidField
@@ -297,7 +297,7 @@
 					// verifica se o formulário possui o atributo is
 					if(form.is('[id]')) {
 
-						fields = fields.add('[form="' + form.attr('id') + '"]').filter(allTypes);
+						fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
 					}
 
 					fields = fields.filter(options.filter);
@@ -405,7 +405,7 @@
 				if(form.is('[id]')) {
 
 					// Procura por campos fora do formulário porém que são parte do mesmo
-					fields = fields.add($('[form="' + form.attr('id') + '"]').filter(allTypes));
+					fields = fields.add($('[form="' + form.prop('id') + '"]').filter(allTypes));
 				}
 
 				// Desliga os eventos com o name space usado
