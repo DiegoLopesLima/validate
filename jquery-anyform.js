@@ -97,9 +97,9 @@
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
 				fieldTrim = field.data('trim'),
 
-				reTrue = /^(true|1|)$/i,
+				reTrue = /^(true|)$/i,
 
-				reFalse = /^(false|0)$/i;
+				reFalse = /^false$/i;
 
 			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
 			if(reTrue.test(fieldTrim)) {
@@ -203,14 +203,16 @@
 						for(var i = 0, len = matches.length; i < len; i++) {
 
 							// Substituo as ocorrências dos grupos na mascara informada
-							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:(?:("|\'|)(.*)\\1))?\\}'), (matches[i] !== undefined ? matches[i] : '$2'));
+							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:(?:("|\')((?:[^\\{\\}]|\\\\\\{|\\\\\\})*)\\1))?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$2'));
 						}
+
+						fieldMask = fieldMask.replace(/\$\{[0-9]+(?:\:(?:("|')((?:[^\{\}]|\\\{|\\\})*)\1))?\}/g, '$2');
 
 						// Verifica se o valor construido com a mascara é válido
 						if(fieldPattern.test(fieldMask)) {
 
 							// Atualizo o valor do campo
-							field.val(fieldMask.replace(/\$\{[0-9]+(?:\:(?:("|'|)(.*)\1))?\}/g, '$2'));
+							field.val(fieldMask);
 						}
 					}
 				} else {
@@ -391,7 +393,7 @@
 				dataValidate = form.data('validate');
 
 			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
-			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) != 'undefined') {
+			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
 
 				var
 
@@ -399,7 +401,7 @@
 					nameSpace = dataValidate.nameSpace,
 
 					// Armazenas os campos filhos do formulário e remove os dados da validação
-					fields = form.removeData('validate').find(allTypes).andSelf();
+					fields = form.removeData('validate').find(allTypes).add(form);
 
 				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {
