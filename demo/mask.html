@@ -3,40 +3,42 @@
 	<head>
 		<meta charset="UTF-8" />
 
-		<title>Basic Demo</title>
+		<title>Mask Demo</title>
 
 		<link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css" />
 	</head>
 
 	<body>
 		<header class="container">
-			<h1>Basic Demo</h1>
+			<h1>Mask Demo</h1>
 		</header>
 
 		<div class="container">
-			<div class="control-group input-append">
-				<input type="text" name="name" id="name" form="form" data-required />
-
-				<label for="name" class="add-on"><span class="icon-asterisk"></span> Name</label>
-			</div>
-
 			<form id="form">
 				<div class="control-group input-append">
-					<input type="text" name="nickname" id="nickname" data-required="true" />
+					<input type="text" name="product" id="product" data-required />
 
-					<label for="nickname" class="add-on"><span class="icon-asterisk"></span> Nickname</label>
+					<label for="product" class="add-on"><span class="icon-asterisk"></span> Product</label>
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="site" id="site" />
+					<input type="text" name="price" id="price" placeholder="R$ 0,00" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:'0'}${3:'0'}" />
 
-					<label for="site" class="add-on">Site</label>
+					<label for="price" class="add-on">Price</label>
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="age" id="age" data-required data-pattern="^[0-9]+$" />
+					<select name="category" id="category" data-required>
+						<option value="">Select a category</option>
 
-					<label for="age" class="add-on"><span class="icon-asterisk"></span> Age</label>
+						<option value="1">Gategory 1</option>
+
+						<option value="2">Gategory 2</option>
+
+						<option value="3">Gategory 3</option>
+					</select>
+
+					<label for="category" class="add-on"><span class="icon-asterisk"></span> Category</label>
 				</div>
 
 				<div class="btn-group">
@@ -53,7 +55,7 @@
 
 		<script>
 			$('form').validate({
-				onKeyup : true,
+				onChange : true,
 				eachValidField : function() {
 
 					$(this).closest('div').removeClass('error').addClass('success');
