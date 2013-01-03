@@ -203,10 +203,10 @@
 						for(var i = 0, len = matches.length; i < len; i++) {
 
 							// Substituo as ocorrências dos grupos na mascara informada
-							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?:\\:(?:("|\')((?:[^\\{\\}]|\\\\\\{|\\\\\\})*)\\1))?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$2'));
+							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
 						}
 
-						fieldMask = fieldMask.replace(/\$\{[0-9]+(?:\:(?:("|')((?:[^\{\}]|\\\{|\\\})*)\1))?\}/g, '$2');
+						fieldMask = fieldMask.replace(/\$\{[0-9]+(?::`([^`]*)`)?\}/g, '$1');
 
 						// Verifica se o valor construido com a mascara é válido
 						if(fieldPattern.test(fieldMask)) {
