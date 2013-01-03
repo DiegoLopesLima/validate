@@ -39,7 +39,7 @@ Aceita uma mascara que será usada para alterar o valor do campo após ser verif
 
 Veja o exemplo abaixo de um campo de preço:
 ```html
-<input type="text" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:'0'}${3:'0'}" />
+<input type="text" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:`0`}${3:`0`}" />
 ```
 
 ### data-pattern
