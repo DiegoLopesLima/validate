@@ -1,58 +1,8 @@
 /* http://diegolopeslima.github.com/jQuery-AnyForm */
-;(function($, window, undefined) {
+;(function(defaults, $, window, undefined) {
 
 	var
 
-		// Parametros padrões do método jQuery.fn.validate
-		defaults = {
-
-			// Define se o formulário deve ser enviado caso esteja inválido
-			sendForm : true,
-
-			// Define se propiedades WAI-ARIA devem ser modificadas conforme a validação
-			waiAria : true,
-
-			// Define se o formulário deve ser validado no submit
-			onSubmit : true,
-
-			// Define se cada campo deve ser validado eu precionar uma tecla
-			onKeyup : false,
-
-			// Define se cada campo deve ser validado ao perder o foco
-			onBlur : false,
-
-			// Define se cada campo deve ser validado ao ser alterado
-			onChange : false,
-
-			// Define um name space que será incluido na delegação dos eventos
-			nameSpace : 'validate',
-
-			// Um objeto contendo funções com retorno boleano para validar os campos
-			conditional : {},
-
-			// Um objeto contendo funções para tratar o valor dos campos antes da validação
-			prepare : {},
-
-			// Uma função chamada para cada campo validado
-			eachField : $.noop,
-
-			// Uma função chamada para cada campo inválido
-			eachInvalidField : $.noop,
-
-			// Uma função chamada para cada campo válido
-			eachValidField : $.noop,
-
-			// Uma função chamada quando o formulário for inválido
-			invalid : $.noop,
-
-			// Uma função chamada quando o formulário é válido
-			valid : $.noop,
-
-			// Uma função ou seletor para filtrar os campos que deverão ser validados
-			filter : '*'
-		},
-
-		// Divide os tipos de campos em grupos conforme o tipo de validação
 		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea', 'select', '[type="checkbox"],[type="radio"]'],
 
 		// Define uma variável contendo todos os tipos de campos
@@ -74,7 +24,7 @@
 				field = $(this),
 
 				// O valor do campo atual
-				fieldValue = field.val(),
+				fieldValue = field.val() || '',
 
 				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
 				fieldPrepare = field.data('prepare'),
@@ -137,7 +87,7 @@
 				// Verifico se a condiocinal está no formato de função
 				if($.isFunction(fieldConditional)) {
 
-					status.conditional = !!fieldConditional.call(field, event, options);
+					status.conditional = !!fieldConditional.call(field, fieldValue, options);
 				} else {
 
 					var
@@ -148,7 +98,7 @@
 					// Percorro todas as condicionais
 					for(var counter = 0, len = conditionals.length; counter < len; counter++) {
 
-						if(options.conditional.hasOwnProperty(conditionals[counter]) && !options.conditional[conditionals[counter]].call(field, event, options)) {
+						if(options.conditional.hasOwnProperty(conditionals[counter]) && !options.conditional[conditionals[counter]].call(field, fieldValue, options)) {
 
 							status.conditional = false;
 						}
@@ -274,7 +224,7 @@
 
 		// Objeto com informações sobre o plugin
 		AnyForm : {
-			version : '1.0'
+			version : '1.1'
 		}
 	}).fn.extend({
 
@@ -418,4 +368,50 @@
 			return form;
 		}
 	});
-})(jQuery, window);
+})({
+
+	// Define se o formulário deve ser enviado caso esteja inválido
+	sendForm : true,
+
+	// Define se propiedades WAI-ARIA devem ser modificadas conforme a validação
+	waiAria : true,
+
+	// Define se o formulário deve ser validado no submit
+	onSubmit : true,
+
+	// Define se cada campo deve ser validado eu precionar uma tecla
+	onKeyup : false,
+
+	// Define se cada campo deve ser validado ao perder o foco
+	onBlur : false,
+
+	// Define se cada campo deve ser validado ao ser alterado
+	onChange : false,
+
+	// Define um name space que será incluido na delegação dos eventos
+	nameSpace : 'validate',
+
+	// Um objeto contendo funções com retorno boleano para validar os campos
+	conditional : {},
+
+	// Um objeto contendo funções para tratar o valor dos campos antes da validação
+	prepare : {},
+
+	// Uma função chamada para cada campo validado
+	eachField : $.noop,
+
+	// Uma função chamada para cada campo inválido
+	eachInvalidField : $.noop,
+
+	// Uma função chamada para cada campo válido
+	eachValidField : $.noop,
+
+	// Uma função chamada quando o formulário for inválido
+	invalid : $.noop,
+
+	// Uma função chamada quando o formulário é válido
+	valid : $.noop,
+
+	// Uma função ou seletor para filtrar os campos que deverão ser validados
+	filter : '*'
+}, jQuery, window);
