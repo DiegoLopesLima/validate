@@ -29,7 +29,7 @@ jQuery AnyForm suporta todos os campos do <a href="http://www.w3.org/TR/html5/" 
 ## Attributos suportados
 
 ### data-conditional
-Aceita um índice que será procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. Deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional">`conditional`</a>).
+Aceita um ou mais índices separados por espaço que seram procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. O índice deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional">`conditional`</a>).
 
 ### data-ignore-case
 Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem ser tratadas como iguais.
