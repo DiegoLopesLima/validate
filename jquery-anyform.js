@@ -220,11 +220,6 @@
 		validateSetup : function(options) {
 
 			return $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
-		},
-
-		// Objeto com informações sobre o plugin
-		AnyForm : {
-			version : '1.1'
 		}
 	}).fn.extend({
 

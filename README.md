@@ -178,12 +178,6 @@ jQuery('form').validateSetup({
 ```
 
 ## Observações
-* jQuery AnyForm disponibiliza o objeto `jQuery.AnyForm` para que você possa armazenar dados referentes ao uso do plugin. Você poder usar o objeto para recuperar a versão atual do plugin.
-
-Exemplo:
-```javascript
-jQuery.AnyForm.version
-```
 * Os atributos ou qualquer propriedade dos campos podem ser alteradas a qualquer momento sem a necessidade de chamar `jQuery.fn.validate` novamente.
 * Não há necessidade de fazer nenhuma modificação para que a validação reconheça campos externos ao formulário que utilizem o atributo `form`.
 
