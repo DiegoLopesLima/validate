@@ -4,9 +4,9 @@
 
 Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo com o plugin, que pode ser baixado nos links abaixo.
 
-* <a href="https://www.dropbox.com/s/e0uozcatlzrrd1f/jQuery%20AnyForm%201.0.zip" target="_blank">Download jQuery AnyForm 1.0.zip</a>
-* <a href="https://www.dropbox.com/s/x9kimxyxpudnuyw/jQuery%20AnyForm%201.0.tar" target="_blank">Download jQuery AnyForm 1.0.tar</a>
-* <a href="https://www.dropbox.com/s/0wzauwilgf4jm57/jQuery%20AnyForm%201.0.rar" target="_blank">Download jQuery AnyForm 1.0.rar</a>
+* <a href="https://www.dropbox.com/s/1snmc1w1xr2jc2u/jQuery%20AnyForm%201.0.1.zip" target="_blank">Download jQuery AnyForm 1.0.1.zip</a>
+* <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.tar" target="_blank">Download jQuery AnyForm 1.0.1.tar</a>
+* <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.rar" target="_blank">Download jQuery AnyForm 1.0.1.rar</a>
 
 Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
 
