@@ -2,54 +2,77 @@
 
 -
 
-Para usar jQuery AnyForm você só precisa ter incluido em seu código uma versão da biblioteca <a href="http://jquery.com/" target="_blank">jQuery</a> igual ou superior a `1.7` e o arquivo com o plugin, que pode ser baixado nos links abaixo.
+To use jQuery AnyForm you just need include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more than `1.7` and a file with the plugin that can be downloaded in links down:
 
 * <a href="https://www.dropbox.com/s/1snmc1w1xr2jc2u/jQuery%20AnyForm%201.0.1.zip" target="_blank">Download jQuery AnyForm 1.0.1.zip</a>
 * <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.tar" target="_blank">Download jQuery AnyForm 1.0.1.tar</a>
 * <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.rar" target="_blank">Download jQuery AnyForm 1.0.1.rar</a>
 
-Usar o jQuery AnyForm é muito simples! Você só precisa encapsular o formulário que deseja validar e chamar o método `jQuery.fn.validate`.
+See also: <a href="https://github.com/DiegoLopesLima/jQuery-AnyForm/wiki/Downloads" target="_blank">Downloads</a>
 
-Veja um exemplo:
+You just need select a form and calling the `jQuery.fn.validate` method.
+
+See a example:
 ```javascript
 jQuery('form').validate();
 ```
 
-Depois de chamar o método validate você pode fazer a maioria das validações mais usadas com <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">atributos de dados</a>, que são totalmente válidos para o <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> segundo as especificações da <a href="http://www.w3.org/" target="_blank">W3C</a>.
+After calling the `jQuery.fn.validate` method, you can validate your fields using <a href="http://www.w3.org/TR/2011/WD-html5-20110525/elements.html#embedding-custom-non-visible-data-with-the-data-attributes" target="_blank">data attributes</a>, that are valid to the <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a>, according to the <a href="http://www.w3.org/" target="_blank">W3C</a>.
 
-Veja um exemplo de como tornar um campo obrigatório:
+See a example to required field:
 ```html
 <form>
 	<input type="text" data-required />
 </form>
 ```
 
-jQuery AnyForm suporta todos os campos do <a href="http://www.w3.org/TR/html5/" target="_blank">HTML5</a> e utiliza <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> para tornar a validação acessível a leitores de tela. Além disso esta ferramenta dispõe de vários attributos e parâmetros para te ajudar desde as situações mais simples até as mais complexas.
+jQuery AnyForm supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
 
-## Attributos suportados
+## Attributes
+See down the supported attributes.
 
 ### data-conditional
-Aceita um ou mais índices separados por espaço que seram procurado no objeto do parâmetro `conditional` do método `jQuery.fn.validate`. O índice deve conter uma função de retorno boleano que será usada para verificar o campo (Leia <a href="#conditional">`conditional`</a>).
+Accepts one or more indexes separated by spaces from the `conditional` object that should contain a the boolean return function. (See <a href="#conditional">`conditional`</a>)
+
+Example:
+```html
+<form>
+	<input type="password" id="password" />
+
+	<input type="password" data-conditional="confirmPassword" />
+</form>
+```
+
+```javascript
+jQuery('form').validate({
+	conditional : {
+		confirmPassword : function() {
+
+			return $(this).val() == $('#password').val();
+		}
+	}
+});
+```
 
 ### data-ignore-case
-Aceita um valor boleano que especifica se letras em maiusculo e minusculo podem ser tratadas como iguais.
+Accepts a boolean value to specify if field is case-insensitive. (Default:true)
 
 ### data-mask
-Aceita uma mascara que será usada para alterar o valor do campo após ser verificado e válido. Você pode usar os grupos baseados na expressão passada no atributo `data-pattern` (Leia <a href="#data-pattern">`data-pattern`</a>).
+Accepts a mask to change the field value to the specified format. The mask should use the character groups of the regular expression passed to the <a href="#data-pattern">`data-pattern`</a> attribute.
 
-Veja o exemplo abaixo de um campo de preço:
+Example:
 ```html
-<input type="text" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:`0`}${3:`0`}" />
+<input type="text" data-pattern="^([0-9]+)(?:[,.]([0-9])([0-9])?)?[0-9]*^" data-mask="${1},${2:`0`}${3:`0`}" />
 ```
 
 ### data-pattern
-Aceita uma expressão regular para testar o valor do campo.
+Accepts a regular expression to test the field value.
 
 ### data-prepare
-Aceita um índice que será procurado no objeto do parâmetro `prepare` do método `jQuery.fn.validate`. Deve conter uma função para retornar o valor do campo tratado (Leia <a href="#prepare">`prepare`</a>).
+Accepts a index from the `prepare` object that should contain a function to receive the field value and returns a new value treated. (See <a href="#prepare">`prepare`</a>)
 
 ### data-required
-Aceita valores boleanos e especifica se o campo é obrigatório. O valor padrão é true.
+Accepts a boolean value to specify if field is required. (Default:false)
 
 ### data-trim
 Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do início e fim retirados antes da validação (O valor do campo não é alterado).
@@ -65,15 +88,15 @@ Veja um exemplo:
 
 	<button type="submit">Enviar</button>
 </form>
+```
 
-<script>
-	jQuery('form').validate();
+```javascript
+jQuery('form').validate();
 
-	jQuery('[name="idade"]').data({
-		required : true,
-		pattern : /^[0-9]+$/
-	});
-</script>
+jQuery('[name="idade"]').data({
+	required : true,
+	pattern : /^[0-9]+$/
+});
 ```
 * Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
 
@@ -91,17 +114,17 @@ Veja um exemplo de confirmação de senha:
 
 	<button type="submit">Enviar</button>
 </form>
+```
 
-<script>
-	jQuery('form').validate({
-		conditional : {
-			'confirm-senha' : function() {
+```
+jQuery('form').validate({
+	conditional : {
+		'confirm-senha' : function() {
 
-				return jQuery(this).val() == jQuery('[name="senha"]').val();
-			}
+			return jQuery(this).val() == jQuery('[name="senha"]').val();
 		}
-	});
-</script>
+	}
+});
 ```
 
 ### filter
@@ -169,7 +192,6 @@ jQuery('form').validateDestroy();
 Você pode alterar os valores padrões dos parâmetros passados para o método `jQuery.fn.validate` usando o método `jQuery.fn.validateSetup`.
 
 Veja o exemplo:
-
 ```javascript
 jQuery('form').validateSetup({
 	sendForm : false,
@@ -186,8 +208,8 @@ Exemplo:
 <form id="my-form"></form>
 
 <input type="text" form="my-form" />
+```
 
-<script>
-	jQuery('form').validate();
-</script>
+```javascript
+jQuery('form').validate();
 ```
