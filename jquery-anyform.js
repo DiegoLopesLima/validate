@@ -1,4 +1,4 @@
-/* http://diegolopeslima.github.com/jQuery-AnyForm */
+/* https://github.com/DiegoLopesLima/jQuery-AnyForm */
 ;(function(defaults, $, window, undefined) {
 
 	var
