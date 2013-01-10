@@ -219,14 +219,14 @@
 		// Método para alterar as opções padrões do método jQuery.fn.validate
 		validateSetup : function(options) {
 
-			return $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
+			return $.extend(defaults, options);
 		}
 	}).fn.extend({
 
 		// Método para validação de formulários
 		validate : function(options) {
 
-			options = $.isPlainObject(options) ? $.extend(defaults, options) : defaults;
+			options = $.extend({}, defaults, options);
 
 			return $(this).validateDestroy().each(function() {
 
