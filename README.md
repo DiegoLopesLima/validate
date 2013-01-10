@@ -75,7 +75,7 @@ Accepts a index from the `prepare` object that should contain a function to rece
 Accepts a boolean value to specify if field is required. (Default:`false`)
 
 ### data-trim
-If true, removes the spaces from the ends in the field value. (The field value is not changed)
+Accepts a boolean value. If true, removes the spaces from the ends in the field value. (The field value is not changed)
 
 ## Supported parameters
 
@@ -96,25 +96,25 @@ jQuery('form').validate({
 A namespace used in all delegates events. (Default:`validate`)
 
 ### onBlur
-If true, triggers the validation when blur the field. (Default:`false`)
+Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)
 
 ### onChange
-If true, triggers the validation when change the field value. (Default:`false`)
+Accepts a boolean value. If true, triggers the validation when change the field value. (Default:`false`)
 
 ### onKeyup
-If true, triggers the validation when press any key. (Default:`false`)
+Accepts a boolean value. If true, triggers the validation when press any key. (Default:`false`)
 
 ### onSubmit
-If true, triggers the validation when submit the form. (Default:`true`)
+Accepts a boolean value. If true, triggers the validation when submit the form. (Default:`true`)
 
 ### prepare
 Accepts a object to store functions to prepare the field values. (See <a href="#data-prepare">`data-prepare`</a>).
 
 ### sendForm
-If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)
+Accepts a boolean value. If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)
 
 ### waiAria
-If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)
+Accepts a boolean value. If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)
 
 ## Callbacks
 
