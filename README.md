@@ -10,7 +10,7 @@ To use jQuery AnyForm you just need include in your code a version of the <a hre
 
 See also: <a href="https://github.com/DiegoLopesLima/jQuery-AnyForm/wiki/Downloads" target="_blank">Downloads</a>
 
-You just need select a form and calling the `jQuery.fn.validate` method.
+After this, you just need select your form and calling the `jQuery.fn.validate` method.
 
 See a example:
 ```javascript
@@ -55,7 +55,7 @@ jQuery('form').validate({
 ```
 
 ### data-ignore-case
-Accepts a boolean value to specify if field is case-insensitive. (Default:true)
+Accepts a boolean value to specify if field is case-insensitive. (Default:`true`)
 
 ### data-mask
 Accepts a mask to change the field value to the specified format. The mask should use the character groups of the regular expression passed to the <a href="#data-pattern">`data-pattern`</a> attribute.
@@ -72,21 +72,98 @@ Accepts a regular expression to test the field value.
 Accepts a index from the `prepare` object that should contain a function to receive the field value and returns a new value treated. (See <a href="#prepare">`prepare`</a>)
 
 ### data-required
-Accepts a boolean value to specify if field is required. (Default:false)
+Accepts a boolean value to specify if field is required. (Default:`false`)
 
 ### data-trim
-Aceita valores boleanos e especifica se o valor do campo deve ter os espaços do início e fim retirados antes da validação (O valor do campo não é alterado).
+If true, removes the spaces from the ends in the field value. (The field value is not changed)
 
-#### Observações
-* Os campos que não possuem nenhum atributo são tratados como válidos.
-* Você pode usar os métodos <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> para configurar os campos.
+## Supported parameters
 
-Veja um exemplo:
+### conditional
+Accepts a object to store functions from validation. (See <a href="#data-conditional">`data-conditional`</a>)
+
+### filter
+Accepts a selector string or function to filter the validated fields.
+
+Example to only validate text areas and text fields:
+```javascript
+jQuery('form').validate({
+	filter : '[type="text"], textarea'
+});
+```
+
+### nameSpace
+A namespace used in all delegates events. (Default:`validate`)
+
+### onBlur
+If true, triggers the validation when blur the field. (Default:`false`)
+
+### onChange
+If true, triggers the validation when change the field value. (Default:`false`)
+
+### onKeyup
+If true, triggers the validation when press any key. (Default:`false`)
+
+### onSubmit
+If true, triggers the validation when submit the form. (Default:`true`)
+
+### prepare
+Accepts a object to store functions to prepare the field values. (See <a href="#data-prepare">`data-prepare`</a>).
+
+### sendForm
+If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)
+
+### waiAria
+If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)
+
+## Callbacks
+
+### valid
+Accepts a function to be calling when form is valid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.
+
+### invalid
+Accepts a function to be calling when form is invalid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.
+
+### eachField
+Accepts a function to be calling to each field. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+
+### eachInvalidField
+Accepts a function to be calling when field is invalid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+
+### eachValidField
+Accepts a function to be calling when field is valid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+
+
+## Removing validation
+You can remove validation of a form using the `jQuery.fn.validateDestroy` method.
+
+Example:
+```javascript
+jQuery('form').validateDestroy();
+```
+
+## Changing the default values of `jQuery.fn.validate`
+You can changes the default values of `jQuery.fn.validate` using `jQuery.validateSetup` method.
+
+Example:
+```javascript
+jQuery('form').validateSetup({
+	sendForm : false,
+	onKeyup : true
+});
+```
+
+## Observations
+* You can change any attribute without the need to call jQuery.fn.validate again.
+* Fields without validation attributes are considered valid.
+* You can use the <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> and <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> methods to configure validation.
+
+Example:
 ```html
 <form>
-	<input type="text" name="idade" />
+	<input type="text" name="age" />
 
-	<button type="submit">Enviar</button>
+	<button type="submit">Send</button>
 </form>
 ```
 
@@ -97,119 +174,4 @@ jQuery('[name="idade"]').data({
 	required : true,
 	pattern : /^[0-9]+$/
 });
-```
-* Os patterns de campos não obrigatórios só são verificados caso o usuário tente preencher algo.
-
-## Parâmetros suportados por `jQuery.fn.validate`
-
-### conditional
-Aceita um objeto que vai armazenar funções para verificar o campos do formulário (Leia <a href="#data-conditional">`data-conditional`</a>).
-
-Veja um exemplo de confirmação de senha:
-```html
-<form>
-	<input type="text" name="senha" />
-
-	<input type="text" name="confirma-senha" data-conditional="confirm-senha" />
-
-	<button type="submit">Enviar</button>
-</form>
-```
-
-```
-jQuery('form').validate({
-	conditional : {
-		'confirm-senha' : function() {
-
-			return jQuery(this).val() == jQuery('[name="senha"]').val();
-		}
-	}
-});
-```
-
-### filter
-O parâmetro filter aceita um seletor ou função para filtrar quais campos dentro do formulário devem ser verificados.
-
-Veja um exemplo de como validar apenas textarea's e campos do tipo texto:
-```javascript
-jQuery('form').validate({
-	filter : '[type="text"], textarea'
-});
-```
-
-### nameSpace
-Um name space que será atribuido na delegação de todos os eventos do plugin. Por padrão seu valor é `validate`.
-
-### onBlur
-Aceita um valor boleado que especifica se os campos devem ser verificados ao perderem o foco. Por padrão seu valor é `false`.
-
-### onChange
-Aceita um valor boleado que especifica se os campos devem ser verificados ao serem alterados. Por padrão seu valor é `false`.
-
-### onKeyup
-Aceita um valor boleado que especifica se os campos devem ser verificados ao precionar uma tecla. Por padrão seu valor é `false`.
-
-### onSubmit
-Aceita um valor boleado que especifica se os campos devem ser verificados no envio do formulário. Por padrão seu valor é `true`.
-
-### prepare
-Aceita um objeto que vai armazenar funções para preparar o valor dos campos do formulário antes da validação (Leia <a href="#data-prepare">`data-prepare`</a>).
-
-### sendForm
-Aceita um valor boleado que especifica se o formulário deve ser enviado ao ser verificado e válido (Útil para formulários enviados por <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). Por padrão seu valor é `true`.
-
-### waiAria
-Aceita um valor boleado que especifica se <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> pode ser usado e modificado.
-
-
-## Callbacks
-
-### valid
-Aceita uma função que será executada sempre que o formulário for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
-
-### invalid
-Aceita uma função que será executada sempre que o formulário for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio formulário e os parâmetros passados são respectivamente `event` e `options`.
-
-### eachField
-Aceita uma função que será executada cada vez que um campo for verificado. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
-
-### eachInvalidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja inválido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
-
-### eachValidField
-Aceita uma função que será executada cada vez que um campo for verificado e esteja válido. O contexto do escopo da função (`this`) é o próprio campo e os parâmetros retornados são respectivamente `event`, `status` e `options`.
-
-
-## Retirando a validação do formulário
-As vezes é necessário retirar a validação de um formulário em uma situação específica, para isso você pode utilizar o método `jQuery.fn.validateDestroy`.
-
-Veja o exemplo:
-```javascript
-jQuery('form').validateDestroy();
-```
-
-## Alterando as propriedades padrões do método `jQuery.fn.validate`
-Você pode alterar os valores padrões dos parâmetros passados para o método `jQuery.fn.validate` usando o método `jQuery.fn.validateSetup`.
-
-Veja o exemplo:
-```javascript
-jQuery('form').validateSetup({
-	sendForm : false,
-	onKeyup : true
-});
-```
-
-## Observações
-* Os atributos ou qualquer propriedade dos campos podem ser alteradas a qualquer momento sem a necessidade de chamar `jQuery.fn.validate` novamente.
-* Não há necessidade de fazer nenhuma modificação para que a validação reconheça campos externos ao formulário que utilizem o atributo `form`.
-
-Exemplo:
-```html
-<form id="my-form"></form>
-
-<input type="text" form="my-form" />
-```
-
-```javascript
-jQuery('form').validate();
 ```
