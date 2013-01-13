@@ -170,8 +170,12 @@ Example:
 ```javascript
 jQuery('form').validate();
 
-jQuery('[name="idade"]').data({
+jQuery('[name="age"]').data({
 	required : true,
-	pattern : /^[0-9]+$/
+	pattern : /^[0-9]+$/,
+	conditional : function(value) {
+
+		return Number(value) > 17;
+	}
 });
 ```
