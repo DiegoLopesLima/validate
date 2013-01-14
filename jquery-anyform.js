@@ -29,10 +29,10 @@
 				fieldValue = field.val() || '',
 
 				//
-				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
+				fieldValidate = field.data('validate'),
 
 				//
-				fieldValidate = field.data('validate'),
+				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
 
 				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
 				fieldPrepare = field.data('prepare') || validation.prepare,
@@ -150,7 +150,7 @@
 				if(fieldPattern.test(fieldValue)) {
 
 					// Verifica se o evento não é keyup e se uma máscara foi passada
-					if(event.type != 'keyup' && fieldMask != undefined) {
+					if(event.type != 'keyup' && fieldMask !== undefined) {
 
 						var
 
