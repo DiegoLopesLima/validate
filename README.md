@@ -74,6 +74,9 @@ Accepts a boolean value to specify if field is required. (Default:`false`)
 ### data-trim
 Accepts a boolean value. If true, removes the spaces from the ends in the field value. (The field value is not changed)
 
+### data-validate
+You can use the `data-validate` to calling extensions. (See <a href="#creating-extensions">Creating extensions</a>)
+
 ## Supported parameters
 
 ### conditional
@@ -147,6 +150,31 @@ Example:
 jQuery('form').validateSetup({
 	sendForm : false,
 	onKeyup : true
+});
+```
+
+## Creating extensions
+You can use the `jQuery.validateExtend` method to extend the validations and calling the extensions with `data-validate` attribute.
+
+Example:
+```html
+<form>
+	<input type="text" name="age" data-validate="age" />
+</form>
+```
+
+```javascript
+jQuery('form').validate();
+
+jQuery.validateExtend({
+	age : {
+		required : true,
+		pattern : /^[0-9]+$/,
+		conditional : function(value) {
+
+			return Number(value) > 17;
+		}
+	}
 });
 ```
 
