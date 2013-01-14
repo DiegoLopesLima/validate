@@ -8,6 +8,8 @@
 		// Define uma variável contendo todos os tipos de campos
 		allTypes = type.join(','),
 
+		extend = {},
+
 		// Método para validar campos individuais
 		validateField = function(event, options) {
 
@@ -26,26 +28,32 @@
 				// O valor do campo atual
 				fieldValue = field.val() || '',
 
+				//
+				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
+
+				//
+				fieldValidate = field.data('validate'),
+
 				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
-				fieldPrepare = field.data('prepare'),
+				fieldPrepare = field.data('prepare') || validation.prepare,
 
 				// Expressão regular para validar o campo
-				fieldPattern = (field.data('pattern') || /(?:)/),
+				fieldPattern = (field.data('pattern') || ($.type(validation.pattern) == 'regexp' ? validation.pattern : /(?:)/)),
 
 				// Boleano que especifica se a expressão regular será sensivel ao case
-				fieldIgnoreCase = field.data('ignore-case'),
+				fieldIgnoreCase = field.attr('data-ignore-case') || field.data('ignoreCase') || validation.ignoreCase,
 
 				// Mascara para o campo do formulário baseada na expressão regula passada
-				fieldMask = field.data('mask'),
+				fieldMask = field.data('mask') || validation.mask,
 
 				// Um índice dentro do objeto conditional contendo uma função que será convertida em Boleano para validar o campo
-				fieldConditional = field.data('conditional'),
+				fieldConditional = field.data('conditional') || validation.conditional,
 
 				// Um Boleano que diz se o campo é obrigatório
-				fieldRequired = field.data('required'),
+				fieldRequired = field.data('required') || !!validation.required,
 
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
-				fieldTrim = field.data('trim'),
+				fieldTrim = field.data('trim') || !!validation.trim,
 
 				reTrue = /^(true|)$/i,
 
@@ -215,6 +223,12 @@
 		};
 
 	$.extend({
+
+		// Método para extender as validações
+		validateExtend : function(options) {
+
+			return $.extend(extend, options);
+		},
 
 		// Método para alterar as opções padrões do método jQuery.fn.validate
 		validateSetup : function(options) {
