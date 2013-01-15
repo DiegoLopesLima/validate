@@ -50,14 +50,18 @@
 				fieldConditional = field.data('conditional') || validation.conditional,
 
 				// Um Boleano que diz se o campo é obrigatório
-				fieldRequired = field.data('required') || !!validation.required,
+				fieldRequired = field.data('required'),
 
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
-				fieldTrim = field.data('trim') || !!validation.trim,
+				fieldTrim = field.data('trim'),
 
 				reTrue = /^(true|)$/i,
 
 				reFalse = /^false$/i;
+
+			fieldRequired = fieldRequired != '' ? (fieldRequired || !!validation.required) : true;
+
+			fieldTrim = fieldTrim != '' ? (fieldTrim || !!validation.trim) : true;
 
 			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
 			if(reTrue.test(fieldTrim)) {
