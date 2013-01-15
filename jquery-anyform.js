@@ -28,10 +28,10 @@
 				// O valor do campo atual
 				fieldValue = field.val() || '',
 
-				//
+				// Um índice de uma extenção para validação
 				fieldValidate = field.data('validate'),
 
-				//
+				// Objeto contendo uma validação criada por jQuery.fn.validateExtend
 				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
 
 				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
@@ -52,8 +52,11 @@
 				// Um Boleano que diz se o campo é obrigatório
 				fieldRequired = field.data('required'),
 
-				// Um objeto contendo descrições para os estados do campo
+				// O id do elemento que receberá as descrições
 				fieldDescribedby = field.data('describedby') || validation.describedby,
+
+				// Um índice de uma objeto que descreve os estados do campo
+				fieldDescription = field.data('description') || validation.description,
 
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
 				fieldTrim = field.data('trim'),
@@ -62,12 +65,8 @@
 
 				reFalse = /^false$/i,
 
-				description = $.isPlainObject(fieldDescribedby) ? fieldDescribedby : (options.description[fieldDescribedby] || {
-					valid : '',
-					pattern : '',
-					required : '',
-					conditional : ''
-				});
+				// Um objeto contendo descrições para os estados do campo
+				fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
 
 			fieldRequired = fieldRequired != '' ? (fieldRequired || !!validation.required) : true;
 
@@ -204,6 +203,20 @@
 						}
 					}
 				}
+			}
+
+			var describedby = $('[id="' + fieldDescribedby +'"]');
+
+			if(describedby.length > 0) {
+
+				var log;
+
+				if() {
+
+					log = fieldDescription.required;
+				}
+
+				describedby.html(log || '');
 			}
 
 			// Chama o callback eachField
@@ -420,7 +433,7 @@
 	// Um objeto contendo funções para tratar o valor dos campos antes da validação
 	prepare : {},
 
-	//
+	// Um objeto contendo descrições para os possíveis estados do campo
 	description : {},
 
 	// Uma função chamada para cada campo validado
