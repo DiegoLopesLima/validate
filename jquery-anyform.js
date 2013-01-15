@@ -52,12 +52,22 @@
 				// Um Boleano que diz se o campo é obrigatório
 				fieldRequired = field.data('required'),
 
+				// Um objeto contendo descrições para os estados do campo
+				fieldDescribedby = field.data('describedby') || validation.describedby,
+
 				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
 				fieldTrim = field.data('trim'),
 
 				reTrue = /^(true|)$/i,
 
-				reFalse = /^false$/i;
+				reFalse = /^false$/i,
+
+				description = $.isPlainObject(fieldDescribedby) ? fieldDescribedby : (options.description[fieldDescribedby] || {
+					valid : '',
+					pattern : '',
+					required : '',
+					conditional : ''
+				});
 
 			fieldRequired = fieldRequired != '' ? (fieldRequired || !!validation.required) : true;
 
@@ -409,6 +419,9 @@
 
 	// Um objeto contendo funções para tratar o valor dos campos antes da validação
 	prepare : {},
+
+	//
+	description : {},
 
 	// Uma função chamada para cada campo validado
 	eachField : $.noop,
