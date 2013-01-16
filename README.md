@@ -93,7 +93,7 @@ jQuery('form').validate({
 ```
 
 ### nameSpace
-A namespace used in all delegates events. (Default:`validate`)
+A namespace used in all delegates events. (Default:`jQueryAnyForm`)
 
 ### onBlur
 Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)

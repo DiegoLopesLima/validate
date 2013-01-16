@@ -22,7 +22,7 @@
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="price" id="price" placeholder="R$ 0,00" data-pattern="^(?:R\$)?\s*([0-9]+)(?:[,\.]([0-9])([0-9])?)?[0-9]*$" data-mask="R$ ${1},${2:`0`}${3:`0`}" />
+					<input type="text" name="price" id="price" placeholder="R$ 0,00" data-pattern="^(?:R\$)?\s*(\d+)(?:[,\.](\d)(\d)?)?\d*$" data-mask="R$ ${1},${2:`0`}${3:`0`}" />
 
 					<label for="price" class="add-on">Price</label>
 				</div>
@@ -49,7 +49,7 @@
 			</form>
 		</div>
 
-		<script src="vendor/jquery-1.8.3.min.js"></script>
+		<script src="vendor/jquery-1.9.0.min.js"></script>
 
 		<script src="../jquery-anyform.js"></script>
 

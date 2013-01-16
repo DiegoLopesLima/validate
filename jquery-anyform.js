@@ -285,7 +285,7 @@
 				// Verifica se o elemento encapsulado é um formulário
 				if(form.is('form')) {
 
-					form.data('validate', {
+					form.data('jQueryAnyForm', {
 						options : options
 					});
 
@@ -385,7 +385,7 @@
 				form = $(this),
 
 				// Armazena os dados de validação contidos no campo
-				dataValidate = form.data('validate');
+				dataValidate = form.data('jQueryAnyForm');
 
 			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
 			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
@@ -396,7 +396,7 @@
 					nameSpace = dataValidate.nameSpace,
 
 					// Armazenas os campos filhos do formulário e remove os dados da validação
-					fields = form.removeData('validate').find(allTypes).add(form);
+					fields = form.removeData('jQueryAnyForm').find(allTypes).add(form);
 
 				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {
@@ -434,7 +434,7 @@
 	onChange : false,
 
 	// Define um name space que será incluido na delegação dos eventos
-	nameSpace : 'validate',
+	nameSpace : 'jQueryAnyForm',
 
 	// Um objeto contendo funções com retorno boleano para validar os campos
 	conditional : {},
