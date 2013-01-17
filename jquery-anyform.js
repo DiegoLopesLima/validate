@@ -207,13 +207,22 @@
 
 			var describedby = $('[id="' + fieldDescribedby +'"]');
 
-			if(describedby.length > 0) {
+			if(describedby.length > 0 && event.type != 'keyup') {
 
 				var log;
 
-				if() {
+				if(!status.required) {
 
 					log = fieldDescription.required;
+				} else if(!status.pattern) {
+
+					log = fieldDescription.pattern;
+				} else if(!status.conditional) {
+
+					log = fieldDescription.conditional;
+				} else {
+
+					log = fieldDescription.valid;
 				}
 
 				describedby.html(log || '');
