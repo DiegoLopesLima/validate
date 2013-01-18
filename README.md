@@ -1,11 +1,5 @@
-# jQuery AnyForm
-To use jQuery AnyForm you just need include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more than `1.7` and a file with the plugin that can be downloaded in links down:
-
-* <a href="https://www.dropbox.com/s/1snmc1w1xr2jc2u/jQuery%20AnyForm%201.0.1.zip" target="_blank">Download jQuery AnyForm 1.0.1.zip</a>
-* <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.tar" target="_blank">Download jQuery AnyForm 1.0.1.tar</a>
-* <a href="https://www.dropbox.com/s/55uestr790j46kz/jQuery%20AnyForm%201.0.1.rar" target="_blank">Download jQuery AnyForm 1.0.1.rar</a>
-
-See also: <a href="https://github.com/DiegoLopesLima/jQuery-AnyForm/wiki/Downloads">Downloads</a>, <a href="https://github.com/DiegoLopesLima/jQuery-AnyForm/wiki">Wiki</a>, <a href="https://github.com/DiegoLopesLima/jQuery-AnyForm/wiki/Changelog">Changelog</a>.
+# jQuery Validate
+To use jQuery AnyForm you just need include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more than `1.7` and a file with the plugin. Click here to download the plugin.
 
 After this, you just need select your form and calling the `jQuery.fn.validate` method.
 
@@ -23,7 +17,7 @@ See a example to required field:
 </form>
 ```
 
-jQuery AnyForm supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
+jQuery Validate supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
 
 ## Attributes
 See down the supported attributes.
@@ -93,7 +87,7 @@ jQuery('form').validate({
 ```
 
 ### nameSpace
-A namespace used in all delegates events. (Default:`jQueryAnyForm`)
+A namespace used in all delegates events. (Default:`validate`)
 
 ### onBlur
 Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)

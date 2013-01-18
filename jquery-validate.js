@@ -1,4 +1,4 @@
-/* https://github.com/DiegoLopesLima/jQuery-AnyForm */
+/* jQuery Validate 1.1.0 - https://github.com/DiegoLopesLima/jQuery-Validate */
 ;(function(defaults, $, window, undefined) {
 
 	var
@@ -285,7 +285,7 @@
 				// Verifica se o elemento encapsulado é um formulário
 				if(form.is('form')) {
 
-					form.data('jQueryAnyForm', {
+					form.data('validate', {
 						options : options
 					});
 
@@ -385,7 +385,7 @@
 				form = $(this),
 
 				// Armazena os dados de validação contidos no campo
-				dataValidate = form.data('jQueryAnyForm');
+				dataValidate = form.data('validate');
 
 			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
 			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
@@ -396,7 +396,7 @@
 					nameSpace = dataValidate.nameSpace,
 
 					// Armazenas os campos filhos do formulário e remove os dados da validação
-					fields = form.removeData('jQueryAnyForm').find(allTypes).add(form);
+					fields = form.removeData('validate').find(allTypes).add(form);
 
 				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {
@@ -434,7 +434,7 @@
 	onChange : false,
 
 	// Define um name space que será incluido na delegação dos eventos
-	nameSpace : 'jQueryAnyForm',
+	nameSpace : 'validate',
 
 	// Um objeto contendo funções com retorno boleano para validar os campos
 	conditional : {},
