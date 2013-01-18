@@ -1,0 +1,34 @@
+{
+	"name": "Validate",
+	"title": "jQuery Validate",
+	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
+	"keywords": [
+		"jquery",
+		"validate",
+		"form"
+	],
+	"version": "1.1.0",
+	"author": {
+		"name": "Diego Lopes Lima",
+		"url": "https://github.com/DiegoLopesLima"
+	},
+	"maintainers": [
+		{
+			"name": "Diego Lopes Lima",
+			"email": "contact.diego.lima@gmail.com",
+			"url": "https://github.com/DiegoLopesLima"
+		}
+	],
+	"licenses": [
+		{
+			"type": "MIT",
+			"url": "http://www.opensource.org/licenses/mit-license.php"
+		}
+	],
+	"bugs": "https://github.com/DiegoLopesLima/jQuery-Validate/issues",
+	"docs": "https://github.com/DiegoLopesLima/jQuery-Validate#readme",
+	"download": "https://github.com/jquery-boilerplate/boilerplate/archive/master.zip",
+	"dependencies": {
+		"jquery": ">=1.7"
+	}
+}
