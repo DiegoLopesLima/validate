@@ -147,6 +147,31 @@ jQuery('form').validateSetup({
 });
 ```
 
+## Creating descriptions
+You can create descriptions to the field states.
+
+Example:
+```html
+<form>
+	<input type="text" data-describedby="description" data-description="test" />
+
+	<span id="description"></span>
+</form>
+```
+
+```javascript
+$('form').validate({
+	description : {
+		test : {
+			required : '<div class="alert alert-error">Required</div>',
+			pattern : '<div class="alert alert-error">Pattern</div>',
+			conditional : '<div class="alert alert-error">Conditional</div>',
+			valid : '<div class="alert alert-success">Valid</div>'
+		}
+	}
+});
+```
+
 ## Creating extensions
 You can use the `jQuery.validateExtend` method to extend the validations and calling the extensions with `data-validate` attribute.
 
