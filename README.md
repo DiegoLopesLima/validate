@@ -1,5 +1,5 @@
 # jQuery Validate
-To use jQuery AnyForm you just need include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more than `1.7` and a file with the plugin. Click here to download the plugin.
+To use jQuery Validate you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/dffdpj1k4np1jrk/jQuery%20Validate%201.1.0.zip" target="_blank">Click here to download the plugin</a>.
 
 After this, you just need select your form and calling the `jQuery.fn.validate` method.
 
