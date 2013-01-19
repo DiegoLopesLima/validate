@@ -53,7 +53,7 @@ Accepts a mask to change the field value to the specified format. The mask shoul
 
 Example:
 ```html
-<input type="text" data-pattern="^([0-9]+)(?:[,.]([0-9])([0-9])?)?[0-9]*^" data-mask="${1},${2:`0`}${3:`0`}" />
+<input type="text" data-pattern="^(\d+)(?:[,.](\d)(\d)?)?\d*^" data-mask="${1},${2:`0`}${3:`0`}" />
 ```
 
 ### data-pattern
