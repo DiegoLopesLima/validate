@@ -7,7 +7,7 @@
 		"validate",
 		"form"
 	],
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"author": {
 		"name": "Diego Lopes Lima",
 		"url": "https://github.com/DiegoLopesLima"
@@ -25,9 +25,9 @@
 			"url": "http://www.opensource.org/licenses/mit-license.php"
 		}
 	],
-	"bugs": "https://github.com/DiegoLopesLima/jQuery-Validate/issues",
-	"docs": "https://github.com/DiegoLopesLima/jQuery-Validate#readme",
-	"download": "https://www.dropbox.com/s/dffdpj1k4np1jrk/jQuery%20Validate%201.1.0.zip",
+	"bugs": "https://github.com/DiegoLopesLima/Validate/issues",
+	"docs": "https://github.com/DiegoLopesLima/Validate#readme",
+	"download": "https://www.dropbox.com/s/gvwrnswupccfjyn/jQuery%20Validate%201.1.1.zip",
 	"dependencies": {
 		"jquery": ">=1.7"
 	}

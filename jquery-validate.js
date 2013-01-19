@@ -1,4 +1,4 @@
-/* jQuery Validate 1.1.0 - https://github.com/DiegoLopesLima/jQuery-Validate */
+/* jQuery Validate 1.1.1 - https://github.com/DiegoLopesLima/Validate */
 ;(function(defaults, $, window, undefined) {
 
 	var
@@ -66,7 +66,9 @@
 				reFalse = /^false$/i,
 
 				// Um objeto contendo descrições para os estados do campo
-				fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
+				fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {}),
+
+				name = 'validate';
 
 			fieldRequired = fieldRequired != '' ? (fieldRequired || !!validation.required) : true;
 
@@ -177,7 +179,7 @@
 							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
 						}
 
-						fieldMask = fieldMask.replace(/\$\{[0-9]+(?::`([^`]*)`)?\}/g, '$1');
+						fieldMask = fieldMask.replace(/\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
 
 						// Verifica se o valor construido com a mascara é válido
 						if(fieldPattern.test(fieldMask)) {
@@ -205,11 +207,13 @@
 				}
 			}
 
-			var describedby = $('[id="' + fieldDescribedby +'"]');
+			var
+
+				describedby = $('[id="' + fieldDescribedby +'"]'),
+
+				log = fieldDescription.valid;
 
 			if(describedby.length > 0 && event.type != 'keyup') {
-
-				var log;
 
 				if(!status.required) {
 
@@ -220,9 +224,6 @@
 				} else if(!status.conditional) {
 
 					log = fieldDescription.conditional;
-				} else {
-
-					log = fieldDescription.valid;
 				}
 
 				describedby.html(log || '');
@@ -285,7 +286,7 @@
 				// Verifica se o elemento encapsulado é um formulário
 				if(form.is('form')) {
 
-					form.data('validate', {
+					form.data(name, {
 						options : options
 					});
 
@@ -385,7 +386,7 @@
 				form = $(this),
 
 				// Armazena os dados de validação contidos no campo
-				dataValidate = form.data('validate');
+				dataValidate = form.data(name);
 
 			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
 			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
@@ -396,7 +397,7 @@
 					nameSpace = dataValidate.nameSpace,
 
 					// Armazenas os campos filhos do formulário e remove os dados da validação
-					fields = form.removeData('validate').find(allTypes).add(form);
+					fields = form.removeData(name).find(allTypes).add(form);
 
 				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {

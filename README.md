@@ -1,5 +1,10 @@
 # jQuery Validate
-To use jQuery Validate you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/dffdpj1k4np1jrk/jQuery%20Validate%201.1.0.zip" target="_blank">Click here to download the plugin</a>.
+
+> License : <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a>.
+
+> Version : `1.1.1`.
+
+To use jQuery Validate you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/gvwrnswupccfjyn/jQuery%20Validate%201.1.1.zip" target="_blank">Click here to download the plugin</a>.
 
 After this, you just need select your form and calling the `jQuery.fn.validate` method.
 
