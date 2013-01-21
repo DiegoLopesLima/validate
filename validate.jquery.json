@@ -5,11 +5,20 @@
 	"keywords": [
 		"jquery",
 		"validate",
-		"form"
+		"validation",
+		"form",
+		"data",
+		"input",
+		"field",
+		"mask",
+		"pattern",
+		"required",
+		"conditional"
 	],
 	"version": "1.1.1",
 	"author": {
 		"name": "Diego Lopes Lima",
+		"email" : "contact.diego.lima@gmail.com",
 		"url": "https://github.com/DiegoLopesLima"
 	},
 	"maintainers": [
