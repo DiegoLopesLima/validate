@@ -1,9 +1,9 @@
-/* jQuery Validate 1.1.1 - https://github.com/DiegoLopesLima/Validate */
+/* https://github.com/DiegoLopesLima/Validate */
 ;(function(defaults, $, window, undefined) {
 
 	var
 
-		type = ['[type="color"],[type="date"],[type="datetime"],[type="datetime-local"],[type="email"],[type="file"],[type="hidden"],[type="month"],[type="number"],[type="password"],[type="range"],[type="search"],[type="tel"],[type="text"],[type="time"],[type="url"],[type="week"],textarea', 'select', '[type="checkbox"],[type="radio"]'],
+		type = ['input:not([type]),input[type="color"],input[type="date"],input[type="datetime"],input[type="datetime-local"],input[type="email"],input[type="file"],input[type="hidden"],input[type="month"],input[type="number"],input[type="password"],input[type="range"],input[type="search"],input[type="tel"],input[type="text"],input[type="time"],input[type="url"],input[type="week"],textarea', 'select', 'input[type="checkbox"],input[type="radio"]'],
 
 		// Define uma variável contendo todos os tipos de campos
 		allTypes = type.join(','),
