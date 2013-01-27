@@ -229,6 +229,11 @@
 				describedby.html(log || '');
 			}
 
+			if(typeof(validation.each) == 'function') {
+
+				validation.each.call(field, event, status, options);
+			}
+
 			// Chama o callback eachField
 			options.eachField.call(field, event, status, options);
 
@@ -241,6 +246,11 @@
 					field.prop('aria-invalid', false);
 				}
 
+				if(typeof(validation.valid) == 'function') {
+
+					validation.valid.call(field, event, status, options);
+				}
+
 				// Chama o callback eachValidField
 				options.eachValidField.call(field, event, status, options);
 			} else {
@@ -249,6 +259,11 @@
 				if(!!options.waiAria) {
 
 					field.prop('aria-invalid', true);
+				}
+
+				if(typeof(validation.invalid) == 'function') {
+
+					validation.invalid.call(field, event, status, options);
 				}
 
 				// Chama o callback eachInvalidField
