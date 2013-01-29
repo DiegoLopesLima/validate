@@ -205,7 +205,7 @@ jQuery.validateExtend({
 ## Observations
 * You can change any attribute without the need to call jQuery.fn.validate again.
 * Fields without validation attributes are considered valid.
-* You can use the <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> e <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> and <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> methods to configure validation.
+* You can use the <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> and <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> methods to configure validation.
 
 Example:
 ```html
