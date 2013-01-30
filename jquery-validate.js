@@ -5,67 +5,67 @@
 
 		type = ['input:not([type]),input[type="color"],input[type="date"],input[type="datetime"],input[type="datetime-local"],input[type="email"],input[type="file"],input[type="hidden"],input[type="month"],input[type="number"],input[type="password"],input[type="range"],input[type="search"],input[type="tel"],input[type="text"],input[type="time"],input[type="url"],input[type="week"],textarea', 'select', 'input[type="checkbox"],input[type="radio"]'],
 
-		// Define uma variável contendo todos os tipos de campos
+		// All field types
 		allTypes = type.join(','),
 
 		extend = {},
 
-		// Método para validar campos individuais
+		// Method to validate each fields
 		validateField = function(event, options) {
 
 			var
 
-				// Define os status padrão do campo
+				// Field status
 				status = {
 					pattern : true,
 					conditional : true,
 					required : true
 				},
 
-				// O campo atual
+				// Current field
 				field = $(this),
 
-				// O valor do campo atual
+				// Current field value
 				fieldValue = field.val() || '',
 
-				// Um índice de uma extenção para validação
+				// An index of extend
 				fieldValidate = field.data('validate'),
 
-				// Objeto contendo uma validação criada por jQuery.fn.validateExtend
+				// A validation object (jQuery.fn.validateExtend)
 				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
 
-				// Um índice ou mais separados or espaços do objeto prepare para tratar o valor do campo antes da validação
+				// One index or more separated for spaces to prepare the field value
 				fieldPrepare = field.data('prepare') || validation.prepare,
 
-				// Expressão regular para validar o campo
+				// A regular expression to validate field value
 				fieldPattern = (field.data('pattern') || ($.type(validation.pattern) == 'regexp' ? validation.pattern : /(?:)/)),
 
-				// Boleano que especifica se a expressão regular será sensivel ao case
+				// Is case sensitive? (Boolean)
 				fieldIgnoreCase = field.attr('data-ignore-case') || field.data('ignoreCase') || validation.ignoreCase,
 
-				// Mascara para o campo do formulário baseada na expressão regula passada
+				// A field mask
 				fieldMask = field.data('mask') || validation.mask,
 
-				// Um índice dentro do objeto conditional contendo uma função que será convertida em Boleano para validar o campo
+				// A index in the conditional object containing a function to validate the field value
 				fieldConditional = field.data('conditional') || validation.conditional,
 
-				// Um Boleano que diz se o campo é obrigatório
+				// Is required?
 				fieldRequired = field.data('required'),
 
-				// O id do elemento que receberá as descrições
+				// The description element id
 				fieldDescribedby = field.data('describedby') || validation.describedby,
 
-				// Um índice de uma objeto que descreve os estados do campo
+				// An index of description object
 				fieldDescription = field.data('description') || validation.description,
 
-				// Um boleano que define se os espaços no início e final do valor do campo devem ser retirados antes da validação
+				// Trim spaces?
 				fieldTrim = field.data('trim'),
 
 				reTrue = /^(true|)$/i,
 
 				reFalse = /^false$/i,
 
-				// Um objeto contendo descrições para os estados do campo
+				// The description object
 				fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {}),
 
 				name = 'validate';
@@ -74,16 +74,16 @@
 
 			fieldTrim = fieldTrim != '' ? (fieldTrim || !!validation.trim) : true;
 
-			// Verifica se devo aparar os espaçoes no começo e fim do valor do campo
+			// Trim spaces?
 			if(reTrue.test(fieldTrim)) {
 
 				fieldValue = $.trim(fieldValue);
 			}
 
-			// Verifica se fieldPrepare está no formato de função
+			// The fieldPrepare is a function?
 			if($.isFunction(fieldPrepare)) {
 
-				// Atualisa o valor a ser validado para o valor de retorno da função
+				// Updates the fieldValue variable
 				fieldValue = String(fieldPrepare.call(field, fieldValue));
 			} else {
 
@@ -305,7 +305,12 @@
 						options : options
 					});
 
-					var fields = form.find(allTypes);
+					var
+
+						fields = form.find(allTypes),
+
+						// Events namespace
+						namespace = options.namespace;
 
 					// verifica se o formulário possui o atributo is
 					if(form.is('[id]')) {
@@ -318,7 +323,7 @@
 					// Verifica se deve validar ao soltar a tecla
 					if(!!options.onKeyup) {
 
-						fields.filter(type[0]).on('keyup.' + options.namespace, function(event) {
+						fields.filter(type[0]).on('keyup.' + namespace, function(event) {
 
 							validateField.call(this, event, options);
 						});
@@ -327,7 +332,7 @@
 					// Verifica se devo validar ao desfocar um campo
 					if(!!options.onBlur) {
 
-						fields.on('blur.' + options.namespace, function(event) {
+						fields.on('blur.' + namespace, function(event) {
 
 							validateField.call(this, event, options);
 						});
@@ -336,7 +341,7 @@
 					// Verifica se devo validar ao alterar o valor de um campo
 					if(!!options.onChange) {
 
-						fields.on('change.' + options.namespace, function(event) {
+						fields.on('change.' + namespace, function(event) {
 
 							validateField.call(this, event, options);
 						});
@@ -345,7 +350,7 @@
 					// Verifica se devo validar ao submeter o formulário
 					if(!!options.onSubmit) {
 
-						form.on('submit.' + options.namespace, function(event) {
+						form.on('submit.' + namespace, function(event) {
 
 							var formValid = true;
 
