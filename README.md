@@ -6,7 +6,7 @@
 
 > Requires: _jQuery 1.7+_.
 
-To use jQuery Validate you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/gvwrnswupccfjyn/jQuery%20Validate%201.1.1.zip" target="_blank">Click here to download the plugin</a>.
+To use _jQuery Validate_ you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/gvwrnswupccfjyn/jQuery%20Validate%201.1.1.zip" target="_blank">Click here to download the plugin</a>.
 
 After this, you just need select your form and calling the `jQuery.fn.validate` method.
 
@@ -24,7 +24,7 @@ See a example to required field:
 </form>
 ```
 
-jQuery Validate supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
+_jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
 
 ## Attributes
 
@@ -33,54 +33,72 @@ jQuery Validate supports all fields of the HTML5 and uses <a href="http://www.w3
 		<th width="110px">Attribute</th>
 
 		<th>Description</th>
+
+		<th>Default</th>
 	</tr>
 
 	<tr>
 		<td>data-conditional</td>
 
 		<td>Accepts one or more indexes separated by spaces from the `conditional` object that should contain a the boolean return function.</td>
+
+		<td></td>
 	</tr>
 
 	<tr>
 		<td>data-ignore-case</td>
 
-		<td>Accepts a boolean value to specify if field is case-insensitive. (Default:`true`)</td>
+		<td>Accepts a boolean value to specify if field is case-insensitive.</td>
+
+		<td>true</td>
 	</tr>
 
 	<tr>
 		<td>data-mask</td>
 
 		<td>Accepts a mask to change the field value to the specified format. The mask should use the character groups of the regular expression passed to the <a href="#data-pattern">`data-pattern`</a> attribute.</td>
+
+		<td>${0}</td>
 	</tr>
 
 	<tr>
 		<td>data-pattern</td>
 
 		<td>Accepts a regular expression to test the field value.</td>
+
+		<td>/(?:)/</td>
 	</tr>
 
 	<tr>
 		<td>data-prepare</td>
 
 		<td>Accepts a index from the `prepare` object that should contain a function to receive the field value and returns a new value treated.</td>
+
+		<td></td>
 	</tr>
 
 	<tr>
 		<td>data-required</td>
 
-		<td>Accepts a boolean value to specify if field is required. (Default:`false`)</td>
+		<td>Accepts a boolean value to specify if field is required.</td>
+
+		<td>false</td>
 	</tr>
 
 	<tr>
 		<td>data-trim</td>
 
 		<td>Accepts a boolean value. If true, removes the spaces from the ends in the field value. (The field value is not changed)</td>
+
+		<td>false</td>
 	</tr>
 
 	<tr>
 		<td>data-validate</td>
 
-		<td>You can use the `data-validate` to calling extensions. (See <a href="#creating-extensions">Creating extensions</a>)</td>
+		<td>You can use the `data-validate` to calling extensions.</td>
+
+		<td></td>
 	</tr>
 </table>
 
@@ -91,66 +109,98 @@ jQuery Validate supports all fields of the HTML5 and uses <a href="http://www.w3
 		<th width="110px">Parameter</th>
 
 		<th>Description</th>
+
+		<th width="50px">Default</th>
 	</tr>
 
 	<tr>
 		<td>conditional</td>
 
 		<td>Accepts a object to store functions from validation.</td>
+
+		<td></td>
 	</tr>
 
 	<tr>
 		<td>filter</td>
 
 		<td>Accepts a selector string or function to filter the validated fields.</td>
+
+		<td>*</td>
 	</tr>
 
 	<tr>
 		<td>nameSpace</td>
 
-		<td>A namespace used in all delegates events. (Default:`validate`)</td>
+		<td>A namespace used in all delegates events.</td>
+
+		<td>validate</td>
 	</tr>
 
 	<tr>
 		<td>onBlur</td>
 
-		<td>Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)</td>
+		<td>Accepts a boolean value. If true, triggers the validation when blur the field.</td>
+
+		<td>false</td>
 	</tr>
 
 	<tr>
 		<td>onChange</td>
 
-		<td>Accepts a boolean value. If true, triggers the validation when change the field value. (Default:`false`)</td>
+		<td>Accepts a boolean value. If true, triggers the validation when change the field value.</td>
+
+		<td>false</td>
 	</tr>
 
 	<tr>
 		<td>onKeyup</td>
 
-		<td>Accepts a boolean value. If true, triggers the validation when press any key. (Default:`false`)</td>
+		<td>Accepts a boolean value. If true, triggers the validation when press any key.</td>
+
+		<td>false</td>
 	</tr>
 
 	<tr>
 		<td>onSubmit</td>
 
-		<td>Accepts a boolean value. If true, triggers the validation when submit the form. (Default:`true`)</td>
+		<td>Accepts a boolean value. If true, triggers the validation when submit the form.</td>
+
+		<td>true</td>
 	</tr>
 
 	<tr>
 		<td>prepare</td>
 
 		<td>Accepts a object to store functions to prepare the field values.</td>
+
+		<td></td>
 	</tr>
 
 	<tr>
 		<td>sendForm</td>
 
-		<td>Accepts a boolean value. If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)</td>
+		<td>Accepts a boolean value. If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>).</td>
+
+		<td>true</td>
 	</tr>
 
 	<tr>
 		<td>waiAria</td>
 
-		<td>Accepts a boolean value. If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)</td>
+		<td>Accepts a boolean value. If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>.</td>
+
+		<td>true</td>
+	</tr>
+</table>
+
+## Callbacks
+
+<table>
+	<tr>
+		<th width="110px">Parameter</th>
+
+		<th>Description</th>
 	</tr>
 
 	<tr>
