@@ -34,7 +34,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 
 		<th>Description</th>
 
-		<th>Default</th>
+		<th width="75px">Default</th>
 	</tr>
 
 	<tr>
@@ -259,9 +259,9 @@ You can create descriptions to the field states.
 Example:
 ```html
 <form>
-	<input type="text" data-describedby="description" data-description="test" />
+	<input type="text" data-describedby="messages" data-description="test" />
 
-	<span id="description"></span>
+	<span id="messages"></span>
 </form>
 ```
 
