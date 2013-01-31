@@ -110,7 +110,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 
 		<th>Description</th>
 
-		<th width="50px">Default</th>
+		<th width="75px">Default</th>
 	</tr>
 
 	<tr>
@@ -299,33 +299,6 @@ jQuery.validateExtend({
 
 			return Number(value) > 17;
 		}
-	}
-});
-```
-
-## Observations
-* You can change any attribute without the need to call jQuery.fn.validate again.
-* Fields without validation attributes are considered valid.
-* You can use the <a href="http://api.jquery.com/data/" target="_blank">`jQuery.fn.data`</a> and <a href="http://api.jquery.com/jQuery.data/" target="_blank">`jQuery.data`</a> methods to configure validation.
-
-Example:
-```html
-<form>
-	<input type="text" name="age" />
-
-	<button type="submit">Send</button>
-</form>
-```
-
-```javascript
-jQuery('form').validate();
-
-jQuery('[name="age"]').data({
-	required : true,
-	pattern : /^[0-9]+$/,
-	conditional : function(value) {
-
-		return Number(value) > 17;
 	}
 });
 ```
