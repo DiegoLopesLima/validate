@@ -1,8 +1,10 @@
 # jQuery Validate
 
-> License : <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT</a>.
+> License: <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">_MIT_</a>.
 
-> Version : `1.1.1`.
+> Version: _1.1.1_.
+
+> Requires: _jQuery 1.7+_.
 
 To use jQuery Validate you just need to include in your code a version of the <a href="http://jquery.com/" target="_blank">jQuery library</a> equal or more recent than `1.7` and a file with the plugin. <a href="https://www.dropbox.com/s/gvwrnswupccfjyn/jQuery%20Validate%201.1.1.zip" target="_blank">Click here to download the plugin</a>.
 
@@ -25,113 +27,162 @@ See a example to required field:
 jQuery Validate supports all fields of the HTML5 and uses <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a> for accessibility. You can use several attributes to your validations.
 
 ## Attributes
-See down the supported attributes.
 
-### data-conditional
-Accepts one or more indexes separated by spaces from the `conditional` object that should contain a the boolean return function. (See <a href="#conditional">`conditional`</a>)
+<table>
+	<tr>
+		<th width="110px">Attribute</th>
 
-Example:
-```html
-<form>
-	<input type="password" id="password" />
+		<th>Description</th>
+	</tr>
 
-	<input type="password" data-conditional="confirmPassword" />
-</form>
-```
+	<tr>
+		<td>data-conditional</td>
 
-```javascript
-jQuery('form').validate({
-	conditional : {
-		confirmPassword : function() {
+		<td>Accepts one or more indexes separated by spaces from the `conditional` object that should contain a the boolean return function.</td>
+	</tr>
 
-			return $(this).val() == $('#password').val();
-		}
-	}
-});
-```
+	<tr>
+		<td>data-ignore-case</td>
 
-### data-ignore-case
-Accepts a boolean value to specify if field is case-insensitive. (Default:`true`)
+		<td>Accepts a boolean value to specify if field is case-insensitive. (Default:`true`)</td>
+	</tr>
 
-### data-mask
-Accepts a mask to change the field value to the specified format. The mask should use the character groups of the regular expression passed to the <a href="#data-pattern">`data-pattern`</a> attribute.
+	<tr>
+		<td>data-mask</td>
 
-Example:
-```html
-<input type="text" data-pattern="^(\d+)(?:[,.](\d)(\d)?)?\d*^" data-mask="${1},${2:`0`}${3:`0`}" />
-```
+		<td>Accepts a mask to change the field value to the specified format. The mask should use the character groups of the regular expression passed to the <a href="#data-pattern">`data-pattern`</a> attribute.</td>
+	</tr>
 
-### data-pattern
-Accepts a regular expression to test the field value.
+	<tr>
+		<td>data-pattern</td>
 
-### data-prepare
-Accepts a index from the `prepare` object that should contain a function to receive the field value and returns a new value treated. (See <a href="#prepare">`prepare`</a>)
+		<td>Accepts a regular expression to test the field value.</td>
+	</tr>
 
-### data-required
-Accepts a boolean value to specify if field is required. (Default:`false`)
+	<tr>
+		<td>data-prepare</td>
 
-### data-trim
-Accepts a boolean value. If true, removes the spaces from the ends in the field value. (The field value is not changed)
+		<td>Accepts a index from the `prepare` object that should contain a function to receive the field value and returns a new value treated.</td>
+	</tr>
 
-### data-validate
-You can use the `data-validate` to calling extensions. (See <a href="#creating-extensions">Creating extensions</a>)
+	<tr>
+		<td>data-required</td>
 
-## Supported parameters
+		<td>Accepts a boolean value to specify if field is required. (Default:`false`)</td>
+	</tr>
 
-### conditional
-Accepts a object to store functions from validation. (See <a href="#data-conditional">`data-conditional`</a>)
+	<tr>
+		<td>data-trim</td>
 
-### filter
-Accepts a selector string or function to filter the validated fields.
+		<td>Accepts a boolean value. If true, removes the spaces from the ends in the field value. (The field value is not changed)</td>
+	</tr>
 
-Example to only validate text areas and text fields:
-```javascript
-jQuery('form').validate({
-	filter : '[type="text"], textarea'
-});
-```
+	<tr>
+		<td>data-validate</td>
 
-### nameSpace
-A namespace used in all delegates events. (Default:`validate`)
+		<td>You can use the `data-validate` to calling extensions. (See <a href="#creating-extensions">Creating extensions</a>)</td>
+	</tr>
+</table>
 
-### onBlur
-Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)
+## Parameters
 
-### onChange
-Accepts a boolean value. If true, triggers the validation when change the field value. (Default:`false`)
+<table>
+	<tr>
+		<th width="110px">Parameter</th>
 
-### onKeyup
-Accepts a boolean value. If true, triggers the validation when press any key. (Default:`false`)
+		<th>Description</th>
+	</tr>
 
-### onSubmit
-Accepts a boolean value. If true, triggers the validation when submit the form. (Default:`true`)
+	<tr>
+		<td>conditional</td>
 
-### prepare
-Accepts a object to store functions to prepare the field values. (See <a href="#data-prepare">`data-prepare`</a>).
+		<td>Accepts a object to store functions from validation.</td>
+	</tr>
 
-### sendForm
-Accepts a boolean value. If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)
+	<tr>
+		<td>filter</td>
 
-### waiAria
-Accepts a boolean value. If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)
+		<td>Accepts a selector string or function to filter the validated fields.</td>
+	</tr>
 
-## Callbacks
+	<tr>
+		<td>nameSpace</td>
 
-### valid
-Accepts a function to be calling when form is valid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.
+		<td>A namespace used in all delegates events. (Default:`validate`)</td>
+	</tr>
 
-### invalid
-Accepts a function to be calling when form is invalid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.
+	<tr>
+		<td>onBlur</td>
 
-### eachField
-Accepts a function to be calling to each field. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+		<td>Accepts a boolean value. If true, triggers the validation when blur the field. (Default:`false`)</td>
+	</tr>
 
-### eachInvalidField
-Accepts a function to be calling when field is invalid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+	<tr>
+		<td>onChange</td>
 
-### eachValidField
-Accepts a function to be calling when field is valid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.
+		<td>Accepts a boolean value. If true, triggers the validation when change the field value. (Default:`false`)</td>
+	</tr>
 
+	<tr>
+		<td>onKeyup</td>
+
+		<td>Accepts a boolean value. If true, triggers the validation when press any key. (Default:`false`)</td>
+	</tr>
+
+	<tr>
+		<td>onSubmit</td>
+
+		<td>Accepts a boolean value. If true, triggers the validation when submit the form. (Default:`true`)</td>
+	</tr>
+
+	<tr>
+		<td>prepare</td>
+
+		<td>Accepts a object to store functions to prepare the field values.</td>
+	</tr>
+
+	<tr>
+		<td>sendForm</td>
+
+		<td>Accepts a boolean value. If false, prevents submit the form (Useful to submit forms via <a href="http://api.jquery.com/jQuery.ajax/" target="_blank">AJAX</a>). (Default:`true`)</td>
+	</tr>
+
+	<tr>
+		<td>waiAria</td>
+
+		<td>Accepts a boolean value. If false, disables <a href="http://www.w3.org/WAI/PF/aria/" target="_blank">WAI-ARIA</a>. (Default:`true`)</td>
+	</tr>
+
+	<tr>
+		<td>valid</td>
+
+		<td>Accepts a function to be calling when form is valid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.</td>
+	</tr>
+
+	<tr>
+		<td>invalid</td>
+
+		<td>Accepts a function to be calling when form is invalid. The context (`this`) is the current verified form and the parameters are respectively `event` and `options`.</td>
+	</tr>
+
+	<tr>
+		<td>eachField</td>
+
+		<td>Accepts a function to be calling to each field. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.</td>
+	</tr>
+
+	<tr>
+		<td>eachInvalidField</td>
+
+		<td>Accepts a function to be calling when field is invalid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.</td>
+	</tr>
+
+	<tr>
+		<td>eachValidField</td>
+
+		<td>Accepts a function to be calling when field is valid. The context (`this`) is the current verified field and the parameters are respectively `event`, `status` and `options`.</td>
+	</tr>
+</table>
 
 ## Removing validation
 You can remove validation of a form using the `jQuery.fn.validateDestroy` method.
