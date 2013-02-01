@@ -87,27 +87,27 @@
 				fieldValue = String(fieldPrepare.call(field, fieldValue));
 			} else {
 
-				// Verifica se existe a função de preparo passada
+				// Is a function?
 				if($.isFunction(options.prepare[fieldPrepare])) {
 
-					// Atualisa o valor a ser validado para o valor de retorno da função
+					// Updates the fieldValue variable
 					fieldValue = String(options.prepare[fieldPrepare].call(field, fieldValue));
 				}
 			}
 
-			// Verifica se o padrão não está no formato RegExp
+			// Is not RegExp?
 			if($.type(fieldPattern) != 'regexp') {
 
 				fieldIgnoreCase = !reFalse.test(fieldIgnoreCase);
 
-				// Converto o padrão informado para o formato RegExp
+				// Converts to RegExp
 				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
 			}
 
-			// Verifico se existe uma condicional
+			// The conditional exists?
 			if(fieldConditional != undefined) {
 
-				// Verifico se a condiocinal está no formato de função
+				// The fieldConditional is a function?
 				if($.isFunction(fieldConditional)) {
 
 					status.conditional = !!fieldConditional.call(field, fieldValue, options);
@@ -115,10 +115,10 @@
 
 					var
 
-						// Divido as condiocionais em um Array
+						// Splits the conditionals in an array
 						conditionals = fieldConditional.split(/[\s\t]+/);
 
-					// Percorro todas as condicionais
+					// Each conditional
 					for(var counter = 0, len = conditionals.length; counter < len; counter++) {
 
 						if(options.conditional.hasOwnProperty(conditionals[counter]) && !options.conditional[conditionals[counter]].call(field, fieldValue, options)) {
@@ -131,13 +131,13 @@
 
 			fieldRequired = reTrue.test(fieldRequired);
 
-			// Verifica se o campo é obrigatório
+			// Is required?
 			if(fieldRequired) {
 
-				// Verifica o tipo de campo
+				// Verifies the field type
 				if(field.is(type[0] + ',' + type[1])) {
 
-					// Verifica se o campo foi preenchido
+					// Is empty?
 					if(!fieldValue.length > 0) {
 
 						status.required = false;
@@ -146,7 +146,7 @@
 
 					if(field.is('[name]')) {
 
-						// Verifica se algum dos campos foi marcado
+						// Is checked?
 						if($('[name="' + field.prop('name') + '"]:checked').length == 0) {
 
 							status.required = false;
@@ -158,49 +158,43 @@
 				}
 			}
 
-			// Verifica se é um tipo de campo cujo o texto deve ser validado
+			// Verifies the field type
 			if(field.is(type[0])) {
 
-				// Verifica se o valor do campo é fiel ao padrão informado
+				// Test the field value pattern
 				if(fieldPattern.test(fieldValue)) {
 
-					// Verifica se o evento não é keyup e se uma máscara foi passada
+					// If the event type is not equals to keyup
 					if(event.type != 'keyup' && fieldMask !== undefined) {
 
-						var
+						var matches = fieldValue.match(fieldPattern);
 
-							// Uso o pattern informado para capturar os grupos de caracteres
-							matches = fieldValue.match(fieldPattern);
-
-						// Percorro todos os grupos de caracteres
+						// Each characters group
 						for(var i = 0, len = matches.length; i < len; i++) {
 
-							// Substituo as ocorrências dos grupos na mascara informada
+							// Replace the groups
 							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
 						}
 
 						fieldMask = fieldMask.replace(/\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
 
-						// Verifica se o valor construido com a mascara é válido
+						// Test the field value pattern
 						if(fieldPattern.test(fieldMask)) {
 
-							// Atualizo o valor do campo
+							// Update the field value
 							field.val(fieldMask);
 						}
 					}
 				} else {
 
-					// Verifica se o campo é obrigatório
+					// If the field is required
 					if(fieldRequired) {
 
-						// Define o campo como inválido pelo pattern
 						status.pattern = false;
 					} else {
 
-						// Verifica se algo foi preenchido
 						if(fieldValue.length > 0) {
 
-							// Define o campo como inválido pelo pattern
 							status.pattern = false;
 						}
 					}
@@ -234,13 +228,13 @@
 				validation.each.call(field, event, status, options);
 			}
 
-			// Chama o callback eachField
+			// Call the eachField callback
 			options.eachField.call(field, event, status, options);
 
-			// Verifica se o campo é válido
+			// If the field is valid
 			if(status.required && status.pattern && status.conditional) {
 
-				// Verifica se propriedades WAi-ARIA podem ser alteradas
+				// If WAI-ARIA is enabled
 				if(!!options.waiAria) {
 
 					field.prop('aria-invalid', false);
@@ -251,11 +245,11 @@
 					validation.valid.call(field, event, status, options);
 				}
 
-				// Chama o callback eachValidField
+				// Call the eachValidField callback
 				options.eachValidField.call(field, event, status, options);
 			} else {
 
-				// Verifica se propriedades WAi-ARIA podem ser alteradas
+				// If WAI-ARIA is enabled
 				if(!!options.waiAria) {
 
 					field.prop('aria-invalid', true);
@@ -266,30 +260,30 @@
 					validation.invalid.call(field, event, status, options);
 				}
 
-				// Chama o callback eachInvalidField
+				// Call the eachInvalidField callback
 				options.eachInvalidField.call(field, event, status, options);
 			}
 
-			// Retorna os status do campo
+			// Returns the field status
 			return status;
 		};
 
 	$.extend({
 
-		// Método para extender as validações
+		// Method to extends validations
 		validateExtend : function(options) {
 
 			return $.extend(extend, options);
 		},
 
-		// Método para alterar as opções padrões do método jQuery.fn.validate
+		// Method to change the default properties of jQuery.fn.validate method
 		validateSetup : function(options) {
 
 			return $.extend(defaults, options);
 		}
 	}).fn.extend({
 
-		// Método para validação de formulários
+		// Method to validate forms
 		validate : function(options) {
 
 			options = $.extend({}, defaults, options);
@@ -298,7 +292,7 @@
 
 				var form = $(this);
 
-				// Verifica se o elemento encapsulado é um formulário
+				// This is a form?
 				if(form.is('form')) {
 
 					form.data(name, {
@@ -312,7 +306,6 @@
 						// Events namespace
 						namespace = options.namespace;
 
-					// verifica se o formulário possui o atributo is
 					if(form.is('[id]')) {
 
 						fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
@@ -320,7 +313,7 @@
 
 					fields = fields.filter(options.filter);
 
-					// Verifica se deve validar ao soltar a tecla
+					// If onKeyup is enabled
 					if(!!options.onKeyup) {
 
 						fields.filter(type[0]).on('keyup.' + namespace, function(event) {
@@ -329,7 +322,7 @@
 						});
 					}
 
-					// Verifica se devo validar ao desfocar um campo
+					// If onBlur is enabled
 					if(!!options.onBlur) {
 
 						fields.on('blur.' + namespace, function(event) {
@@ -338,7 +331,7 @@
 						});
 					}
 
-					// Verifica se devo validar ao alterar o valor de um campo
+					// If onChange is enabled
 					if(!!options.onChange) {
 
 						fields.on('change.' + namespace, function(event) {
@@ -347,7 +340,7 @@
 						});
 					}
 
-					// Verifica se devo validar ao submeter o formulário
+					// If onSubmit is enabled
 					if(!!options.onSubmit) {
 
 						form.on('submit.' + namespace, function(event) {
@@ -356,7 +349,6 @@
 
 							fields.each(function() {
 
-								// Armazena os status do campo percorrido atualmente
 								var status = validateField.call(this, event, options);
 
 								if(!status.pattern || !status.conditional || !status.required) {
@@ -365,27 +357,25 @@
 								}
 							});
 
-							// Verifica se os dados do formulário são válidos
+							// If form is valid
 							if(formValid) {
 
-								// Verifica se devo impedir que o formulário seja submetido
+								// Send form?
 								if(!options.sendForm) {
 
-									// Evita que o formulário seja submetido
 									event.preventDefault();
 								}
 
-								// Verifica se o callback valid foi definido e é uma função
+								// Is a function?
 								if($.isFunction(options.valid)) {
 
 									options.valid.call(form, event, options);
 								}
 							} else {
 
-								// Evita que o formulário seja submetido
 								event.preventDefault();
 
-								// Verifica se o callback invalid foi definido e é uma função
+								// Is a function?
 								if($.isFunction(options.invalid)) {
 
 									options.invalid.call(form, event, options);
@@ -397,40 +387,28 @@
 			});
 		},
 
-		// Metodo destrutor para o método jQuery.fn.validate
+		// Method to destroy validations
 		validateDestroy : function() {
 
 			var
 
-				// Formulário que terá a função de validação destruida
 				form = $(this),
 
-				// Armazena os dados de validação contidos no campo
 				dataValidate = form.data(name);
 
-			// Verifico se o elemento encapsulado é um formulário e se possui dados de validação
+			// If this is a form
 			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
 
-				var
+				var fields = form.removeData(name).find(allTypes).add(form);
 
-					// Armazena o name space que foi usado na delegação dos eventos
-					nameSpace = dataValidate.nameSpace,
-
-					// Armazenas os campos filhos do formulário e remove os dados da validação
-					fields = form.removeData(name).find(allTypes).add(form);
-
-				// Verifica se o formulário possui o atributo id
 				if(form.is('[id]')) {
 
-					// Procura por campos fora do formulário porém que são parte do mesmo
 					fields = fields.add($('[form="' + form.prop('id') + '"]').filter(allTypes));
 				}
 
-				// Desliga os eventos com o name space usado
-				fields.off('.' + nameSpace);
+				fields.off('.' + dataValidate.options.nameSpace);
 			}
 
-			// Retorna o proprio elemento selecionado para proporcionar encadeamento
 			return form;
 		}
 	});
