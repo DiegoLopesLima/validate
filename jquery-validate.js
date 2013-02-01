@@ -1,4 +1,4 @@
-/* https://github.com/DiegoLopesLima/Validate */
+/* http://plugins.jquery.com/validate */
 ;(function(defaults, $, window, undefined) {
 
 	var
@@ -414,51 +414,51 @@
 	});
 })({
 
-	// Define se o formulário deve ser enviado caso esteja inválido
+	// Send form if is valid?
 	sendForm : true,
 
-	// Define se propiedades WAI-ARIA devem ser modificadas conforme a validação
+	// Use WAI-ARIA properties
 	waiAria : true,
 
-	// Define se o formulário deve ser validado no submit
+	// Validate on submit?
 	onSubmit : true,
 
-	// Define se cada campo deve ser validado eu precionar uma tecla
+	// Validate on onKeyup?
 	onKeyup : false,
 
-	// Define se cada campo deve ser validado ao perder o foco
+	// Validate on onBlur?
 	onBlur : false,
 
-	// Define se cada campo deve ser validado ao ser alterado
+	// Validate on onChange?
 	onChange : false,
 
-	// Define um name space que será incluido na delegação dos eventos
+	// Default namespace
 	nameSpace : 'validate',
 
-	// Um objeto contendo funções com retorno boleano para validar os campos
+	// Conditional functions
 	conditional : {},
 
-	// Um objeto contendo funções para tratar o valor dos campos antes da validação
+	// Prepare functions
 	prepare : {},
 
-	// Um objeto contendo descrições para os possíveis estados do campo
+	// Fields descriptions
 	description : {},
 
-	// Uma função chamada para cada campo validado
+	// Callback
 	eachField : $.noop,
 
-	// Uma função chamada para cada campo inválido
+	// Callback
 	eachInvalidField : $.noop,
 
-	// Uma função chamada para cada campo válido
+	// Callback
 	eachValidField : $.noop,
 
-	// Uma função chamada quando o formulário for inválido
+	// Callback
 	invalid : $.noop,
 
-	// Uma função chamada quando o formulário é válido
+	// Callback
 	valid : $.noop,
 
-	// Uma função ou seletor para filtrar os campos que deverão ser validados
+	// A fielter to the fields
 	filter : '*'
 }, jQuery, window);
