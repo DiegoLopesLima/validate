@@ -304,7 +304,7 @@
 						fields = form.find(allTypes),
 
 						// Events namespace
-						namespace = options.namespace;
+						namespace = options.nameSpace;
 
 					if(form.is('[id]')) {
 
