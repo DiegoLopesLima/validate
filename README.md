@@ -247,7 +247,7 @@ You can changes the default values of `jQuery.fn.validate` using `jQuery.validat
 
 Example:
 ```javascript
-jQuery('form').validateSetup({
+jQuery.validateSetup({
 	sendForm : false,
 	onKeyup : true
 });
