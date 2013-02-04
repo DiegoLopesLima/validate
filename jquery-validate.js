@@ -371,6 +371,8 @@
 
 									options.valid.call(form, event, options);
 								}
+
+								form.trigger('valid');
 							} else {
 
 								event.preventDefault();
@@ -380,6 +382,8 @@
 
 									options.invalid.call(form, event, options);
 								}
+
+								form.trigger('invalid');
 							}
 						});
 					}
