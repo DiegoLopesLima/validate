@@ -192,6 +192,14 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 
 		<td>true</td>
 	</tr>
+
+	<tr>
+		<td>sendInvalidForm</td>
+
+		<td>If true, send invalid forms.</td>
+
+		<td>false</td>
+	</tr>
 </table>
 
 ## Callbacks
