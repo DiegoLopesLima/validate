@@ -130,7 +130,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 	</tr>
 
 	<tr>
-		<td>nameSpace</td>
+		<td>namespace</td>
 
 		<td>A namespace used in all delegates events.</td>
 

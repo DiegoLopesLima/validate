@@ -304,7 +304,7 @@
 						fields = form.find(allTypes),
 
 						// Events namespace
-						namespace = options.nameSpace;
+						namespace = options.namespace;
 
 					if(form.is('[id]')) {
 
@@ -401,7 +401,7 @@
 				dataValidate = form.data(name);
 
 			// If this is a form
-			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.nameSpace) == 'string') {
+			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.namespace) == 'string') {
 
 				var fields = form.removeData(name).find(allTypes).add(form);
 
@@ -410,7 +410,7 @@
 					fields = fields.add($('[form="' + form.prop('id') + '"]').filter(allTypes));
 				}
 
-				fields.off('.' + dataValidate.options.nameSpace);
+				fields.off('.' + dataValidate.options.namespace);
 			}
 
 			return form;
@@ -437,7 +437,7 @@
 	onChange : false,
 
 	// Default namespace
-	nameSpace : 'validate',
+	namespace : 'validate',
 
 	// Conditional functions
 	conditional : {},
