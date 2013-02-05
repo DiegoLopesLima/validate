@@ -12,7 +12,7 @@
 		extend = {},
 
 		// Method to validate each fields
-		validateField = function(event, options) {
+		validateField = function(event, options, form) {
 
 			var
 
@@ -73,7 +73,10 @@
 			// The description object
 			fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
 
-			fieldRequired = fieldRequired !== '' ? (fieldRequired || !!validation.required) : true;
+			fieldRequired = fieldRequired !== '' ? (fieldRequired || !!validation.required || field.parent('*').filter(function() {
+
+				return ($(this).data('required') !== undefined);
+			}).length > 0) : true;
 
 			fieldTrim = fieldTrim !== '' ? (fieldTrim || !!validation.trim) : true;
 
@@ -325,7 +328,7 @@
 
 								fields.filter(type[0]).on('keyup' + namespace, function(event) {
 
-									validateField.call(this, event, options);
+									validateField.call(this, event, options, form);
 								});
 							}
 
@@ -334,7 +337,7 @@
 
 								fields.on('blur' + namespace, function(event) {
 
-									validateField.call(this, event, options);
+									validateField.call(this, event, options, form);
 								});
 							}
 
@@ -343,7 +346,7 @@
 
 								fields.on('change' + namespace, function(event) {
 
-									validateField.call(this, event, options);
+									validateField.call(this, event, options, form);
 								});
 							}
 						};
@@ -361,7 +364,7 @@
 
 							fields.each(function() {
 
-								var status = validateField.call(this, event, options);
+								var status = validateField.call(this, event, options, form);
 
 								if(!status.pattern || !status.conditional || !status.required) {
 
