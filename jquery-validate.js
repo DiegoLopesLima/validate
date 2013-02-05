@@ -1,8 +1,9 @@
-/* http://plugins.jquery.com/validate */
+// http://plugins.jquery.com/validate
 ;(function(defaults, $, undefined) {
 
 	var
 
+		// Field types
 		type = ['input:not([type]),input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea', 'select', 'input[type=checkbox],input[type=radio]'],
 
 		// All field types
@@ -40,7 +41,7 @@
 				fieldPrepare = data.prepare || validation.prepare,
 
 				// A regular expression to validate field value
-				fieldPattern = (data.pattern || ($.type(validation.pattern) == 'regexp' ? validation.pattern : /(?:)/)),
+				fieldPattern = (data.pattern || ($.type(validation.pattern) === 'regexp' ? validation.pattern : /(?:)/)),
 
 				// Is case sensitive? (Boolean)
 				fieldIgnoreCase = field.prop('data-ignore-case') || data.ignoreCase || validation.ignoreCase,
@@ -67,14 +68,14 @@
 
 				reFalse = /^false$/i,
 
-				// The description object
-				fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {}),
-
 				name = 'validate';
 
-			fieldRequired = fieldRequired != '' ? (fieldRequired || !!validation.required) : true;
+			// The description object
+			fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
 
-			fieldTrim = fieldTrim != '' ? (fieldTrim || !!validation.trim) : true;
+			fieldRequired = fieldRequired !== '' ? (fieldRequired || !!validation.required) : true;
+
+			fieldTrim = fieldTrim !== '' ? (fieldTrim || !!validation.trim) : true;
 
 			// Trim spaces?
 			if(reTrue.test(fieldTrim)) {
@@ -98,7 +99,7 @@
 			}
 
 			// Is not RegExp?
-			if($.type(fieldPattern) != 'regexp') {
+			if($.type(fieldPattern) !== 'regexp') {
 
 				fieldIgnoreCase = !reFalse.test(fieldIgnoreCase);
 
@@ -107,7 +108,7 @@
 			}
 
 			// The conditional exists?
-			if(fieldConditional != undefined) {
+			if(fieldConditional !== undefined) {
 
 				// The fieldConditional is a function?
 				if($.isFunction(fieldConditional)) {
@@ -140,7 +141,7 @@
 				if(field.is(type[0] + ',' + type[1])) {
 
 					// Is empty?
-					if(!fieldValue.length > 0) {
+					if(fieldValue.length === 0) {
 
 						status.required = false;
 					}
@@ -149,7 +150,7 @@
 					if(field.is('[name]')) {
 
 						// Is checked?
-						if($('[name="' + field.prop('name') + '"]:checked').length == 0) {
+						if($('[name="' + field.prop('name') + '"]:checked').length === 0) {
 
 							status.required = false;
 						}
@@ -167,12 +168,12 @@
 				if(fieldPattern.test(fieldValue)) {
 
 					// If the event type is not equals to keyup
-					if(event.type != 'keyup' && fieldMask !== undefined) {
+					if(event.type !== 'keyup' && fieldMask !== undefined) {
 
 						var matches = fieldValue.match(fieldPattern);
 
 						// Each characters group
-						for(var i = 0, len = matches.length; i < len; i++) {
+						for(var i = 0; i < matches.length; i++) {
 
 							// Replace the groups
 							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
@@ -209,7 +210,7 @@
 
 				log = fieldDescription.valid;
 
-			if(describedby.length > 0 && event.type != 'keyup') {
+			if(describedby.length > 0 && event.type !== 'keyup') {
 
 				if(!status.required) {
 
@@ -225,7 +226,7 @@
 				describedby.html(log || '');
 			}
 
-			if(typeof(validation.each) == 'function') {
+			if(typeof(validation.each) === 'function') {
 
 				validation.each.call(field, event, status, options);
 			}
@@ -242,7 +243,7 @@
 					field.prop('aria-invalid', false);
 				}
 
-				if(typeof(validation.valid) == 'function') {
+				if(typeof(validation.valid) === 'function') {
 
 					validation.valid.call(field, event, status, options);
 				}
@@ -257,7 +258,7 @@
 					field.prop('aria-invalid', true);
 				}
 
-				if(typeof(validation.invalid) == 'function') {
+				if(typeof(validation.invalid) === 'function') {
 
 					validation.invalid.call(field, event, status, options);
 				}
@@ -310,7 +311,7 @@
 
 						delegateEvents = function() {
 
-							fields = form.find(allTypes)
+							fields = form.find(allTypes);
 
 							if(form.is('[id]')) {
 
@@ -415,7 +416,7 @@
 				dataValidate = form.data(name);
 
 			// If this is a form
-			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.namespace) == 'string') {
+			if(form.is('form') && $.isPlainObject(dataValidate) && typeof(dataValidate.options.namespace) === 'string') {
 
 				var fields = form.removeData(name).find(allTypes).add(form);
 
