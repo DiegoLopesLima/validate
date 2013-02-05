@@ -301,49 +301,58 @@
 
 					var
 
-						fields = form.find(allTypes),
+						fields,
 
 						// Events namespace
-						namespace = options.namespace;
+						namespace = '.' + options.namespace,
 
-					if(form.is('[id]')) {
+						delegateEvents = function() {
 
-						fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
-					}
+							fields = form.find(allTypes)
 
-					fields = fields.filter(options.filter);
+							if(form.is('[id]')) {
 
-					// If onKeyup is enabled
-					if(!!options.onKeyup) {
+								fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
+							}
 
-						fields.filter(type[0]).on('keyup.' + namespace, function(event) {
+							fields = fields.filter(options.filter).off(namespace);
 
-							validateField.call(this, event, options);
-						});
-					}
+							// If onKeyup is enabled
+							if(!!options.onKeyup) {
 
-					// If onBlur is enabled
-					if(!!options.onBlur) {
+								fields.filter(type[0]).on('keyup' + namespace, function(event) {
 
-						fields.on('blur.' + namespace, function(event) {
+									validateField.call(this, event, options);
+								});
+							}
 
-							validateField.call(this, event, options);
-						});
-					}
+							// If onBlur is enabled
+							if(!!options.onBlur) {
 
-					// If onChange is enabled
-					if(!!options.onChange) {
+								fields.on('blur' + namespace, function(event) {
 
-						fields.on('change.' + namespace, function(event) {
+									validateField.call(this, event, options);
+								});
+							}
 
-							validateField.call(this, event, options);
-						});
-					}
+							// If onChange is enabled
+							if(!!options.onChange) {
+
+								fields.on('change' + namespace, function(event) {
+
+									validateField.call(this, event, options);
+								});
+							}
+						};
+
+					delegateEvents();
 
 					// If onSubmit is enabled
 					if(!!options.onSubmit) {
 
-						form.on('submit.' + namespace, function(event) {
+						form.on('submit' + namespace, function(event) {
+
+							delegateEvents();
 
 							var formValid = true;
 
@@ -375,7 +384,7 @@
 								form.trigger('valid');
 							} else {
 
-								if(!sendInvalidForm) {
+								if(!options.sendInvalidForm) {
 
 									event.preventDefault();
 								}
