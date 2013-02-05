@@ -375,7 +375,10 @@
 								form.trigger('valid');
 							} else {
 
-								event.preventDefault();
+								if(!sendInvalidForm) {
+
+									event.preventDefault();
+								}
 
 								// Is a function?
 								if($.isFunction(options.invalid)) {
@@ -420,6 +423,9 @@
 
 	// Send form if is valid?
 	sendForm : true,
+
+	// Send invalid form?
+	sendInvalidForm : false,
 
 	// Use WAI-ARIA properties
 	waiAria : true,
