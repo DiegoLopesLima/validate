@@ -1,5 +1,5 @@
 /* http://plugins.jquery.com/validate */
-;(function(defaults, $, window, undefined) {
+;(function(defaults, $, undefined) {
 
 	var
 
@@ -25,41 +25,43 @@
 				// Current field
 				field = $(this),
 
+				data = field.data(),
+
 				// Current field value
 				fieldValue = field.val() || '',
 
 				// An index of extend
-				fieldValidate = field.data('validate'),
+				fieldValidate = data.validate,
 
 				// A validation object (jQuery.fn.validateExtend)
 				validation = fieldValidate !== undefined ? extend[fieldValidate] : {},
 
 				// One index or more separated for spaces to prepare the field value
-				fieldPrepare = field.data('prepare') || validation.prepare,
+				fieldPrepare = data.prepare || validation.prepare,
 
 				// A regular expression to validate field value
-				fieldPattern = (field.data('pattern') || ($.type(validation.pattern) == 'regexp' ? validation.pattern : /(?:)/)),
+				fieldPattern = (data.pattern || ($.type(validation.pattern) == 'regexp' ? validation.pattern : /(?:)/)),
 
 				// Is case sensitive? (Boolean)
-				fieldIgnoreCase = field.attr('data-ignore-case') || field.data('ignoreCase') || validation.ignoreCase,
+				fieldIgnoreCase = field.prop('data-ignore-case') || data.ignoreCase || validation.ignoreCase,
 
 				// A field mask
-				fieldMask = field.data('mask') || validation.mask,
+				fieldMask = data.mask || validation.mask,
 
 				// A index in the conditional object containing a function to validate the field value
-				fieldConditional = field.data('conditional') || validation.conditional,
+				fieldConditional = data.conditional || validation.conditional,
 
 				// Is required?
-				fieldRequired = field.data('required'),
+				fieldRequired = data.required,
 
 				// The description element id
-				fieldDescribedby = field.data('describedby') || validation.describedby,
+				fieldDescribedby = data.describedby || validation.describedby,
 
 				// An index of description object
-				fieldDescription = field.data('description') || validation.description,
+				fieldDescription = data.description || validation.description,
 
 				// Trim spaces?
-				fieldTrim = field.data('trim'),
+				fieldTrim = data.trim,
 
 				reTrue = /^(true|)$/i,
 
@@ -116,7 +118,7 @@
 					var
 
 						// Splits the conditionals in an array
-						conditionals = fieldConditional.split(/[\s\t]+/);
+						conditionals = fieldConditional.split(/\s+/);
 
 					// Each conditional
 					for(var counter = 0, len = conditionals.length; counter < len; counter++) {
@@ -480,4 +482,4 @@
 
 	// A fielter to the fields
 	filter : '*'
-}, jQuery, window);
+}, jQuery);
