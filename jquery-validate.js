@@ -1,7 +1,9 @@
-// http://plugins.jquery.com/validate
+/* http://plugins.jquery.com/validate */
 ;(function(defaults, $, undefined) {
 
 	var
+
+		name = 'validate',
 
 		// Field types
 		type = ['input:not([type]),input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea', 'select', 'input[type=checkbox],input[type=radio]'],
@@ -12,7 +14,7 @@
 		extend = {},
 
 		// Method to validate each fields
-		validateField = function(event, options, form) {
+		validateField = function(event, options) {
 
 			var
 
@@ -66,9 +68,7 @@
 
 				reTrue = /^(true|)$/i,
 
-				reFalse = /^false$/i,
-
-				name = 'validate';
+				reFalse = /^false$/i;
 
 			// The description object
 			fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
@@ -307,58 +307,49 @@
 
 					var
 
-						fields,
+						fields = form.find(allTypes),
 
 						// Events namespace
-						namespace = '.' + options.namespace,
+						namespace = '.' + options.namespace;
 
-						delegateEvents = function() {
+					if(form.is('[id]')) {
 
-							fields = form.find(allTypes);
+						fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
+					}
 
-							if(form.is('[id]')) {
+					fields = fields.filter(options.filter).off(namespace);
 
-								fields = fields.add('[form="' + form.prop('id') + '"]').filter(allTypes);
-							}
+					// If onKeyup is enabled
+					if(!!options.onKeyup) {
 
-							fields = fields.filter(options.filter).off(namespace);
+						fields.filter(type[0]).on('keyup' + namespace, function(event) {
 
-							// If onKeyup is enabled
-							if(!!options.onKeyup) {
+							validateField.call(this, event, options, form);
+						});
+					}
 
-								fields.filter(type[0]).on('keyup' + namespace, function(event) {
+					// If onBlur is enabled
+					if(!!options.onBlur) {
 
-									validateField.call(this, event, options, form);
-								});
-							}
+						fields.on('blur' + namespace, function(event) {
 
-							// If onBlur is enabled
-							if(!!options.onBlur) {
+							validateField.call(this, event, options, form);
+						});
+					}
 
-								fields.on('blur' + namespace, function(event) {
+					// If onChange is enabled
+					if(!!options.onChange) {
 
-									validateField.call(this, event, options, form);
-								});
-							}
+						fields.on('change' + namespace, function(event) {
 
-							// If onChange is enabled
-							if(!!options.onChange) {
-
-								fields.on('change' + namespace, function(event) {
-
-									validateField.call(this, event, options, form);
-								});
-							}
-						};
-
-					delegateEvents();
+							validateField.call(this, event, options, form);
+						});
+					}
 
 					// If onSubmit is enabled
 					if(!!options.onSubmit) {
 
 						form.on('submit' + namespace, function(event) {
-
-							delegateEvents();
 
 							var formValid = true;
 
@@ -484,6 +475,6 @@
 	// Callback
 	valid : $.noop,
 
-	// A fielter to the fields
+	// A filter to the fields
 	filter : '*'
 }, jQuery);

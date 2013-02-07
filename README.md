@@ -1,4 +1,4 @@
-# jQuery Validate
+# jQuery Validate #
 
 > License: <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">_MIT_</a>.
 
@@ -102,7 +102,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 	</tr>
 </table>
 
-## Parameters
+## Parameters ##
 
 <table>
 	<tr>
@@ -202,7 +202,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 	</tr>
 </table>
 
-## Callbacks
+## Callbacks ##
 
 <table>
 	<tr>
@@ -242,7 +242,7 @@ _jQuery Validate_ supports all fields of the HTML5 and uses <a href="http://www.
 	</tr>
 </table>
 
-## Removing validation
+## Removing validation ##
 You can remove validation of a form using the `jQuery.fn.validateDestroy` method.
 
 Example:
@@ -261,7 +261,7 @@ jQuery.validateSetup({
 });
 ```
 
-## Creating descriptions
+## Creating descriptions ##
 You can create descriptions to the field states.
 
 Example:
@@ -286,7 +286,7 @@ $('form').validate({
 });
 ```
 
-## Creating extensions
+## Creating extensions ##
 You can use the `jQuery.validateExtend` method to extend the validations and calling the extensions with `data-validate` attribute.
 
 Example:
