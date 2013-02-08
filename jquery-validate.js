@@ -1,7 +1,7 @@
 /* http://plugins.jquery.com/validate */
 ;(function(defaults, $, undefined) {
 
-	"use strict";
+	'use strict';
 
 	var
 
@@ -25,7 +25,9 @@
 					pattern : true,
 					conditional : true,
 					required : true,
-					confirm : true
+					confirm : true,
+					minlength : true,
+					maxlength : true
 				},
 
 				// Current field
@@ -63,6 +65,12 @@
 				// The field confirm id
 				fieldConfirm = data.confirm || validation.confirm,
 
+				// 
+				minlength = Number(data.minlength || validation.minlength || 0),
+
+				// 
+				maxlength = Number(data.maxlength || validation.maxlength || Infinity),
+
 				// The description element id
 				fieldDescribedby = data.describedby || validation.describedby,
 
@@ -83,7 +91,11 @@
 
 			fieldTrim = fieldTrim !== '' ? (fieldTrim || !!validation.trim) : true;
 
-			fieldConfirm = ($('#' + fieldConfirm).length > 0) ? $('#' + fieldConfirm) : $(fieldConfirm);
+			fieldConfirm = $('#' + fieldConfirm).length > 0 ? $('#' + fieldConfirm) : $(fieldConfirm);
+
+			minlength = typeof minlength === 'number' ? minlength : 0;
+
+			maxlength = typeof maxlength === 'number' ? maxlength : Infinity;
 
 			// Trim spaces?
 			if(reTrue.test(fieldTrim)) {
@@ -218,6 +230,23 @@
 				status.confirm = fieldValue === fieldConfirm.val();
 			}
 
+			//////////////////////////////////////////////////////////////////////////
+
+			if(field.is(type[0] + ',' + type[1])) {
+
+				status.minlength = fieldValue.length > minlength;
+
+				status.maxlength = fieldValue.length < maxlength;
+			} else {
+
+				if(field.id('[name]')) {
+
+					//
+				}
+			}
+
+			//////////////////////////////////////////////////////////////////////////
+
 			var
 
 				describedby = $('[id="' + fieldDescribedby +'"]'),
@@ -255,7 +284,7 @@
 			options.eachField.call(field, event, status, options);
 
 			// If the field is valid
-			if(status.required && status.pattern && status.conditional && status.confirm) {
+			if(status.required && status.pattern && status.conditional && status.confirm && status.maxlength && status.minlength) {
 
 				// If WAI-ARIA is enabled
 				if(!!options.waiAria) {
