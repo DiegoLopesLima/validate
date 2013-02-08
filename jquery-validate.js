@@ -1,6 +1,8 @@
 /* http://plugins.jquery.com/validate */
 ;(function(defaults, $, undefined) {
 
+	"use strict";
+
 	var
 
 		name = 'validate',
@@ -110,7 +112,7 @@
 				fieldIgnoreCase = !reFalse.test(fieldIgnoreCase);
 
 				// Converts to RegExp
-				fieldPattern = fieldIgnoreCase ? RegExp(fieldPattern, 'i') : RegExp(fieldPattern);
+				fieldPattern = fieldIgnoreCase ? new RegExp(fieldPattern, 'i') : new RegExp(fieldPattern);
 			}
 
 			// The conditional exists?
@@ -182,7 +184,7 @@
 						for(var i = 0; i < matches.length; i++) {
 
 							// Replace the groups
-							fieldMask = fieldMask.replace(RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
+							fieldMask = fieldMask.replace(new RegExp('\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (matches[i] !== undefined ? matches[i] : '$1'));
 						}
 
 						fieldMask = fieldMask.replace(/\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
