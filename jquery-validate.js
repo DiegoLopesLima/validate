@@ -22,7 +22,8 @@
 				status = {
 					pattern : true,
 					conditional : true,
-					required : true
+					required : true,
+					confirm : true
 				},
 
 				// Current field
@@ -57,6 +58,9 @@
 				// Is required?
 				fieldRequired = data.required,
 
+				// The field confirm id
+				fieldConfirm = data.confirm || validation.confirm,
+
 				// The description element id
 				fieldDescribedby = data.describedby || validation.describedby,
 
@@ -73,12 +77,11 @@
 			// The description object
 			fieldDescription = $.isPlainObject(fieldDescription) ? fieldDescription : (options.description[fieldDescription] || {});
 
-			fieldRequired = fieldRequired !== '' ? (fieldRequired || !!validation.required || field.parent('*').filter(function() {
-
-				return ($(this).data('required') !== undefined);
-			}).length > 0) : true;
+			fieldRequired = fieldRequired !== '' ? (fieldRequired || !!validation.required) : true;
 
 			fieldTrim = fieldTrim !== '' ? (fieldTrim || !!validation.trim) : true;
+
+			fieldConfirm = ($('#' + fieldConfirm).length > 0) ? $('#' + fieldConfirm) : $(fieldConfirm);
 
 			// Trim spaces?
 			if(reTrue.test(fieldTrim)) {
@@ -207,6 +210,12 @@
 				}
 			}
 
+			// Test field confirm
+			if(fieldConfirm.length > 0) {
+
+				status.confirm = fieldValue === fieldConfirm.val();
+			}
+
 			var
 
 				describedby = $('[id="' + fieldDescribedby +'"]'),
@@ -224,9 +233,15 @@
 				} else if(!status.conditional) {
 
 					log = fieldDescription.conditional;
+				} else if(!status.confirm) {
+
+					log = fieldDescription.confirm;
 				}
 
-				describedby.html(log || '');
+				if(log !== undefined) {
+
+					describedby.html(log);
+				}
 			}
 
 			if(typeof(validation.each) === 'function') {
@@ -238,7 +253,7 @@
 			options.eachField.call(field, event, status, options);
 
 			// If the field is valid
-			if(status.required && status.pattern && status.conditional) {
+			if(status.required && status.pattern && status.conditional && status.confirm) {
 
 				// If WAI-ARIA is enabled
 				if(!!options.waiAria) {
