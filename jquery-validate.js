@@ -234,14 +234,16 @@
 
 			if(field.is(type[0] + ',' + type[1])) {
 
-				status.minlength = fieldValue.length > minlength;
+				status.minlength = fieldValue.length >= minlength;
 
-				status.maxlength = fieldValue.length < maxlength;
+				status.maxlength = fieldValue.length <= maxlength;
 			} else {
 
 				if(field.id('[name]')) {
 
-					//
+					status.minlength = $('[name="' + field.prop('name') + '"]:checked').length >= minlength;
+
+					status.maxlength = $('[name="' + field.prop('name') + '"]:checked').length <= maxlength;
 				}
 			}
 
