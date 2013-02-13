@@ -230,24 +230,20 @@
 				status.confirm = fieldValue === fieldConfirm.val();
 			}
 
-			//////////////////////////////////////////////////////////////////////////
+			if(field.is('input[type=checkbox]')) {
 
-			if(field.is(type[0] + ',' + type[1])) {
+				status.minlength = $('[name="' + field.prop('name') + '"]:checked').length >= minlength;
 
-				status.minlength = fieldValue.length >= minlength;
-
-				status.maxlength = fieldValue.length <= maxlength;
+				status.maxlength = $('[name="' + field.prop('name') + '"]:checked').length <= maxlength;
 			} else {
 
-				if(field.id('[name]')) {
+				if(field.is('[name]')) {
 
-					status.minlength = $('[name="' + field.prop('name') + '"]:checked').length >= minlength;
+					status.minlength = fieldValue.length >= minlength;
 
-					status.maxlength = $('[name="' + field.prop('name') + '"]:checked').length <= maxlength;
-				}
+					status.maxlength = fieldValue.length <= maxlength;
+				}				
 			}
-
-			//////////////////////////////////////////////////////////////////////////
 
 			var
 
