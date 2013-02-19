@@ -247,7 +247,7 @@
 
 			var
 
-				describedby = $('[id="' + fieldDescribedby +'"]'),
+				describedby = $('#' + fieldDescribedby),
 
 				log = fieldDescription.valid;
 
@@ -256,6 +256,12 @@
 				if(!status.required) {
 
 					log = fieldDescription.required;
+				} else if(!status.minlength) {
+
+					log = fieldDescription.minlength;
+				} else if(!status.maxlength) {
+
+					log = fieldDescription.maxlength;
 				} else if(!status.pattern) {
 
 					log = fieldDescription.pattern;
