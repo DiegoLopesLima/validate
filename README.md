@@ -22,6 +22,127 @@ jQuery('form').validate();
 
 ### Example
 
+## Attributes
+Lorem ipsum dolor sit ammet.
+
+### data-conditional
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-confirm
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-counter
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-ignore-case
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-mask
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-maxlength
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-minlength
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-pattern
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-prepare
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-required
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-trim
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-validate
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-describedby
+Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+
 ## Callbacks
 
 ### beforeValidation
@@ -139,17 +260,19 @@ jQuery.validate.add('age', {
 
 ### Usage
 
+```html
+<form>
+	<input type="text" data-validate="age" />
+</form>
+```
+
 ```javascript
 jQuery('form').validate();
 ```
 
-```html
-<input type="text" data-validate="age" />
-```
-
 ### Multiple methods
 
-```
+```javascript
 jQuery.validate.extend({
 	method : function() {
 
@@ -191,7 +314,7 @@ jQuery('form').validate('methodName', 'Lorem ipsum');
 
 ### Multiple methods
 
-```
+```javascript
 jQuery.validate.extend({
 	method : function() {
 
