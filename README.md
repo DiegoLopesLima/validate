@@ -248,7 +248,7 @@ Lorem ipsum dolor sit ammet.
 
 ### Example
 
-```
+```javascript
 jQuery.validate.add('age', {
 	pattern : /^\d+$/,
 	conditional : function(value) {
@@ -299,7 +299,7 @@ Lorem ipsum dolor sit ammet.
 
 ### Example
 
-```
+```javascript
 jQuery.validate.extend('methodName', function(param) {
 	
 	return param;
