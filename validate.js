@@ -1,4 +1,3 @@
-/* http://plugins.jquery.com/validate */
 ;(function($, undefined) {
 
 	'use strict';
