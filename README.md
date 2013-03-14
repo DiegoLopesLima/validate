@@ -7,12 +7,12 @@
 > Requires: _jQuery 1.7+_
 
 ## Demos
-* [Lorem ipsum dolor](http://localhost)
-* [Lorem ipsum dolor](http://localhost)
-* [Lorem ipsum dolor](http://localhost)
-* [Lorem ipsum dolor](http://localhost)
-* [Lorem ipsum dolor](http://localhost)
-* [Lorem ipsum dolor](http://localhost)
+* [Required fields](#)
+* [Conditional validation](#)
+* [Confirmation field](#)
+* [Regular expressions](#)
+* [Field masks](#)
+* [Extending jQuery Validate](#)
 
 ## Usage
 
@@ -86,7 +86,8 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```javascript
-// Code
+// Validates a form.
+jQuery('form').validate('validate');
 ```
 
 ### option
@@ -95,7 +96,11 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```javascript
-// Code
+// Sets the filter options to `*`.
+jQuery('form').validate('option', 'filter', '*');
+
+// Gets the filter option.
+jQuery('form').validate('option', 'filter');
 ```
 
 ### destroy
@@ -104,5 +109,8 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```javascript
-// Code
+// Destroy all events and plugin data.
+jQuery('form').validate('destroy');
 ```
+
+## Extending `jQuery.fn.validate`
