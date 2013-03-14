@@ -31,7 +31,20 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<form>
+	<input type="text" data-conditional="ofAge" />
+</form>
+```
+
+```javascript
+jQuery('form').validate({
+	conditional : {
+		ofAge : function(value) {
+
+			return Number(value) > 17;
+		}
+	}
+});
 ```
 
 ### data-confirm
@@ -40,7 +53,9 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" id="password" />
+
+<input type="text" data-confirm="password" />
 ```
 
 ### data-counter
@@ -52,8 +67,17 @@ Lorem ipsum dolor sit ammet.
 <!-- Code -->
 ```
 
-### data-ignore-case
+### data-ignorecase
 Lorem ipsum dolor sit ammet.
+
+#### Example
+
+```html
+<!-- Code -->
+```
+
+### data-pattern
+<input type="text" data-pattern="^\d+$" />
 
 #### Example
 
@@ -67,7 +91,7 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-pattern="^(?:Mr\.\s+)?([\S\s]+)$" data-mask="Mr. ${1}" />
 ```
 
 ### data-maxlength
@@ -88,22 +112,26 @@ Lorem ipsum dolor sit ammet.
 <!-- Code -->
 ```
 
-### data-pattern
-Lorem ipsum dolor sit ammet.
-
-#### Example
-
-```html
-<!-- Code -->
-```
-
 ### data-prepare
 Lorem ipsum dolor sit ammet.
 
 #### Example
 
 ```html
-<!-- Code -->
+<form>
+	<input type="text" data-prepare="placeholder" placeholder="Lorem ipsum" value="Lorem ipsum" />
+</form>
+```
+
+```javascript
+jQuery('form').validate({
+	prepare : {
+		placeholder : function(value) {
+
+			return value != $(this).prop('placeholder') ? value : '';
+		}
+	}
+});
 ```
 
 ### data-required
