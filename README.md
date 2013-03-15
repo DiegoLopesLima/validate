@@ -181,7 +181,7 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<input type="text" data-required data-describedby="desc-name" data-description="test" />
+<input type="text" data-required data-describedby="desc-name" data-description="name" />
 
 <span id="desc-name"></span>
 ```
@@ -189,8 +189,8 @@ Lorem ipsum dolor sit ammet.
 ```javascript
 jQuery('form').validate({
 	description : {
-		test : {
-			required : '<span class="error">Required field.</span>',
+		name : {
+			required : '<span class="error">A name is required field.</span>',
 			valid : 'Correct.'
 		}
 	}
@@ -248,6 +248,54 @@ jQuery('form').validate({
 	afterValidation : function() {
 
 		console.log('After validation');
+	}
+});
+```
+
+## Options
+
+### filter
+Lorem ipsum dolor sit ammet.
+
+### events
+Lorem ipsum dolor sit ammet.
+
+### sendForm
+Lorem ipsum dolor sit ammet.
+
+### conditional
+Lorem ipsum dolor sit ammet.
+
+### prepare
+Lorem ipsum dolor sit ammet.
+
+### description
+Lorem ipsum dolor sit ammet.
+
+### Example
+
+```javascript
+jQuery('form').validate({
+	filter : '[type=text]',
+	events : ['keyup', 'change', 'blur'],
+	sendForm : false,
+	conditional : {
+		ofAge : function(value) {
+
+			return Number(value) > 17;
+		}
+	},
+	prepare : {
+		placeholder : function(value) {
+
+			return value != $(this).prop('placeholder') ? value : '';
+		}
+	},
+	description : {
+		name : {
+			required : '<span class="error">A name is required field.</span>',
+			valid : 'Correct.'
+		}
 	}
 });
 ```

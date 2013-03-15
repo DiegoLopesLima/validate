@@ -12,7 +12,7 @@
 
 		defaults = {
 			filter : '*',
-			events : ['keyup', 'change', 'blur'],
+			events : [],
 			valid : noop,
 			invalid : noop,
 			beforeValidate : noop,
@@ -462,56 +462,3 @@
 	// Stores the plugin version
 	$[name].version = '1.2.0rc';
 })(jQuery);
-
-/*
-
-valid
-invalid
-eachInvalidField
-eachValidField
-eachField
-
-data-conditional
-data-confirm
-data-counter
-data-ignore-case
-data-mask
-data-maxlength
-data-minlength
-data-pattern
-data-prepare
-data-required
-data-trim
-data-validate
-data-describedby
-
-$('form').validate({
-	filter : '*'
-});
-
-$('form').validate('validate');
-
-$('form').validate('destroy');
-
-$('form').validate('option', 'filter', '*');
-
-$('form').validate('option', 'filter');
-
-$('form').validate('option', 'conditional', {
-	property : 'value'
-});
-
-$.validate.version
-
-$.validate.add('age', {
-	required : true,
-	pattern : /^\d+$/,
-	conditional : function(value) {
-	
-		return Number(value) > 0;
-	}
-});
-
-$.validate.remove('age');
-
-*/
