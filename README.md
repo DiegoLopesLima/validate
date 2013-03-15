@@ -100,7 +100,7 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-maxlength="10" />
 ```
 
 ### data-minlength
@@ -109,7 +109,7 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-minlength="10" />
 ```
 
 ### data-prepare
@@ -140,7 +140,11 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-required />
+
+<!-- Ou -->
+
+<input type="text" data-required="true" />
 ```
 
 ### data-trim
@@ -149,17 +153,15 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-trim />
+
+<!-- Ou -->
+
+<input type="text" data-trim="true" />
 ```
 
 ### data-validate
-Lorem ipsum dolor sit ammet.
-
-#### Example
-
-```html
-<!-- Code -->
-```
+See [Adding validation shortcuts](#adding-validation-shortcuts).
 
 ### data-describedby
 Lorem ipsum dolor sit ammet.
