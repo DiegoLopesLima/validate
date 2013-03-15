@@ -15,8 +15,8 @@
 			events : ['keyup', 'change', 'blur'],
 			valid : noop,
 			invalid : noop,
-			beforeValidation : noop,
-			afterValidation : noop,
+			beforeValidate : noop,
+			afterValidate : noop,
 			eachInvalidField : noop,
 			eachValidField : noop,
 			eachField : noop,
@@ -248,7 +248,7 @@
 
 					valid = true;
 
-				data.beforeValidation.call(element);
+				data.beforeValidate.call(element);
 
 				if(element.is('[id]')) {
 
@@ -291,7 +291,7 @@
 					data.invalid.call(element);
 				}
 
-				data.afterValidation.call(element, valid);
+				data.beforeValidate.call(element, valid);
 			},
 			option : function(property, value) {
 

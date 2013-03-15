@@ -64,7 +64,9 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" id="password" data-maxlength="25" data-counter="remaining" />
+
+<p><span id="remaining"></span> characters remaining.</p>
 ```
 
 ### data-ignorecase
@@ -73,7 +75,13 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-pattern="^[a-z]+$" data-ignorecase />
+```
+
+Equivalent to
+
+```html
+<input type="text" data-pattern="^[a-zA-Z]+$" />
 ```
 
 ### data-pattern
@@ -141,9 +149,11 @@ Lorem ipsum dolor sit ammet.
 
 ```html
 <input type="text" data-required />
+```
 
-<!-- Ou -->
+Or
 
+```html
 <input type="text" data-required="true" />
 ```
 
@@ -154,9 +164,11 @@ Lorem ipsum dolor sit ammet.
 
 ```html
 <input type="text" data-trim />
+```
 
-<!-- Ou -->
+Or
 
+```html
 <input type="text" data-trim="true" />
 ```
 
@@ -169,64 +181,75 @@ Lorem ipsum dolor sit ammet.
 #### Example
 
 ```html
-<!-- Code -->
+<input type="text" data-required data-describedby="desc-name" data-description="test" />
+
+<span id="desc-name"></span>
 ```
 
+```javascript
+jQuery('form').validate({
+	description : {
+		test : {
+			required : '<span class="error">Required field.</span>',
+			valid : 'Correct.'
+		}
+	}
+});
+```
 
 ## Callbacks
 
-### beforeValidation
-Lorem ipsum dolor sit ammet.
-
-#### Example
-
-```javascript
-// Code
-```
+### beforeValidate
+Accepts a function called before validation.
 
 ### valid
 Lorem ipsum dolor sit ammet.
 
-#### Example
-
-```javascript
-// Code
-```
-
 ### invalid
 Lorem ipsum dolor sit ammet.
-
-#### Example
-
-```javascript
-// Code
-```
 
 ### eachInvalidField
 Lorem ipsum dolor sit ammet.
 
-#### Example
-
-```javascript
-// Code
-```
-
 ### eachValidField
 Lorem ipsum dolor sit ammet.
-
-#### Example
-
-```javascript
-// Code
-```
 
 ### afterValidation
 Lorem ipsum dolor sit ammet.
 
-#### Example
+### Example
 
 ```javascript
-// Code
+jQuery('form').validate({
+	beforeValidate : function() {
+
+		console.log('Before validate');
+	},
+	eachInvalidField : function() {
+
+		console.log('Each invalid field');
+	},
+	eachValidField : function() {
+
+		console.log('Each valid field');
+	},
+	eachField : function() {
+
+		console.log('Each field');
+	},
+	valid : function() {
+
+		console.log('Valid form');
+	},
+	invalid : function() {
+
+		console.log('Invalid form');
+	},
+	afterValidation : function() {
+
+		console.log('After validation');
+	}
+});
 ```
 
 ## Methods
@@ -303,7 +326,7 @@ jQuery('form').validate();
 ### Multiple methods
 
 ```javascript
-jQuery.validate.extend({
+jQuery.validate.add({
 	method : function() {
 
 		// ...
