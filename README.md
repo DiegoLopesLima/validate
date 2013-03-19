@@ -375,14 +375,8 @@ jQuery('form').validate();
 
 ```javascript
 jQuery.validate.add({
-	method : function() {
-
-		// ...
-	},
-	otherMethod : function() {
-
-		// ...
-	}
+	method : function() {z},
+	otherMethod : function() {}
 });
 ```
 
@@ -417,13 +411,7 @@ jQuery('form').validate('methodName', 'Lorem ipsum');
 
 ```javascript
 jQuery.validate.extend({
-	method : function() {
-
-		// ...
-	},
-	otherMethod : function() {
-
-		// ...
-	}
+	method : function() {},
+	otherMethod : function() {}
 });
 ```

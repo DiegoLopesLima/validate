@@ -110,23 +110,21 @@
 
 				valid = true,
 
-				fieldType = element.prop('type');
+				fieldType = element.prop('type'),
+
+				filled;
 
 			// 
 			if(element.is(checkable)) {
 
-				var
-
-					filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
+				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
 
 				status.minlength = sameName.filter(':checked') >= fieldMinlength;
 
 				status.maxlength = sameName.filter(':checked') <= fieldMaxlength;
 			} else {
 
-				var
-
-					filled = fieldLength > 0;
+				filled = fieldLength > 0;
 
 				status.minlength = fieldLength >= fieldMinlength;
 
@@ -196,7 +194,7 @@
 				status.pattern = validConditionals;
 			}
 
-			for(item in status) {
+			for(var item in status) {
 
 				if(!status[item]) {
 
