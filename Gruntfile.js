@@ -8,7 +8,7 @@ module.exports = function(grunt) {
 					'<%=pkg.name%>.min.js': '<%=pkg.name%>.js'
 				},
 				options: {
-					banner: '/* jQuery Validate <%=pkg.version%> - <%=pkg.homepage%> */\n'
+					banner: '/* jQuery Validate <%=pkg.version%> | <%=pkg.homepage%> */\n'
 				}
 			}
 		},
@@ -22,7 +22,5 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', [
-		'uglify'
-	]);
+	grunt.registerTask('default', ['uglify']);
 };

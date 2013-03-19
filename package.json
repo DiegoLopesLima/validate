@@ -1,24 +1,25 @@
 {
-  "name": "validate",
-  "version": "1.2.0",
-  "author": {
-    "name": "Diego Lopes Lima",
-    "email": "contact.diego.lima@gmail.com"
-  },
-  "description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/DiegoLopesLima/Validate"
-  },
-  "dependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-uglify": "~0.1.2",
-    "grunt-contrib-watch": "~0.3.1"
-  },
-  "engines": {
-    "node": "0.8.x"
-  },
-  "devDependencies": {
-    "grunt": "~0.4.1"
-  }
+	"name": "validate",
+	"version": "1.2.0",
+	"homepage": "http://plugins.jquery.com/validate",
+	"author": {
+		"name": "Diego Lopes Lima",
+		"email": "contact.diego.lima@gmail.com"
+	},
+	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/DiegoLopesLima/Validate"
+	},
+	"dependencies": {
+		"grunt": "~0.4.0",
+		"grunt-contrib-uglify": "~0.1.2",
+		"grunt-contrib-watch": "~0.3.1"
+	},
+	"engines": {
+		"node": "0.8.x"
+	},
+	"devDependencies": {
+		"grunt": "~0.4.1"
+	}
 }

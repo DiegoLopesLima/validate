@@ -14,6 +14,13 @@
 * [Field masks](#)
 * [Extending jQuery Validate](#)
 
+## Contribute
+Lorem ipsum dolor sit ammet.
+
+```git
+git clone git@github.com:DiegoLopesLima/Validate.git
+```
+
 ## Usage
 
 ```javascript
