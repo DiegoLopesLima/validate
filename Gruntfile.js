@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+	'use strict';
+
 	grunt.initConfig({
 		pkg : grunt.file.readJSON('package.json'),
 		uglify: {
@@ -8,7 +10,7 @@ module.exports = function(grunt) {
 					'<%=pkg.name%>.min.js': '<%=pkg.name%>.js'
 				},
 				options: {
-					banner: '/* jQuery Validate <%=pkg.version%> | <%=pkg.homepage%> */\n'
+					banner: '/* jQuery Validate <%=pkg.version%> | <%=pkg.homepage%> */\n;'
 				}
 			}
 		},

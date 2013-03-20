@@ -10,6 +10,16 @@
 
 		noop = $.noop,
 
+		globalEvents = {
+			valid : [],
+			invalid : [],
+			eachInvalidField : [],
+			eachValidField : [],
+			eachField : [],
+			beforeValidate : [],
+			afterValidate : []
+		},
+
 		defaults = {
 			filter : '*',
 			events : [],
@@ -457,6 +467,17 @@
 		return methods;
 	};
 
+	$[name].on = function(type, callback) {
+
+		if(globalEvents.hasOwnProperty(type)) {
+
+			if(typeof callback === 'function') {
+
+				globalEvents[type].push(callback);
+			}
+		}
+	};
+
 	// Stores the plugin version
-	$[name].version = '1.2.0rc';
+	$[name].version = '1.2.0';
 })(jQuery);
