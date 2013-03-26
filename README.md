@@ -15,7 +15,7 @@
 * [Extending jQuery Validate](#)
 
 ## Contribute
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ```git
 git clone git@github.com:DiegoLopesLima/Validate.git
@@ -30,10 +30,10 @@ jQuery('form').validate();
 ### Example
 
 ## Attributes
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### data-conditional
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -55,7 +55,7 @@ jQuery('form').validate({
 ```
 
 ### data-confirm
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -66,7 +66,7 @@ Lorem ipsum dolor sit ammet.
 ```
 
 ### data-counter
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -77,7 +77,7 @@ Lorem ipsum dolor sit ammet.
 ```
 
 ### data-ignorecase
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -101,7 +101,7 @@ Equivalent to
 ```
 
 ### data-mask
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -110,7 +110,7 @@ Lorem ipsum dolor sit ammet.
 ```
 
 ### data-maxlength
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -119,7 +119,7 @@ Lorem ipsum dolor sit ammet.
 ```
 
 ### data-minlength
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -128,7 +128,7 @@ Lorem ipsum dolor sit ammet.
 ```
 
 ### data-prepare
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -150,7 +150,7 @@ jQuery('form').validate({
 ```
 
 ### data-required
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -165,7 +165,7 @@ Or
 ```
 
 ### data-trim
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -183,7 +183,7 @@ Or
 See [Adding validation shortcuts](#adding-validation-shortcuts).
 
 ### data-describedby
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -210,19 +210,19 @@ jQuery('form').validate({
 Accepts a function called before validation.
 
 ### valid
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### invalid
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### eachInvalidField
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### eachValidField
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### afterValidation
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### Example
 
@@ -262,22 +262,22 @@ jQuery('form').validate({
 ## Options
 
 ### filter
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### events
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### sendForm
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### conditional
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### prepare
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### description
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### Example
 
@@ -310,7 +310,7 @@ jQuery('form').validate({
 ## Methods
 
 ### validate
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -320,7 +320,7 @@ jQuery('form').validate('validate');
 ```
 
 ### option
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -333,7 +333,7 @@ jQuery('form').validate('option', 'filter');
 ```
 
 ### destroy
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 #### Example
 
@@ -343,7 +343,7 @@ jQuery('form').validate('destroy');
 ```
 
 ## Changind default properties
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ```javascript
 jQuery.validate({
@@ -352,7 +352,7 @@ jQuery.validate({
 ```
 
 ## Adding validation shortcuts
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### Example
 
@@ -397,7 +397,7 @@ console.log(jQuery.validate.version);
 ```
 
 ## Extending `jQuery.fn.validate`
-Lorem ipsum dolor sit ammet.
+Lorem ipsum dolor sit amet.
 
 ### Example
 
@@ -421,4 +421,49 @@ jQuery.validate.extend({
 	method : function() {},
 	otherMethod : function() {}
 });
+```
+
+## Global events
+Lorem ipsum dolor sit amet.
+
+### Usage
+
+```javascirpt
+jQuery.validate.on('valid', function() {});
+
+jQuery.validate.on('invalid', function() {});
+```
+
+### Multiple events
+Lorem ipsum dolor sit amet.
+
+```javascript
+jQuery.validate.on('valid', function() {});
+```
+
+### Namespaces
+
+```javascript
+jQuery.validate.on('valid.namespace', function() {});
+```
+
+### Removing events
+You can remove delegated events with the `jQuery.validate.off` method.
+
+#### Example
+
+```javascript
+jQuery.validate.off('valid');
+```
+
+You can remove multiple events:
+
+```javascript
+jQuery.validate.off('valid invalid');
+```
+
+Lorem ipsum dolor sit amet.
+
+```javascript
+jQuery.validate.off('.namespace');
 ```

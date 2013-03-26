@@ -1,7 +1,6 @@
 {
 	"name": "validate",
 	"version": "1.2.0",
-	"homepage": "http://plugins.jquery.com/validate",
 	"author": {
 		"name": "Diego Lopes Lima",
 		"email": "contact.diego.lima@gmail.com"
