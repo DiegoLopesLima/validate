@@ -10,16 +10,6 @@
 
 		noop = $.noop,
 
-		globalEvents = {
-			valid: [],
-			invalid: [],
-			eachInvalidField: [],
-			eachValidField: [],
-			eachField: [],
-			beforeValidate: [],
-			afterValidate: []
-		},
-
 		defaults = {
 			filter: '*',
 			events: [],
@@ -221,35 +211,6 @@
 				valid: valid,
 				status: status
 			};
-		},
-
-		on = function(type, task) {
-
-			var
-
-				events = type.split(/\s+/);
-
-			for(var i = 0, len = events.length; i < len; i++) {
-
-				var
-
-					namespaces = events[i].split('.'),
-
-					currentEvent = namespaces[0];
-
-				namespaces.shift();
-
-				if(globalEvents.hasOwnProperty(currentEvent)) {
-
-					if(typeof task === 'function') {
-
-						globalEvents[currentEvent].push({
-							namespace: namespaces,
-							task: task
-						});
-					}
-				}
-			}
 		},
 
 		methods = {
@@ -495,40 +456,6 @@
 		}
 
 		return methods;
-	};
-
-	$[name].on = function(type, task) {
-
-		if($.isPlainObject(type)) {
-
-			for(var item in type) {
-
-				on(item, type[item]);
-			}
-		} else {
-
-			on(type, task);
-		}
-	};
-
-	$[name].off = function(type) {
-
-		var
-
-			events = type.split(/\s+/);
-
-		for(var i = 0, len = events.length; i < len; i++) {
-
-			events[i]
-
-			var
-
-				namespaces = events[i].split('.'),
-
-				currentEvent = namespaces[0];
-
-			namespaces.shift();
-		}
 	};
 
 	// Stores the plugin version
