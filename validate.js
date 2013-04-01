@@ -89,7 +89,7 @@
 				fieldDescribedby = data.describedby,
 
 				// Current field value
-				fieldValue = fieldTrim ? $.trim(element.val()): element.val(),
+				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
 
 				// 
 				fieldLength = fieldValue.length,
@@ -97,6 +97,7 @@
 				// Current field name
 				fieldName = element.prop('name'),
 
+				// 
 				sameName = $('[name="' + fieldName + '"]'),
 
 				// Current field status

@@ -198,6 +198,7 @@ jQuery('form').validate({
 	description : {
 		name : {
 			required : '<span class="error">A name is required field.</span>',
+			pattern : '<b>Validation error:</b> Invalid format.',
 			valid : 'Correct.'
 		}
 	}
