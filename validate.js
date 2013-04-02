@@ -284,14 +284,20 @@
 					}
 
 					data.valid.call(element);
+
+					element.trigger('valid');
 				} else {
 
 					event.preventDefault();
 
 					data.invalid.call(element);
+
+					element.trigger('invalid');
 				}
 
 				data.beforeValidate.call(element, valid);
+
+				element.trigger('validated');
 			},
 			option: function(property, value) {
 
@@ -400,14 +406,20 @@
 						if(response.valid) {
 
 							data.eachValidField.call(this);
+
+							$(this).trigger('valid');
 						} else {
 
 							valid = false;
 
 							data.eachInvalidField.call(this, status);
+
+							$(this).trigger('invalid');
 						}
 
 						data.eachField.call(this, status);
+
+						$(this).trigger('validated');
 					}
 
 					if(event.type === 'keyup') {
