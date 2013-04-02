@@ -65,17 +65,6 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-confirm="password" />
 ```
 
-### data-counter
-Lorem ipsum dolor sit amet.
-
-#### Example
-
-```html
-<input type="text" id="password" data-maxlength="25" data-counter="remaining" />
-
-<p><span id="remaining"></span> characters remaining.</p>
-```
-
 ### data-ignorecase
 Lorem ipsum dolor sit amet.
 

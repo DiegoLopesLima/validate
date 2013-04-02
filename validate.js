@@ -21,7 +21,6 @@
 			eachValidField: noop,
 			eachField: noop,
 			sendForm: true,
-			global: true,
 			conditional: {},
 			prepare: {},
 			description: {}
@@ -54,9 +53,6 @@
 
 				// A field id to confirm.
 				fieldConfirm = String(data.confirm),
-
-				// A element id to write the count.
-				fieldCounter = data.counter,
 
 				// 
 				fieldIgnorecase = regExpTrue.test(data.ignorecase) ? true: false,
@@ -299,6 +295,26 @@
 
 				element.trigger('validated');
 			},
+			counter: function(options) {
+
+				options = options || {};
+
+				var
+
+					start = Number(options.start) || 0,
+
+					operator = options.desc ? -1 : 1,
+
+					element = $(this);
+
+				element.on('keyup' + namespace, function(event) {
+
+					if(options.options.haltWrite) {
+
+						event.preventDefault();
+					}
+				});
+			},
 			option: function(property, value) {
 
 				var
@@ -420,11 +436,6 @@
 						data.eachField.call(this, status);
 
 						$(this).trigger('validated');
-					}
-
-					if(event.type === 'keyup') {
-
-						// Counter logic
 					}
 				});
 			}

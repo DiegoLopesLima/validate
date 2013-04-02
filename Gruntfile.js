@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 			}
 		},
 		watch: {
-			files: ['<%=pkg.name%>.js'],
+			files: ['<%=pkg.name%>.js', 'package.json'],
 			tasks: ['uglify:dist']
 		}
 	});
