@@ -332,6 +332,26 @@ Lorem ipsum dolor sit amet.
 jQuery('form').validate('destroy');
 ```
 
+### Counter
+Lorem ipsum dolor sit amet.
+
+#### Example
+
+```html
+<input type="text" id="my-field" />
+
+<div><span id="my-counter">100</span> characters remaining.</div>
+```
+
+```javascript
+jQuery('#my-field').validate('counter', {
+	target : '#my-counter',
+	start : 100,
+	desc : true,
+	haltWrite : true
+});
+```
+
 ## Changind default properties
 Lorem ipsum dolor sit amet.
 
@@ -410,25 +430,5 @@ jQuery('form').validate('methodName', 'Lorem ipsum');
 jQuery.validate.extend({
 	method : function() {},
 	otherMethod : function() {}
-});
-```
-
-## Creating a counter
-Lorem ipsum dolor sit amet.
-
-### Example
-
-```html
-<input type="text" id="my-field" />
-
-<div><span id="my-counter">100</span> characters remaining.</div>
-```
-
-```javascript
-jQuery('#my-field').validate('counter', {
-	target : '#my-counter',
-	start : 100,
-	desc : true,
-	haltWrite : true
 });
 ```
