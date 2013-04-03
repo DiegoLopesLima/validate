@@ -412,3 +412,23 @@ jQuery.validate.extend({
 	otherMethod : function() {}
 });
 ```
+
+## Creating a counter
+Lorem ipsum dolor sit amet.
+
+### Example
+
+```html
+<input type="text" id="my-field" />
+
+<div><span id="my-counter">100</span> characters remaining.</div>
+```
+
+```javascript
+jQuery('#my-field').validate('counter', {
+	target : '#my-counter',
+	start : 100,
+	desc : true,
+	haltWrite : true
+});
+```

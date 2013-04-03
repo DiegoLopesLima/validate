@@ -11,19 +11,19 @@
 		noop = $.noop,
 
 		defaults = {
-			filter: '*',
-			events: [],
-			valid: noop,
-			invalid: noop,
-			beforeValidate: noop,
-			afterValidate: noop,
-			eachInvalidField: noop,
-			eachValidField: noop,
-			eachField: noop,
-			sendForm: true,
-			conditional: {},
-			prepare: {},
-			description: {}
+			filter : '*',
+			events : [],
+			valid : noop,
+			invalid : noop,
+			beforeValidate : noop,
+			afterValidate : noop,
+			eachInvalidField : noop,
+			eachValidField : noop,
+			eachField : noop,
+			sendForm : true,
+			conditional : {},
+			prepare : {},
+			description : {}
 		},
 
 		writable = 'input:not([type]),input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select',
@@ -55,7 +55,7 @@
 				fieldConfirm = String(data.confirm),
 
 				// 
-				fieldIgnorecase = regExpTrue.test(data.ignorecase) ? true: false,
+				fieldIgnorecase = regExpTrue.test(data.ignorecase) ? true : false,
 
 				// A mask to field value
 				fieldMask = data.mask || '${0}',
@@ -73,10 +73,10 @@
 				fieldPrepare = data.prepare,
 
 				// 
-				fieldRequired = regExpTrue.test(data.required) ? true: false,
+				fieldRequired = regExpTrue.test(data.required) ? true : false,
 
 				// 
-				fieldTrim = regExpTrue.test(data.trim) ? true: false,
+				fieldTrim = regExpTrue.test(data.trim) ? true : false,
 
 				// 
 				fieldValidate = data.validate,
@@ -85,7 +85,7 @@
 				fieldDescribedby = data.describedby,
 
 				// Current field value
-				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
+				fieldValue = fieldTrim ? $.trim(element.val())  : element.val(),
 
 				// 
 				fieldLength = fieldValue.length,
@@ -98,12 +98,12 @@
 
 				// Current field status
 				status = {
-					required: true,
-					pattern: true,
-					conditional: true,
-					confirm: true,
-					minlength: true,
-					maxlength: true
+					required : true,
+					pattern : true,
+					conditional : true,
+					confirm : true,
+					minlength : true,
+					maxlength : true
 				},
 
 				valid = true,
@@ -115,7 +115,7 @@
 			// 
 			if(element.is(checkable)) {
 
-				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0: false;
+				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
 
 				status.minlength = sameName.filter(':checked') >= fieldMinlength;
 
@@ -146,7 +146,7 @@
 
 					for(var i = 0; i < shares.length; i++) {
 
-						fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (shares[i] !== undefined ? shares[i]: '$1'));
+						fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (shares[i] !== undefined ? shares[i] : '$1'));
 					}
 
 					fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{(\d+)(?::`([^`]*)`)?\}/g, '$2');
@@ -205,13 +205,13 @@
 			element.prop('aria-invalid', !valid);
 
 			return {
-				valid: valid,
-				status: status
+				valid : valid,
+				status : status
 			};
 		},
 
 		methods = {
-			destroy: function() {
+			destroy : function() {
 
 				var
 
@@ -230,7 +230,7 @@
 
 				return element;
 			},
-			validate: function(event) {
+			validate : function(event) {
 
 				var
 
@@ -295,27 +295,52 @@
 
 				element.trigger('validated');
 			},
-			counter: function(options) {
+			counter : function(options) {
 
 				options = options || {};
 
 				var
 
+					// 
 					start = Number(options.start) || 0,
 
-					operator = options.desc ? -1 : 1,
+					// 
+					current = start,
 
-					element = $(this);
+					// 
+					operator = options.desc ? -1  : 1,
+
+					// 
+					element = $(this),
+
+					// 
+					counter = $(options.target),
+
+					// 
+					custom = options.target,
+
+					// 
+					prepare = options.prepare;
 
 				element.on('keyup' + namespace, function(event) {
 
-					if(options.options.haltWrite) {
+					current = typeof prepare === 'function' ? prepare(current)  : current;
 
-						event.preventDefault();
+					if(typeof custom === 'function') {
+
+						custom.call(this, current);
+					} else if(counter.length > 0) {
+
+						counter.text(custom);
+
+						if(options.haltWrite) {
+
+							event.preventDefault();
+						}
 					}
 				});
 			},
-			option: function(property, value) {
+			option : function(property, value) {
 
 				var
 
