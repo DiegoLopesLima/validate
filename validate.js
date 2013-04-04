@@ -38,6 +38,11 @@
 
 		regExpFalse = /^false$/,
 
+		generateNamespace = function(events) {
+
+			return String(events).replace(/(\s+|$)/g, namespace + '$1');
+		},
+
 		validateField = function(options, event) {
 
 			var
@@ -189,7 +194,7 @@
 					}
 				}
 
-				status.pattern = validConditionals;
+				status.conditional = validConditionals;
 			}
 
 			for(var item in status) {
@@ -221,6 +226,7 @@
 					// 
 					fields = element.find(types);
 
+				// 
 				if(element.is('[id]')) {
 
 					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
@@ -240,8 +246,10 @@
 					// Current form data
 					data = element.data(name),
 
+					// 
 					fields = element.find(types),
 
+					// 
 					valid = true;
 
 				data.beforeValidate.call(element);
@@ -302,13 +310,7 @@
 				var
 
 					// 
-					start = Number(options.start) || 0,
-
-					// 
-					current = start,
-
-					// 
-					operator = options.desc ? -1  : 1,
+					start = Math.round(options.start) || 0,
 
 					// 
 					element = $(this),
@@ -317,27 +319,11 @@
 					counter = $(options.target),
 
 					// 
-					custom = options.target,
-
-					// 
 					prepare = options.prepare;
 
-				element.on('keyup' + namespace, function(event) {
+				element.on(generateNamespace('keydown keyup mouseup'), function(event) {
 
-					current = typeof prepare === 'function' ? prepare(current)  : current;
-
-					if(typeof custom === 'function') {
-
-						custom.call(this, current);
-					} else if(counter.length > 0) {
-
-						counter.text(custom);
-
-						if(options.haltWrite) {
-
-							event.preventDefault();
-						}
-					}
+					// 
 				});
 			},
 			option : function(property, value) {
@@ -430,7 +416,7 @@
 
 				fields = fields.filter(data.filter);
 
-				fields.on('keyup change blur'.replace(/(\s+|$)/g, namespace + '$1'), function(event) {
+				fields.on(generateNamespace('keyup change blur'), function(event) {
 
 					var
 
