@@ -197,6 +197,7 @@
 				status.conditional = validConditionals;
 			}
 
+			// 
 			for(var item in status) {
 
 				if(!status[item]) {
@@ -207,7 +208,10 @@
 				}
 			}
 
-			element.prop('aria-invalid', !valid);
+			// 
+			element.prop('aria-invalid', !valid).data(name, {
+				valid : valid
+			});
 
 			return {
 				valid : valid,
@@ -491,6 +495,15 @@
 		}
 
 		return methods;
+	};
+
+	$.expr[':'].validate = function(element, index, data) {
+
+		var
+
+			element = $(element);
+
+		return element.is(types) && !!element.data(name).valid;
 	};
 
 	// Stores the plugin version
