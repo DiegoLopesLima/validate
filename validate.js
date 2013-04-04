@@ -172,7 +172,7 @@
 
 			if(typeof fieldConditional === 'function') {
 
-				status.pattern = fieldConditional.call(element, fieldValue);
+				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
 
 				var
