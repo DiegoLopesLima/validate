@@ -442,10 +442,32 @@ jQuery(':validate(valid)');
 ## Contribute
 Lorem ipsum dolor sit amet.
 
+Lorem ipsum dolor sit amet.
+
 ```git
 git clone git@github.com:DiegoLopesLima/Validate.git
 ```
 
+Lorem ipsum dolor sit amet.
+
 ```git
 git pull origin development
+```
+
+Lorem ipsum dolor sit amet.
+
+```git
+git ckeckout development
+```
+
+Lorem ipsum dolor sit amet.
+
+```git
+git commit -m "Your message" -a
+```
+
+Lorem ipsum dolor sit amet.
+
+```git
+git push origin development
 ```
