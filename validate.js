@@ -499,11 +499,27 @@
 
 	$.expr[':'].validate = function(element, index, data) {
 
+		element = $(element);
+
 		var
 
-			element = $(element);
+			param = $.trim(data[3]),
 
-		return element.is(types) && !!element.data(name).valid;
+			valid;
+
+
+		if(param === 'valid') {
+
+			valid = true;
+		} else if(param === 'invalid') {
+
+			valid = false;
+		} else {
+
+			return false;
+		}
+
+		return valid === validateField.call(element).valid;
 	};
 
 	// Stores the plugin version

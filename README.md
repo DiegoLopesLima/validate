@@ -432,3 +432,13 @@ jQuery.validate.extend({
 	otherMethod : function() {}
 });
 ```
+
+## Custom selector
+Lorem ipsum dolor sit amet.
+
+### Example
+
+```javascript
+// Returns all invalid fields.
+jQuery(':validate(invalid)');
+```
