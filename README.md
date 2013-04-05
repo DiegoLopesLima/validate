@@ -441,4 +441,7 @@ Lorem ipsum dolor sit amet.
 ```javascript
 // Returns all invalid fields.
 jQuery(':validate(invalid)');
+
+// Returns all valid fields.
+jQuery(':validate(valid)');
 ```
