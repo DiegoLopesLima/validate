@@ -445,3 +445,7 @@ Lorem ipsum dolor sit amet.
 ```git
 git clone git@github.com:DiegoLopesLima/Validate.git
 ```
+
+```git
+git pull origin development
+```
