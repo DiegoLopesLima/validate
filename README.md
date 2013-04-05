@@ -14,13 +14,6 @@
 * [Field masks](#)
 * [Extending jQuery Validate](#)
 
-## Contribute
-Lorem ipsum dolor sit amet.
-
-```git
-git clone git@github.com:DiegoLopesLima/Validate.git
-```
-
 ## Usage
 
 ```javascript
@@ -444,4 +437,11 @@ jQuery(':validate(invalid)');
 
 // Returns all valid fields.
 jQuery(':validate(valid)');
+```
+
+## Contribute
+Lorem ipsum dolor sit amet.
+
+```git
+git clone git@github.com:DiegoLopesLima/Validate.git
 ```
