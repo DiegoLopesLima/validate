@@ -4,25 +4,55 @@
 
 	var
 
+		// The plugin name.
 		name = 'validate',
 
+		// Event namespace.
 		namespace = '.' + name,
 
+		// Empty function.
 		noop = $.noop,
 
+		// Default properties.
 		defaults = {
-			filter : '*',
-			events : [],
+
+			// A function called when the form is valid.
 			valid : noop,
+
+			// A function called when the form is invalid.
 			invalid : noop,
+
+			// A function called before validate form.
 			beforeValidate : noop,
+
+			// A function called after validate form.
 			afterValidate : noop,
+
+			// A function called for each invalid field.
 			eachInvalidField : noop,
+
+			// A function called for each valid field.
 			eachValidField : noop,
+
+			// 
+			filter : '*',
+
+			// 
+			events : [],
+
+			// 
 			eachField : noop,
+
+			// 
 			sendForm : true,
+
+			// 
 			conditional : {},
+
+			// 
 			prepare : {},
+
+			// 
 			description : {}
 		},
 
@@ -30,8 +60,10 @@
 
 		checkable = 'input[type=checkbox],input[type=radio]',
 
+		// Fields selector.
 		types = writable + ',' + checkable,
 
+		// Extensions.
 		validate = {},
 
 		regExpTrue = /^(true|)$/,
@@ -43,6 +75,7 @@
 			return String(events).replace(/(\s+|$)/g, namespace + '$1');
 		},
 
+		// A function to validate fields.
 		validateField = function(options, event) {
 
 			var
@@ -506,7 +539,6 @@
 			param = $.trim(data[3]),
 
 			valid;
-
 
 		if(param === 'valid') {
 
