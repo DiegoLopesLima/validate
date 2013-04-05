@@ -18,15 +18,25 @@ module.exports = function(grunt) {
 				}
 			}
 		},
+		jshint : {
+			options : {
+				globals : {
+					jQuery : true
+				}
+			},
+			uses_defaults : ['<%=pkg.name%>.js']
+		},
 		watch : {
 			files : ['<%=pkg.name%>.js', packageFile],
-			tasks : ['uglify:dist']
+			tasks : ['uglify:dist', 'jshint']
 		}
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['uglify']);
+	grunt.registerTask('default', ['uglify', 'jshint']);
 };

@@ -34,14 +34,14 @@
 			// A function called for each valid field.
 			eachValidField : noop,
 
+			// A function called for each field.
+			eachField : noop,
+
 			// 
 			filter : '*',
 
 			// 
 			events : [],
-
-			// 
-			eachField : noop,
 
 			// 
 			sendForm : true,
@@ -219,9 +219,9 @@
 
 					validConditionals = true;
 
-				for(var i = 0, len = conditionals.length; i < len; i++) {
+				for(var b = 0, len = conditionals.length; b < len; b++) {
 
-					if(!conditionals[i].call(element, fieldValue)) {
+					if(!conditionals[b].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
