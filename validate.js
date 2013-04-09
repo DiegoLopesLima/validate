@@ -67,9 +67,14 @@
 
 		regExpFalse = /^false$/,
 
+		ifExist = function(value, substitute) {
+
+			return !/^(undefined|null|NaN)$/.test(value) ? value : substitute;
+		},
+
 		namespace = function(events) {
 
-			return String(events).replace(/(\s+|$)/g, '.' + name + '$1');
+			return events.replace(/(\s+|$)/g, '.' + name + '$1');
 		},
 
 		// A function to validate fields.
@@ -84,46 +89,46 @@
 				data = element.data(),
 
 				// A conditional function.
-				fieldConditional = data.conditional,
+				fieldConditional = ifExist(data.conditional, validate.conditional),
 
 				// A field id to confirm.
-				fieldConfirm = String(data.confirm),
+				fieldConfirm = String(ifExist(data.confirm, validate.confirm)),
 
 				// 
-				fieldIgnorecase = regExpTrue.test(data.ignorecase) ? true : false,
+				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase)) ? true : false,
 
 				// A mask to field value
-				fieldMask = data.mask || '${0}',
+				fieldMask = data.mask || validate.mask || '${0}',
 
 				// 
-				fieldMaxlength = Number(data.maxlength) || Infinity,
+				fieldMaxlength = ifExist(Number(data.maxlength), validate.maxlength) || Infinity,
 
 				// 
-				fieldMinlength = Number(data.minlength) || 0,
+				fieldMinlength = ifExist(Number(data.minlength), validate.minlength) || 0,
 
 				// A regular expression to validate the field value.
-				fieldPattern = data.pattern || /(?:)/,
+				fieldPattern = ifExist(data.pattern, validate.pattern) || /(?:)/,
 
 				// 
-				fieldPrepare = data.prepare,
+				fieldPrepare = ifExist(data.prepare, validate.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(data.required) ? true : false,
+				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required)) ? true : false,
 
 				// 
-				fieldTrim = regExpTrue.test(data.trim) ? true : false,
+				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim)) ? true : false,
+
+				// 
+				fieldDescribedby = ifExist(data.describedby, validate.describedby),
 
 				// 
 				fieldValidate = data.validate,
 
-				// 
-				fieldDescribedby = data.describedby,
-
 				// Current field value
-				fieldValue = fieldTrim ? $.trim(element.val())  : element.val(),
+				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
 
 				// 
-				fieldLength = fieldValue.length,
+				fieldLength = ifExist(fieldValue, '').length,
 
 				// Current field name
 				fieldName = element.prop('name'),
@@ -148,6 +153,12 @@
 				filled;
 
 			// 
+			if($.type(fieldPattern) !== 'regex') {
+
+				fieldPattern = new RegExp(fieldPattern);
+			}
+
+			// 
 			if(element.is(checkable)) {
 
 				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
@@ -155,41 +166,39 @@
 				status.minlength = sameName.filter(':checked') >= fieldMinlength;
 
 				status.maxlength = sameName.filter(':checked') <= fieldMaxlength;
-			} else {
+			} else if(element.is(writable)) {
 
 				filled = fieldLength > 0;
 
 				status.minlength = fieldLength >= fieldMinlength;
 
 				status.maxlength = fieldLength <= fieldMaxlength;
+
+				status.pattern = fieldPattern.test(fieldValue);
 			}
 
 			if(fieldRequired) {
 
 				status.required = filled;
+			}
 
-				status.pattern = fieldPattern.test(fieldValue);
-			} else if(filled) {
 
-				status.pattern = fieldPattern.test(fieldValue);
+			if(event.type !== 'keyup' && status.pattern && fieldMask) {
 
-				if(event.type !== 'keyup') {
+				var
 
-					var
+					shares = fieldValue.match(fieldPattern) || [];
 
-						shares = fieldValue.match(fieldPattern);
+				for(var i = 0; i < shares.length; i++) {
 
-					for(var i = 0; i < shares.length; i++) {
+					fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (shares[i] !== undefined ? shares[i] : '$1'));
+				}
 
-						fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (shares[i] !== undefined ? shares[i] : '$1'));
-					}
+				fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{(\d+)(?::`([^`]*)`)?\}/g, '$2');
 
-					fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{(\d+)(?::`([^`]*)`)?\}/g, '$2');
+				if(fieldPattern.test(fieldMask)) {
 
-					if(fieldPattern.test(fieldMask)) {
-
-						element.val(fieldMask);
-					}
+					element.val(fieldMask);
 				}
 			}
 
@@ -236,7 +245,7 @@
 
 				if(!status[item]) {
 
-					valid = item;
+					valid = false;
 
 					break;
 				}
@@ -452,13 +461,14 @@
 
 				fields = fields.filter(data.filter);
 
+				// 
 				fields.on(namespace('keyup change blur'), function(event) {
 
 					var
 
 						data = element.data(name);
 
-					if($.inArray(event.type, data.events)) {
+					if($.inArray(event.type, data.events) > -1) {
 
 						var
 
@@ -527,30 +537,6 @@
 		}
 
 		return methods;
-	};
-
-	$.expr[':'].validate = function(element, index, data) {
-
-		element = $(element);
-
-		var
-
-			param = $.trim(data[3]),
-
-			valid;
-
-		if(param === 'valid') {
-
-			valid = true;
-		} else if(param === 'invalid') {
-
-			valid = false;
-		} else {
-
-			return false;
-		}
-
-		return valid === validateField.call(element).valid;
 	};
 
 	// Stores the plugin version
