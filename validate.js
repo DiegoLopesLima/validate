@@ -7,9 +7,6 @@
 		// The plugin name.
 		name = 'validate',
 
-		// Event namespace.
-		namespace = '.' + name,
-
 		// Empty function.
 		noop = $.noop,
 
@@ -70,9 +67,9 @@
 
 		regExpFalse = /^false$/,
 
-		generateNamespace = function(events) {
+		namespace = function(events) {
 
-			return String(events).replace(/(\s+|$)/g, namespace + '$1');
+			return String(events).replace(/(\s+|$)/g, '.' + name + '$1');
 		},
 
 		// A function to validate fields.
@@ -84,7 +81,7 @@
 				element = $(this),
 
 				// Current field data.
-				data = element.data(name),
+				data = element.data(),
 
 				// A conditional function.
 				fieldConditional = data.conditional,
@@ -221,7 +218,11 @@
 
 				for(var b = 0, len = conditionals.length; b < len; b++) {
 
-					if(!conditionals[b].call(element, fieldValue)) {
+					var
+
+						foo = options.conditional[conditionals[b]];
+
+					if(typeof foo === 'function' && !options.conditional[conditionals[b]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
@@ -242,9 +243,7 @@
 			}
 
 			// 
-			element.prop('aria-invalid', !valid).data(name, {
-				valid : valid
-			});
+			element.prop('aria-invalid', !valid);
 
 			return {
 				valid : valid,
@@ -269,7 +268,7 @@
 					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 				}
 
-				element.add(fields.filter(element.data(name).filter)).removeData(name).off(namespace);
+				element.add(fields.filter(element.data(name).filter)).removeData(name).off('.' + name);
 
 				return element;
 			},
@@ -300,7 +299,7 @@
 
 					var
 
-						response = validateField.call(element, data),
+						response = validateField.call(this, data, event),
 
 						status = response.status;
 
@@ -358,7 +357,7 @@
 					// 
 					prepare = options.prepare;
 
-				element.on(generateNamespace('keydown keyup mouseup'), function(event) {
+				element.on(namespace('keydown keyup mouseup'), function(event) {
 
 					// 
 				});
@@ -435,9 +434,9 @@
 					return methods[param[0]].apply(element, param.shift());
 				}
 
-				element.data(name, $.extend({}, defaults, param[0])).on('submit' + namespace, function(event) {
+				element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
 
-					methods.validate.call(element, event);
+					methods.validate.call(this, event);
 				});
 
 				var
@@ -453,7 +452,7 @@
 
 				fields = fields.filter(data.filter);
 
-				fields.on(generateNamespace('keyup change blur'), function(event) {
+				fields.on(namespace('keyup change blur'), function(event) {
 
 					var
 
