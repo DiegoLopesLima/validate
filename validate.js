@@ -184,7 +184,7 @@
 				status.required = filled;
 			}
 
-			if(eventType !== 'keyup' && status.pattern && fieldMask) {
+			if(eventType !== 'keyup' && status.pattern) {
 
 				var
 
@@ -192,10 +192,10 @@
 
 				for(var i = 0; i < shares.length; i++) {
 
-					fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), (shares[i] !== undefined ? shares[i] : '$1'));
+					fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), shares[i] || '$1');
 				}
 
-				fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{(\d+)(?::`([^`]*)`)?\}/g, '$2');
+				fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
 
 				if(fieldPattern.test(fieldMask)) {
 
@@ -380,7 +380,7 @@
 					// 
 					prepare = options.prepare;
 
-				element.on(namespace('keydown keyup mouseup'), function(event) {
+				element.on(namespace('keydown keyup drop'), function(event) {
 
 					// 
 				});
