@@ -242,6 +242,48 @@ jQuery('form').validate({
 });
 ```
 
+## Events
+Lorem ipsum dolor sit amet.
+
+### valid
+Lorem ipsum dolor sit amet.
+
+#### Example
+
+```javascript
+// In forms.
+jQuery('form').on('valid', function() {});
+
+// In fields.
+jQuery('input').on('valid', function() {});
+```
+
+### invalid
+Lorem ipsum dolor sit amet.
+
+#### Example
+
+```javascript
+// In forms.
+jQuery('form').on('invalid', function() {});
+
+// In fields.
+jQuery('input').on('invalid', function() {});
+```
+
+### validated
+Lorem ipsum dolor sit amet.
+
+#### Example
+
+```javascript
+// In forms.
+jQuery('form').on('validated', function() {});
+
+// In fields.
+jQuery('input').on('validated', function() {});
+```
+
 ## Options
 
 ### filter
