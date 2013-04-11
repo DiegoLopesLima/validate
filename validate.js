@@ -436,12 +436,7 @@
 
 		var
 
-			param = [];
-
-		for(var i = 0; i < arguments.length; i++) {
-
-			param.push(arguments[i]);
-		}
+			param = arguments;
 
 		return $(this).each(function() {
 
@@ -454,13 +449,7 @@
 
 				if(typeof param[0] === 'string' && methods.hasOwnProperty(param[0])) {
 
-					var
-
-						method = methods[param[0]];
-
-					param.shift();
-
-					return method.apply(element, param);
+					return methods[param[0]].apply(element, Array.prototype.slice.call(param, 1));
 				}
 
 				element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
