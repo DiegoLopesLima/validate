@@ -150,6 +150,8 @@
 
 				fieldType = element.prop('type'),
 
+				eventType = event ? event.type : 'submit',
+
 				filled;
 
 			// 
@@ -182,8 +184,7 @@
 				status.required = filled;
 			}
 
-
-			if(event.type !== 'keyup' && status.pattern && fieldMask) {
+			if(eventType !== 'keyup' && status.pattern && fieldMask) {
 
 				var
 
@@ -260,6 +261,7 @@
 			};
 		},
 
+		// 
 		methods = {
 			destroy : function() {
 
@@ -277,6 +279,7 @@
 					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 				}
 
+				// 
 				element.add(fields.filter(element.data(name).filter)).removeData(name).off('.' + name);
 
 				return element;
@@ -297,13 +300,16 @@
 					// 
 					valid = true;
 
+				// 
 				data.beforeValidate.call(element);
 
+				// 
 				if(element.is('[id]')) {
 
 					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 				}
 
+				// 
 				fields.filter(data.filter).each(function() {
 
 					var
@@ -325,19 +331,27 @@
 					data.eachField.call(this, status);
 				});
 
+				// 
 				if(valid) {
 
-					if(!data.sendForm) {
+					// 
+					if(!data.sendForm && event) {
 
 						event.preventDefault();
 					}
 
+					// 
 					data.valid.call(element);
 
+					// 
 					element.trigger('valid');
 				} else {
 
-					event.preventDefault();
+					// 
+					if(event) {
+
+						event.preventDefault();
+					}
 
 					data.invalid.call(element);
 
@@ -440,7 +454,13 @@
 
 				if(typeof param[0] === 'string' && methods.hasOwnProperty(param[0])) {
 
-					return methods[param[0]].apply(element, param.shift());
+					var
+
+						method = methods[param[0]];
+
+					param.shift();
+
+					return method.apply(element, param);
 				}
 
 				element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
