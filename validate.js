@@ -472,7 +472,7 @@
 
 						var
 
-							response = validateField.call(element, data, event),
+							response = validateField.call(this, data, event),
 
 							status = response.status;
 
@@ -482,8 +482,6 @@
 
 							$(this).trigger('valid');
 						} else {
-
-							valid = false;
 
 							data.eachInvalidField.call(this, status);
 
