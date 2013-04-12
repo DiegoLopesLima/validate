@@ -187,6 +187,21 @@ jQuery('form').validate({
 });
 ```
 
+## Using `jQuery.data` to attributes declare.
+
+### Example
+
+```javascript
+jQuery('input[name="age"]').data({
+	pattern : /^\d+$/,
+	required : true,
+	conditional : function(value) {
+
+		return Number(value) > 17;
+	}
+});
+```
+
 ## Callbacks
 
 ### beforeValidate
