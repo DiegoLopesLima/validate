@@ -65,13 +65,22 @@
 
 		regExpTrue = /^(true|)$/,
 
-		regExpFalse = /^false$/,
+		// 
+		fieldsetWrapper = function(attribute) {
 
+			return $(this).parent('fieldset').filter(function() {
+
+				return regExpTrue.test($(this).data(attribute));
+			}).length > 0;
+		},
+
+		// 
 		ifExist = function(value, substitute) {
 
 			return !/^(undefined|null|NaN)$/.test(value) ? value : substitute;
 		},
 
+		// 
 		namespace = function(events) {
 
 			return events.replace(/(\s+|$)/g, '.' + name + '$1');
@@ -95,7 +104,7 @@
 				fieldConfirm = String(ifExist(data.confirm, validate.confirm)),
 
 				// 
-				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase)) ? true : false,
+				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || fieldsetWrapper.call(element, 'ignorecase'))) ? true : false,
 
 				// A mask to field value
 				fieldMask = data.mask || validate.mask || '${0}',
@@ -113,10 +122,10 @@
 				fieldPrepare = ifExist(data.prepare, validate.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required)) ? true : false,
+				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required || fieldsetWrapper.call(element, 'required'))) ? true : false,
 
 				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim)) ? true : false,
+				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim || fieldsetWrapper.call(element, 'trim'))) ? true : false,
 
 				// 
 				fieldDescribedby = ifExist(data.describedby, validate.describedby),
@@ -155,6 +164,19 @@
 				filled;
 
 			// 
+			if($.isFunction(fieldPrepare)) {
+
+				fieldValue = fieldPrepare.call(element, fieldValue);
+			} else {
+
+				var
+
+					prepare = options.prepare[fieldPrepare];
+
+				fieldValue = $.isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
+			}
+
+			// 
 			if($.type(fieldPattern) !== 'regex') {
 
 				fieldPattern = new RegExp(fieldPattern);
@@ -179,11 +201,13 @@
 				status.pattern = fieldPattern.test(fieldValue);
 			}
 
+			// 
 			if(fieldRequired) {
 
 				status.required = filled;
 			}
 
+			// 
 			if(eventType !== 'keyup' && status.pattern) {
 
 				var
@@ -203,6 +227,7 @@
 				}
 			}
 
+			// 
 			if(fieldConfirm.length > 0) {
 
 				var
@@ -215,7 +240,8 @@
 				}
 			}
 
-			if(typeof fieldConditional === 'function') {
+			// 
+			if($.isFunction(fieldConditional)) {
 
 				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
@@ -226,13 +252,13 @@
 
 					validConditionals = true;
 
-				for(var b = 0, len = conditionals.length; b < len; b++) {
+				for(var counter = 0, len = conditionals.length; counter < len; counter++) {
 
 					var
 
-						foo = options.conditional[conditionals[b]];
+						conditional = options.conditional[conditionals[counter]];
 
-					if(typeof foo === 'function' && !options.conditional[conditionals[b]].call(element, fieldValue)) {
+					if($.isFunction(conditional) && !options.conditional[conditionals[counter]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
