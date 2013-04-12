@@ -187,7 +187,7 @@ jQuery('form').validate({
 });
 ```
 
-## Using `jQuery.data` to attributes declare.
+## Using `jQuery.data` to attributes declare
 
 ### Example
 
