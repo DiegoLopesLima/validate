@@ -68,7 +68,7 @@
 		// 
 		fieldsetWrapper = function(attribute) {
 
-			return $(this).parent('fieldset').filter(function() {
+			return $(this).parents('*').filter(function() {
 
 				return regExpTrue.test($(this).data(attribute));
 			}).length > 0;
@@ -159,7 +159,7 @@
 
 				fieldType = element.prop('type'),
 
-				eventType = event ? event.type : 'submit',
+				eventType = event ? event.type : null,
 
 				filled;
 

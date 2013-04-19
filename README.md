@@ -482,3 +482,26 @@ jQuery.validate.extend({
 	otherMethod : function() {}
 });
 ```
+
+## Tips
+Lorem ipsum dolor sit amet.
+
+### Wraping fields
+
+```html
+<input type="text" name="name" data-required />
+
+<input type="text" name="age" data-required />
+```
+
+You can use a element to wrap the fields.
+
+```html
+<div data-required>
+	<input type="text" name="name" />
+
+	<input type="text" name="age" />
+</div>
+```
+
+> You can use the attributes `data-required`, `data-trim` and `data-ignorecase`.
