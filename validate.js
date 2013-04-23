@@ -52,6 +52,9 @@
 			// 
 			prepare : {},
 
+			//
+			valueHook : null,
+
 			// 
 			description : {}
 		},
@@ -166,6 +169,12 @@
 
 				filled;
 
+			//
+			if($.isFunction(options.valueHook)) {
+
+				fieldValue = options.valueHook.call(element, fieldValue);
+			}
+
 			// 
 			if($.isFunction(fieldPrepare)) {
 
@@ -178,6 +187,9 @@
 
 				fieldValue = $.isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
 			}
+
+			// 
+			fieldValue = String(fieldValue);
 
 			// 
 			if($.type(fieldPattern) !== 'regex') {
@@ -210,25 +222,26 @@
 				status.required = filled;
 			}
 
-			// 
-			/*if(eventType !== 'keyup' && status.pattern) {
+			if(eventType !== 'keyup' && status.pattern) {
 
 				var
 
-					shares = fieldValue.match(fieldPattern) || [];
+					shares = fieldValue.match(fieldPattern) || [],
 
-				for(var i = 0; i < shares.length; i++) {
+					newValue = fieldMask;
 
-					fieldMask = fieldMask.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), shares[i] || '$1');
+				for(var i = 0, len = shares.length; i < len; i++) {
+
+					newValue = newValue.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), shares[i] || '$1');
 				}
 
-				fieldMask = fieldMask.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
+				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
 
-				if(fieldPattern.test(fieldMask)) {
+				if(fieldPattern.test(newValue)) {
 
-					element.val(fieldMask);
+					element.val(newValue);
 				}
-			}*/
+			}
 
 			// 
 			if(fieldConfirm.length > 0) {
@@ -255,13 +268,13 @@
 
 					validConditionals = true;
 
-				for(var counter = 0, len = conditionals.length; counter < len; counter++) {
+				for(var i = 0, len = conditionals.length; i < len; i++) {
 
 					var
 
-						conditional = options.conditional[conditionals[counter]];
+						conditional = options.conditional[conditionals[i]];
 
-					if($.isFunction(conditional) && !options.conditional[conditionals[counter]].call(element, fieldValue)) {
+					if($.isFunction(conditional) && !options.conditional[conditionals[i]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
