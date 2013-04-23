@@ -69,7 +69,7 @@
 		// Extensions.
 		validate = {},
 
-		regExpTrue = /^(true|)$/,
+		regExpTrue = /^(true|1)$/,
 
 		// 
 		isWrapper = function(attribute) {
