@@ -19,16 +19,18 @@ module.exports = function(grunt) {
 			}
 		},
 		jshint : {
-			options : {
-				globals : {
-					jQuery : true
+			dist : {
+				src : ['<%=pkg.name%>.js'],
+				options : {
+					globals : {
+						jQuery : true
+					}
 				}
-			},
-			uses_defaults : ['<%=pkg.name%>.js']
+			}
 		},
 		watch : {
 			files : ['<%=pkg.name%>.js', packageFile],
-			tasks : ['uglify:dist', 'jshint']
+			tasks : ['uglify:dist', 'jshint:dist']
 		}
 	});
 
