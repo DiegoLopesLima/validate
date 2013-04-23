@@ -307,6 +307,9 @@ Lorem ipsum dolor sit amet.
 ### events
 Lorem ipsum dolor sit amet.
 
+### selectFirstInvalid
+Lorem ipsum dolor sit amet.
+
 ### sendForm
 Lorem ipsum dolor sit amet.
 

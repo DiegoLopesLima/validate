@@ -41,6 +41,9 @@
 			events : [],
 
 			// 
+			selectFirstInvalid : true,
+
+			// 
 			sendForm : true,
 
 			// 
@@ -66,7 +69,7 @@
 		regExpTrue = /^(true|)$/,
 
 		// 
-		fieldsetWrapper = function(attribute) {
+		isWrapper = function(attribute) {
 
 			return $(this).parents('*').filter(function() {
 
@@ -104,7 +107,7 @@
 				fieldConfirm = String(ifExist(data.confirm, validate.confirm)),
 
 				// 
-				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || fieldsetWrapper.call(element, 'ignorecase'))) ? true : false,
+				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || isWrapper.call(element, 'ignorecase'))) ? true : false,
 
 				// A mask to field value
 				fieldMask = data.mask || validate.mask || '${0}',
@@ -122,10 +125,10 @@
 				fieldPrepare = ifExist(data.prepare, validate.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required || fieldsetWrapper.call(element, 'required'))) ? true : false,
+				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required || isWrapper.call(element, 'required'))) ? true : false,
 
 				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim || fieldsetWrapper.call(element, 'trim'))) ? true : false,
+				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim || isWrapper.call(element, 'trim'))) ? true : false,
 
 				// 
 				fieldDescribedby = ifExist(data.describedby, validate.describedby),
@@ -208,7 +211,7 @@
 			}
 
 			// 
-			if(eventType !== 'keyup' && status.pattern) {
+			/*if(eventType !== 'keyup' && status.pattern) {
 
 				var
 
@@ -225,7 +228,7 @@
 
 					element.val(fieldMask);
 				}
-			}
+			}*/
 
 			// 
 			if(fieldConfirm.length > 0) {
@@ -324,7 +327,10 @@
 					fields = element.find(types),
 
 					// 
-					valid = true;
+					valid = true,
+
+					// 
+					first = true;
 
 				// 
 				data.beforeValidate.call(element);
@@ -352,6 +358,13 @@
 						valid = false;
 
 						data.eachInvalidField.call(this, status);
+
+						if(first && data.selectFirstInvalid) {
+
+							$(this).trigger('select');
+						}
+
+						first = false;
 					}
 
 					data.eachField.call(this, status);
