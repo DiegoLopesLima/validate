@@ -227,17 +227,22 @@
 				status.required = filled;
 			}
 
+			// 
 			if(eventType !== 'keyup' && status.pattern && data.mask) {
 
 				var
 
-					shares = fieldValue.match(fieldPattern) || [],
+					parts = fieldValue.match(fieldPattern) || [],
 
 					newValue = String(fieldMask);
 
-				for(var currentShare = 0, sharesLength = shares.length; currentShare < sharesLength; currentShare++) {
+				for(var currentPart = 0, sharesLength = parts.length; currentPart < sharesLength; currentPart++) {
 
-					newValue = newValue.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentShare + '(?::`([^`]*)`)?\\}'), shares[currentShare] ? '$1' + shares[currentShare].replace(/\$/g, '$$') : '$1$2');
+					var
+
+						part = parts[currentPart];
+
+					newValue = newValue.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentPart + '(?::`([^`]*)`)?\\}'), part ? '$1' + part.replace(/\$/g, '$$') : '$1$2');
 				}
 
 				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
