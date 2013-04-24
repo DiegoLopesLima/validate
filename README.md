@@ -58,6 +58,15 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-confirm="password" />
 ```
 
+### data-pattern
+Lorem ipsum dolor sit amet.
+
+#### Example
+
+```html
+<input type="text" data-pattern="^\d+$" />
+```
+
 ### data-ignorecase
 Lorem ipsum dolor sit amet.
 
@@ -71,15 +80,6 @@ Equivalent to
 
 ```html
 <input type="text" data-pattern="^[a-zA-Z]+$" />
-```
-
-### data-pattern
-<input type="text" data-pattern="^\d+$" />
-
-#### Example
-
-```html
-<!-- Code -->
 ```
 
 ### data-mask
