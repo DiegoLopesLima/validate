@@ -167,6 +167,8 @@
 
 				eventType = event ? event.type : null,
 
+				patternModifier = fieldIgnorecase ? 'i' : undefined,
+
 				filled;
 
 			//
@@ -192,9 +194,12 @@
 			fieldValue = String(fieldValue);
 
 			// 
-			if($.type(fieldPattern) !== 'regex') {
+			if($.type(fieldPattern) === 'regex') {
 
-				fieldPattern = new RegExp(fieldPattern);
+				fieldPattern = new RegExp(fieldPattern.source, patternModifier);
+			} else {
+
+				fieldPattern = new RegExp(fieldPattern, patternModifier);
 			}
 
 			// 
@@ -230,9 +235,9 @@
 
 					newValue = fieldMask;
 
-				for(var i = 0, len = shares.length; i < len; i++) {
+				for(var currentShare = 0, sharesLength = shares.length; currentShare < sharesLength; currentShare++) {
 
-					newValue = newValue.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + i + '(?::`([^`]*)`)?\\}', 'g'), shares[i] || '$1');
+					newValue = newValue.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + currentShare + '(?::`([^`]*)`)?\\}', 'g'), shares[currentShare] || '$1');
 				}
 
 				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
@@ -268,13 +273,13 @@
 
 					validConditionals = true;
 
-				for(var i = 0, len = conditionals.length; i < len; i++) {
+				for(var currentConditional = 0, conditionalLength = conditionals.length; currentConditional < conditionalLength; currentConditional++) {
 
 					var
 
-						conditional = options.conditional[conditionals[i]];
+						conditional = options.conditional[conditionals[currentConditional]];
 
-					if($.isFunction(conditional) && !options.conditional[conditionals[i]].call(element, fieldValue)) {
+					if($.isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
