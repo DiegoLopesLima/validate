@@ -69,7 +69,7 @@
 		// Extensions.
 		validate = {},
 
-		regExpTrue = /^(true|1)$/,
+		regExpTrue = /^(true|1|)$/,
 
 		// 
 		isWrapper = function(attribute) {
@@ -113,7 +113,7 @@
 				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || isWrapper.call(element, 'ignorecase'))) ? true : false,
 
 				// A mask to field value
-				fieldMask = data.mask || validate.mask || '${0}',
+				fieldMask = data.mask || validate.mask,
 
 				// 
 				fieldMaxlength = ifExist(Number(data.maxlength), validate.maxlength) || Infinity,
@@ -227,17 +227,17 @@
 				status.required = filled;
 			}
 
-			if(eventType !== 'keyup' && status.pattern) {
+			if(eventType !== 'keyup' && status.pattern && data.mask) {
 
 				var
 
 					shares = fieldValue.match(fieldPattern) || [],
 
-					newValue = fieldMask;
+					newValue = String(fieldMask);
 
 				for(var currentShare = 0, sharesLength = shares.length; currentShare < sharesLength; currentShare++) {
 
-					newValue = newValue.replace(new RegExp('(?:^|[^\\\\])\\$\\{' + currentShare + '(?::`([^`]*)`)?\\}', 'g'), shares[currentShare] || '$1');
+					newValue = newValue.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentShare + '(?::`([^`]*)`)?\\}'), shares[currentShare] ? '$1' + shares[currentShare].replace(/\$/g, '$$') : '$1$2');
 				}
 
 				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
@@ -418,29 +418,6 @@
 				data.beforeValidate.call(element, valid);
 
 				element.trigger('validated');
-			},
-			counter : function(options) {
-
-				options = options || {};
-
-				var
-
-					// 
-					start = Math.round(options.start) || 0,
-
-					// 
-					element = $(this),
-
-					// 
-					counter = $(options.target),
-
-					// 
-					prepare = options.prepare;
-
-				element.on(namespace('keydown keyup drop'), function(event) {
-
-					// 
-				});
 			},
 			option : function(property, value) {
 
