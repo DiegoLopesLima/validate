@@ -6,6 +6,8 @@
 
 > Requires: _jQuery 1.7+_
 
+> Author: [Diego Lopes Lima](https://github.com/DiegoLopesLima)
+
 ## Demos
 * [Required fields](#)
 * [Conditional validation](#)
