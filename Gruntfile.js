@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 					'<%=pkg.name%>.min.js': '<%=pkg.name%>.js'
 				},
 				options : {
-					banner : '/* jQuery Validate <%=pkg.version%> | http://plugins.jquery.com/validate/<%=pkg.version%> */\n;'
+					banner : '/* jQuery <%=pkg.name%> <%=pkg.version%> | http://plugins.jquery.com/<%=pkg.name%>/<%=pkg.version%> */\n;'
 				}
 			}
 		},

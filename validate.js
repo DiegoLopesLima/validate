@@ -112,7 +112,7 @@
 				// 
 				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || isWrapper.call(element, 'ignorecase'))) ? true : false,
 
-				// A mask to field value
+				// A mask to field value.
 				fieldMask = data.mask || validate.mask,
 
 				// 
@@ -139,19 +139,19 @@
 				// 
 				fieldValidate = data.validate,
 
-				// Current field value
+				// Current field value.
 				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
 
 				// 
 				fieldLength = ifExist(fieldValue, '').length,
 
-				// Current field name
+				// Current field name.
 				fieldName = element.prop('name'),
 
 				// 
 				sameName = $('[name="' + fieldName + '"]'),
 
-				// Current field status
+				// Current field status.
 				status = {
 					required : true,
 					pattern : true,
@@ -274,7 +274,7 @@
 
 				var
 
-					conditionals = String(fieldConditional).split(/\s+/),
+					conditionals = $.type(fieldConditional) === 'array' ? fieldConditional : String(fieldConditional).split(/\s+/),
 
 					validConditionals = true;
 
@@ -340,10 +340,10 @@
 
 				var
 
-					// Current form
+					// Current form.
 					element = $(this),
 
-					// Current form data
+					// Current form data.
 					data = element.data(name),
 
 					// 
@@ -428,10 +428,10 @@
 
 				var
 
-					// Current form
+					// Current form.
 					element = $(this),
 
-					// Current form data
+					// Current form data.
 					data = element.data(name);
 
 				if(typeof property === 'string') {
@@ -545,7 +545,7 @@
 		});
 	};
 
-	// A function to add validation shortcuts
+	// A function to add validation shortcuts (data-validate="shortcut").
 	$[name].add = function(property, value) {
 
 		if(typeof property === 'string') {
@@ -565,7 +565,7 @@
 		return validate;
 	};
 
-	// A function to extend the methods
+	// A function to extend the methods.
 	$[name].extend = function(property, value) {
 
 		if(typeof property === 'string') {
@@ -585,6 +585,6 @@
 		return methods;
 	};
 
-	// Stores the plugin version
+	// Stores the plugin version.
 	$[name].version = '1.2.0';
 })(jQuery);
