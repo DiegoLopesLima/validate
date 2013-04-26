@@ -355,6 +355,31 @@ jQuery('form').validate({
 });
 ```
 
+## Field description
+
+### Example
+
+```javascript
+jQuery('form').validate({
+	description : {
+		events : ['keyup', 'blur', 'change'],
+		default : 'Fill in the field correctly.',
+		custom : {
+			email : {
+				events : ['blur', 'change'],
+				conditional : 'This email has already been registered.',
+				required : 'This field is required.',
+				pattern : function(value) {
+
+					return '"' + valid + '" is not a valid email.';
+				},
+				default : 'Invalid value.'
+			}
+		}
+	}
+});
+```
+
 ## Methods
 
 ### validate
