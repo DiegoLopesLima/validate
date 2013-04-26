@@ -69,15 +69,19 @@
 		// Extensions.
 		validate = {},
 
-		regExpTrue = /^(true|1|)$/,
+		// 
+		regExpTrue = /^(true|1|)$/i,
 
 		// 
-		isWrapper = function(attribute) {
+		regExpFalse = /^(false|0)$/i,
 
-			return $(this).parents('*').filter(function() {
+		// 
+		getParentAttribute = function(element, attribute) {
 
-				return regExpTrue.test($(this).data(attribute));
-			}).length > 0;
+			return $(element).parents('*').filter(function() {
+
+				return $(this).data(attribute) !== undefined;
+			}).filter(':first').data(attribute);
 		},
 
 		// 
@@ -103,41 +107,44 @@
 				// Current field data.
 				data = element.data(),
 
-				// A conditional function.
-				fieldConditional = ifExist(data.conditional, validate.conditional),
-
-				// A field id to confirm.
-				fieldConfirm = String(ifExist(data.confirm, validate.confirm)),
-
-				// 
-				fieldIgnorecase = regExpTrue.test(ifExist(data.ignorecase, validate.ignorecase || isWrapper.call(element, 'ignorecase'))) ? true : false,
-
-				// A mask to field value.
-				fieldMask = data.mask || validate.mask,
-
-				// 
-				fieldMaxlength = ifExist(Number(data.maxlength), validate.maxlength) || Infinity,
-
-				// 
-				fieldMinlength = ifExist(Number(data.minlength), validate.minlength) || 0,
-
-				// A regular expression to validate the field value.
-				fieldPattern = ifExist(data.pattern, validate.pattern) || /(?:)/,
-
-				// 
-				fieldPrepare = ifExist(data.prepare, validate.pattern),
-
-				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, validate.required || isWrapper.call(element, 'required'))) ? true : false,
-
-				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, validate.trim || isWrapper.call(element, 'trim'))) ? true : false,
-
-				// 
-				fieldDescribedby = ifExist(data.describedby, validate.describedby),
-
 				// 
 				fieldValidate = data.validate,
+
+				// 
+				currentValidate = validate[fieldValidate] || {},
+
+				// A conditional function.
+				fieldConditional = ifExist(data.conditional, currentValidate.conditional),
+
+				// A field id to confirm.
+				fieldConfirm = String(ifExist(data.confirm, currentValidate.confirm)),
+
+				// 
+				fieldIgnorecase = regExpFalse.test(getParentAttribute(element, 'ignorecase')) ? false : true,
+
+				// A mask to field value.
+				fieldMask = data.mask || currentValidate.mask,
+
+				// 
+				fieldMaxlength = ifExist(Number(data.maxlength), currentValidate.maxlength) || Infinity,
+
+				// 
+				fieldMinlength = ifExist(Number(data.minlength), currentValidate.minlength) || 0,
+
+				// A regular expression to validate the field value.
+				fieldPattern = ifExist(data.pattern, currentValidate.pattern) || '',
+
+				// 
+				fieldPrepare = ifExist(data.prepare, currentValidate.pattern),
+
+				// 
+				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidate.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
+
+				// 
+				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidate.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
+
+				// 
+				fieldDescribedby = ifExist(data.describedby, currentValidate.describedby),
 
 				// Current field value.
 				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
@@ -161,14 +168,19 @@
 					maxlength : true
 				},
 
+				// 
 				valid = true,
 
+				// 
 				fieldType = element.prop('type'),
 
+				// 
 				eventType = event ? event.type : null,
 
+				// 
 				patternModifier = fieldIgnorecase ? 'i' : undefined,
 
+				// 
 				filled;
 
 			//
@@ -410,7 +422,7 @@
 				} else {
 
 					// 
-					if(event) {
+					if(event !== undefined) {
 
 						event.preventDefault();
 					}
