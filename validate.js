@@ -418,7 +418,7 @@
 					data.valid.call(element);
 
 					// 
-					element.trigger('valid');
+					element.triggerHandler('valid');
 				} else {
 
 					// 
@@ -429,12 +429,12 @@
 
 					data.invalid.call(element);
 
-					element.trigger('invalid');
+					element.triggerHandler('invalid');
 				}
 
 				data.beforeValidate.call(element, valid);
 
-				element.trigger('validated');
+				element.triggerHandler('validated');
 			},
 			option : function(property, value) {
 
@@ -540,17 +540,17 @@
 
 							data.eachValidField.call(this);
 
-							$(this).trigger('valid');
+							$(this).triggerHandler('valid');
 						} else {
 
 							data.eachInvalidField.call(this, status);
 
-							$(this).trigger('invalid');
+							$(this).triggerHandler('invalid');
 						}
 
 						data.eachField.call(this, status);
 
-						$(this).trigger('validated');
+						$(this).triggerHandler('validated');
 					}
 				});
 			}
