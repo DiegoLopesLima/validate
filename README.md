@@ -303,6 +303,9 @@ jQuery('input').on('validated', function() {});
 
 ## Options
 
+### clause
+Lorem ipsum dolor sit amet.
+
 ### filter
 Lorem ipsum dolor sit amet.
 

@@ -56,7 +56,10 @@
 			valueHook : null,
 
 			// 
-			description : {}
+			description : {},
+
+			// 
+			clause : null
 		},
 
 		writable = 'input:not([type]),input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select',
@@ -111,40 +114,40 @@
 				fieldValidate = data.validate,
 
 				// 
-				currentValidate = validate[fieldValidate] || {},
+				currentValidation = validate[fieldValidate] || {},
 
 				// A conditional function.
-				fieldConditional = ifExist(data.conditional, currentValidate.conditional),
+				fieldConditional = ifExist(data.conditional, currentValidation.conditional),
 
 				// A field id to confirm.
-				fieldConfirm = String(ifExist(data.confirm, currentValidate.confirm)),
+				fieldConfirm = String(ifExist(data.confirm, currentValidation.confirm)),
 
 				// 
 				fieldIgnorecase = regExpFalse.test(getParentAttribute(element, 'ignorecase')) ? false : true,
 
 				// A mask to field value.
-				fieldMask = data.mask || currentValidate.mask,
+				fieldMask = data.mask || currentValidation.mask,
 
 				// 
-				fieldMaxlength = ifExist(Number(data.maxlength), currentValidate.maxlength) || Infinity,
+				fieldMaxlength = ifExist(Number(data.maxlength), currentValidation.maxlength) || Infinity,
 
 				// 
-				fieldMinlength = ifExist(Number(data.minlength), currentValidate.minlength) || 0,
+				fieldMinlength = ifExist(Number(data.minlength), currentValidation.minlength) || 0,
 
 				// A regular expression to validate the field value.
-				fieldPattern = ifExist(data.pattern, currentValidate.pattern) || '',
+				fieldPattern = ifExist(data.pattern, currentValidation.pattern) || '',
 
 				// 
-				fieldPrepare = ifExist(data.prepare, currentValidate.pattern),
+				fieldPrepare = ifExist(data.prepare, currentValidation.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidate.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
+				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
 
 				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidate.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
+				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
 
 				// 
-				fieldDescribedby = ifExist(data.describedby, currentValidate.describedby),
+				fieldDescribedby = ifExist(data.describedby, currentValidation.describedby),
 
 				// Current field value.
 				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
@@ -387,12 +390,18 @@
 
 					if(response.valid) {
 
-						data.eachValidField.call(this);
+						if($.isFunction(data.eachValidField)) {
+
+							data.eachValidField.call(this);
+						}
 					} else {
 
 						valid = false;
 
-						data.eachInvalidField.call(this, status);
+						if($.isFunction(data.eachInvalidField)) {
+
+							data.eachInvalidField.call(this, status);
+						}
 
 						if(first && data.selectFirstInvalid) {
 
@@ -402,8 +411,17 @@
 						first = false;
 					}
 
-					data.eachField.call(this, status);
+					if($.isFunction(data.eachField)) {
+
+						data.eachField.call(this, status);
+					}
 				});
+
+				// 
+				if($.isFunction(data.clause)) {
+
+					valid = !data.clause.call(element);
+				}
 
 				// 
 				if(valid) {
@@ -414,8 +432,11 @@
 						event.preventDefault();
 					}
 
-					// 
-					data.valid.call(element);
+					if($.isFunction(data.valid)) {
+
+						// 
+						data.valid.call(element);
+					}
 
 					// 
 					element.triggerHandler('valid');
@@ -427,7 +448,11 @@
 						event.preventDefault();
 					}
 
-					data.invalid.call(element);
+					if($.isFunction(data.invalid)) {
+
+						// 
+						data.invalid.call(element);
+					}
 
 					element.triggerHandler('invalid');
 				}
@@ -461,6 +486,10 @@
 				}
 
 				return element;
+			},
+			isValid : function() {
+
+				// 
 			}
 		};
 
@@ -526,9 +555,13 @@
 
 					var
 
-						data = element.data(name);
+						data = element.data(name),
 
-					if($.inArray(event.type, data.events) > -1) {
+						events = data.events;
+
+					events = $.isArray(events) ? events : String(events).split(/\s+/);
+
+					if($.inArray(event.type, events) > -1) {
 
 						var
 
