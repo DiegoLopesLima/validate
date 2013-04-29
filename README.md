@@ -418,7 +418,7 @@ Lorem ipsum dolor sit amet.
 jQuery('form').validate('destroy');
 ```
 
-### Counter
+### isValid
 Lorem ipsum dolor sit amet.
 
 #### Example

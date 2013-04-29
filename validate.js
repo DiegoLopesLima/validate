@@ -351,7 +351,7 @@
 
 				return element;
 			},
-			validate : function(event) {
+			validate : function(event, callbacks) {
 
 				var
 
@@ -370,8 +370,11 @@
 					// 
 					first = true;
 
-				// 
-				data.beforeValidate.call(element);
+				if(callbacks && $.isFunction(data.beforeValidate)) {
+
+					// 
+					data.beforeValidate.call(element);
+				}
 
 				// 
 				if(element.is('[id]')) {
@@ -390,7 +393,7 @@
 
 					if(response.valid) {
 
-						if($.isFunction(data.eachValidField)) {
+						if(callbacks && $.isFunction(data.eachValidField)) {
 
 							data.eachValidField.call(this);
 						}
@@ -398,22 +401,28 @@
 
 						valid = false;
 
-						if($.isFunction(data.eachInvalidField)) {
+						if(callbacks) {
 
-							data.eachInvalidField.call(this, status);
+							if($.isFunction(data.eachInvalidField)) {
+
+								data.eachInvalidField.call(this, status);
+							}
+
+							if(first && data.selectFirstInvalid) {
+
+								$(this).trigger('select');
+							}
+
+							first = false;
 						}
-
-						if(first && data.selectFirstInvalid) {
-
-							$(this).trigger('select');
-						}
-
-						first = false;
 					}
 
-					if($.isFunction(data.eachField)) {
+					if(callbacks) {
 
-						data.eachField.call(this, status);
+						if($.isFunction(data.eachField)) {
+
+							data.eachField.call(this, status);
+						}
 					}
 				});
 
@@ -423,43 +432,52 @@
 					valid = !data.clause.call(element);
 				}
 
-				// 
-				if(valid) {
+				if(callbacks) {
 
 					// 
-					if(!data.sendForm && event) {
-
-						event.preventDefault();
-					}
-
-					if($.isFunction(data.valid)) {
+					if(valid) {
 
 						// 
-						data.valid.call(element);
+						if(!data.sendForm && event) {
+
+							event.preventDefault();
+						}
+
+						if($.isFunction(data.valid)) {
+
+							// 
+							data.valid.call(element);
+						}
+
+						// 
+						element.triggerHandler('valid');
+					} else {
+
+						// 
+						if(event !== undefined) {
+
+							event.preventDefault();
+						}
+
+						if($.isFunction(data.invalid)) {
+
+							// 
+							data.invalid.call(element);
+						}
+
+						element.triggerHandler('invalid');
 					}
 
-					// 
-					element.triggerHandler('valid');
+					if($.isFunction(data.afterValidate)) {
+
+						data.afterValidate.call(element, valid);
+					}
+
+					element.triggerHandler('validated');
 				} else {
 
-					// 
-					if(event !== undefined) {
-
-						event.preventDefault();
-					}
-
-					if($.isFunction(data.invalid)) {
-
-						// 
-						data.invalid.call(element);
-					}
-
-					element.triggerHandler('invalid');
+					return valid;
 				}
-
-				data.beforeValidate.call(element, valid);
-
-				element.triggerHandler('validated');
 			},
 			option : function(property, value) {
 
@@ -489,7 +507,21 @@
 			},
 			isValid : function() {
 
-				// 
+				var
+
+					element = $(this),
+
+					data = element.data(name);
+
+				if(element.is(types)) {
+
+					return validateField.call(this, data).status;
+				} else if(element.is('form')) {
+
+					return methods.validate.call(element, null, false);
+				}
+
+				return false;
 			}
 		};
 
@@ -518,76 +550,83 @@
 
 			param = arguments;
 
-		return $(this).each(function() {
+		if(typeof param[0] === 'string' && methods.hasOwnProperty(param[0])) {
 
 			var
 
-				element = $(this);
+				element = $(this),
 
-			// Verifies if the current element is a form.
-			if(element.is('form')) {
+				response = methods[param[0]].apply(element, Array.prototype.slice.call(param, 1));
 
-				if(typeof param[0] === 'string' && methods.hasOwnProperty(param[0])) {
+			return response !== undefined ? response : element;
+		} else {
 
-					return methods[param[0]].apply(element, Array.prototype.slice.call(param, 1));
-				}
-
-				element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
-
-					methods.validate.call(this, event);
-				});
+			return $(this).each(function() {
 
 				var
 
-					data = element.data(name),
+					element = $(this);
 
-					fields = element.find(types);
+				// Verifies if the current element is a form.
+				if(element.is('form')) {
 
-				if(element.is('[id]')) {
+					element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
 
-					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
-				}
-
-				fields = fields.filter(data.filter);
-
-				// 
-				fields.on(namespace('keyup change blur'), function(event) {
+						methods.validate.call(this, event, true);
+					});
 
 					var
 
 						data = element.data(name),
 
-						events = data.events;
+						fields = element.find(types);
 
-					events = $.isArray(events) ? events : String(events).split(/\s+/);
+					if(element.is('[id]')) {
 
-					if($.inArray(event.type, events) > -1) {
+						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
+					}
+
+					fields = fields.filter(data.filter);
+
+					// 
+					fields.on(namespace('keyup change blur'), function(event) {
 
 						var
 
-							response = validateField.call(this, data, event),
+							data = element.data(name),
 
-							status = response.status;
+							events = data.events;
 
-						if(response.valid) {
+						events = $.isArray(events) ? events : String(events).split(/\s+/);
 
-							data.eachValidField.call(this);
+						if($.inArray(event.type, events) > -1) {
 
-							$(this).triggerHandler('valid');
-						} else {
+							var
 
-							data.eachInvalidField.call(this, status);
+								response = validateField.call(this, data, event),
 
-							$(this).triggerHandler('invalid');
+								status = response.status;
+
+							if(response.valid) {
+
+								data.eachValidField.call(this);
+
+								$(this).triggerHandler('valid');
+							} else {
+
+								data.eachInvalidField.call(this, status);
+
+								$(this).triggerHandler('invalid');
+							}
+
+							data.eachField.call(this, status);
+
+							$(this).triggerHandler('validated');
 						}
-
-						data.eachField.call(this, status);
-
-						$(this).triggerHandler('validated');
-					}
-				});
-			}
-		});
+					});
+				}
+			});
+		}
 	};
 
 	// A function to add validation shortcuts (data-validate="shortcut").
