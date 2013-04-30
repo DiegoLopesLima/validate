@@ -22,6 +22,18 @@ module.exports = function(grunt) {
 			dist : {
 				src : ['<%=pkg.name%>.js'],
 				options : {
+					camelcase : true,
+					immed : true,
+					indent : true,
+					latedef : true,
+					newcap : true,
+					noarg : true,
+					noempty : true,
+					quotmark : 'single',
+					undef : true,
+					unused : true,
+					strict : true,
+					trailing : true,
 					globals : {
 						jQuery : true
 					}

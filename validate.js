@@ -1,4 +1,4 @@
-;(function($, undefined) {
+(function($, undefined) {
 
 	'use strict';
 
@@ -173,9 +173,6 @@
 
 				// 
 				valid = true,
-
-				// 
-				fieldType = element.prop('type'),
 
 				// 
 				eventType = event ? event.type : null,
