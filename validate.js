@@ -514,7 +514,7 @@
 
 						data = element.closest('form').data(name);
 
-					return validateField.call(this, data, null, false).valid;
+					return validateField.call(element.get(0), data, null, false).valid;
 				} else if(element.is('form')) {
 
 					return methods.validate.call(element, null, false);

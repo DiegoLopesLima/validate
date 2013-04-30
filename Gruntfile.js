@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 			dist : {
 				files : uglifyFiles,
 				options : {
-					banner : '/* ' + jQueryData.title + ' ' + jQueryData.version + ' - http://plugins.jquery.com/' + jQueryData.name + '/' + jQueryData.version + ' */\n;'
+					banner : '/* ' + jQueryData.title + ' ' + jQueryData.version + ' - http://plugins.jquery.com/' + jQueryData.name + '/' + jQueryData.version + '*/\n;'
 				}
 			}
 		},
