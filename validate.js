@@ -100,7 +100,7 @@
 		},
 
 		// A function to validate fields.
-		validateField = function(options, event) {
+		validateField = function(options, event, callbacks) {
 
 			var
 
@@ -222,9 +222,9 @@
 
 				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
 
-				status.minlength = sameName.filter(':checked') >= fieldMinlength;
+				status.minlength = sameName.filter(':checked').length >= fieldMinlength;
 
-				status.maxlength = sameName.filter(':checked') <= fieldMaxlength;
+				status.maxlength = sameName.filter(':checked').length <= fieldMaxlength;
 			} else if(element.is(writable)) {
 
 				filled = fieldLength > 0;
@@ -243,7 +243,7 @@
 			}
 
 			// 
-			if(eventType !== 'keyup' && status.pattern && data.mask) {
+			if(callbacks && eventType !== 'keyup' && status.pattern && data.mask) {
 
 				var
 
@@ -387,7 +387,7 @@
 
 					var
 
-						response = validateField.call(this, data, event),
+						response = validateField.call(this, data, event, true),
 
 						status = response.status;
 
@@ -509,13 +509,15 @@
 
 				var
 
-					element = $(this),
-
-					data = element.data(name);
+					element = $(this);
 
 				if(element.is(types)) {
 
-					return validateField.call(this, data).status;
+					var
+
+						data = element.closest('form').data(name);
+
+					return validateField.call(this, data, null, false).valid;
 				} else if(element.is('form')) {
 
 					return methods.validate.call(element, null, false);
@@ -603,7 +605,7 @@
 
 							var
 
-								response = validateField.call(this, data, event),
+								response = validateField.call(this, data, event, true),
 
 								status = response.status;
 
