@@ -4,23 +4,28 @@ module.exports = function(grunt) {
 
 	var
 
-		packageFile = 'package.json';
+		packageFile = 'package.json',
+
+		data = grunt.file.readJSON(packageFile),
+
+		jQueryData = grunt.file.readJSON(data.name + '.jquery.json'),
+
+		uglifyFiles = {};
+
+	uglifyFiles[data.name + '.min.js'] = data.name + '.js';
 
 	grunt.initConfig({
-		pkg : grunt.file.readJSON(packageFile),
 		uglify : {
 			dist : {
-				files : {
-					'<%=pkg.name%>.min.js': '<%=pkg.name%>.js'
-				},
+				files : uglifyFiles,
 				options : {
-					banner : '/* jQuery <%=pkg.name%> <%=pkg.version%> | http://plugins.jquery.com/<%=pkg.name%>/<%=pkg.version%> */\n;'
+					banner : '/* ' + jQueryData.title + ' ' + jQueryData.version + ' - http://plugins.jquery.com/' + jQueryData.name + '/' + jQueryData.version + ' */\n;'
 				}
 			}
 		},
 		jshint : {
 			dist : {
-				src : ['<%=pkg.name%>.js'],
+				src : [data.name + '.js', 'Gruntfile.js'],
 				options : {
 					camelcase : true,
 					immed : true,
@@ -35,13 +40,14 @@ module.exports = function(grunt) {
 					strict : true,
 					trailing : true,
 					globals : {
-						jQuery : true
+						jQuery : true,
+						module : true
 					}
 				}
 			}
 		},
 		watch : {
-			files : ['<%=pkg.name%>.js', packageFile],
+			files : [data.name + '.js', packageFile],
 			tasks : ['uglify:dist', 'jshint:dist']
 		}
 	});
