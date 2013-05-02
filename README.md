@@ -418,24 +418,17 @@ Lorem ipsum dolor sit amet.
 jQuery('form').validate('destroy');
 ```
 
-### isValid
+### valid
 Lorem ipsum dolor sit amet.
 
 #### Example
 
 ```html
-<input type="text" id="my-field" />
-
-<div><span id="my-counter">100</span> characters remaining.</div>
+<input type="text" name="test" data-required />
 ```
 
 ```javascript
-jQuery('#my-field').validate('counter', {
-	target : '#my-counter',
-	start : 100,
-	desc : true,
-	haltWrite : true
-});
+jQuery('[name="test"]').validate('valid');
 ```
 
 ## Changind default properties

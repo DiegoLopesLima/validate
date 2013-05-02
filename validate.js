@@ -502,28 +502,42 @@
 
 				return element;
 			},
-			isValid : function() {
+			valid : function() {
 
 				var
 
-					element = $(this);
+					valid = true;
 
-				if(element.is(types)) {
+				$(this).each(function() {
 
 					var
 
-						data = element.closest('form').data(name);
+						element = $(this);
 
-					return validateField.call(element.get(0), data, null, false).valid;
-				} else if(element.is('form')) {
+					if(element.is(types)) {
 
-					return methods.validate.call(element, null, false);
-				}
+						var
 
-				return false;
+							data = element.closest('form').data(name);
+
+						if(!validateField.call(element, data, null, false).valid) {
+
+							valid = false;
+						}
+					} else if(element.is('form')) {
+
+						if(!methods.validate.call(element, null, false)) {
+
+							valid = false;
+						}
+					}
+				});
+
+				return valid;
 			}
 		};
 
+	// 
 	$[name] = function(property, value) {
 
 		if(typeof property === 'string') {
@@ -543,6 +557,7 @@
 		return defaults;
 	};
 
+	// 
 	$.fn[name] = function() {
 
 		var
@@ -569,6 +584,7 @@
 				// Verifies if the current element is a form.
 				if(element.is('form')) {
 
+					// 
 					element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
 
 						methods.validate.call(this, event, true);
@@ -580,6 +596,7 @@
 
 						fields = element.find(types);
 
+					// 
 					if(element.is('[id]')) {
 
 						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
