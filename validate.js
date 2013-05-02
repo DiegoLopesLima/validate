@@ -147,7 +147,10 @@
 				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
 
 				// 
-				fieldDescribedby = ifExist(data.describedby, currentValidation.describedby),
+				fieldDescribedby = $('#' + ifExist(data.describedby, currentValidation.describedby)),
+
+				// 
+				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
 
 				// Current field value.
 				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
@@ -164,11 +167,11 @@
 				// Current field status.
 				status = {
 					required : true,
-					pattern : true,
-					conditional : true,
-					confirm : true,
 					minlength : true,
-					maxlength : true
+					maxlength : true,
+					pattern : true,
+					confirm : true,
+					conditional : true
 				},
 
 				// 
@@ -305,15 +308,42 @@
 				status.conditional = validConditionals;
 			}
 
+			var
+
+				description = ($.isPlainObject(options.description) ? options.description[fieldDescription] : undefined) || {},
+
+				error = description.error || {};
+
 			// 
 			for(var item in status) {
 
 				if(!status[item]) {
 
+					////////////////////////////////////////////////////////////////
+
+					if(fieldDescribedby.length > 0) {
+
+						if(typeof error === 'string') {
+
+							fieldDescribedby.html(error);
+						} else if($.isPlainObject(error)) {
+
+							fieldDescribedby.html();
+						}
+					}
+
+					///////////////////////////////////////////////////////////////*/
+
 					valid = false;
 
 					break;
 				}
+			}
+
+			// 
+			if(valid && description.success) {
+
+				fieldDescribedby.html(description.success);
 			}
 
 			// 
@@ -408,9 +438,9 @@
 							if(first && data.selectFirstInvalid) {
 
 								$(this).trigger('select');
-							}
 
-							first = false;
+								first = false;
+							}
 						}
 					}
 
@@ -518,7 +548,9 @@
 
 						var
 
-							data = element.closest('form').data(name);
+							form = element.is('[form]') ? $('form[id="' + element.prop('form') + '"]') : element.closest('form'),
+
+							data = form.data(name);
 
 						if(!validateField.call(element, data, null, false).valid) {
 
