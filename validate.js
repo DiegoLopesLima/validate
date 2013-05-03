@@ -12,7 +12,6 @@
 
 		// Default properties.
 		defaults = {
-
 			// A function called when the form is valid.
 			valid : noop,
 
@@ -322,6 +321,9 @@
 				descriptionEvents = customDescription.descriptionEvents || description.descriptionEvents || [];
 
 			descriptionEvents = $.isArray(descriptionEvents) ? descriptionEvents : String(descriptionEvents).split(/\s+/);
+
+			// 
+			descriptionEvents.push('submit');
 
 			// 
 			for(var item in status) {

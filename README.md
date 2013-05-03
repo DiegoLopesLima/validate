@@ -69,6 +69,9 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-pattern="^\d+$" />
 ```
 
+### data-describe
+Lorem ipsum dolor sit amet.
+
 ### data-ignorecase
 Lorem ipsum dolor sit amet.
 
