@@ -318,13 +318,13 @@
 
 			var
 
-				descriptionEvents = customDescription.descriptionEvents || description.descriptionEvents || [];
+				descriptionEvents = customDescription.events || description.events || [];
 
 			descriptionEvents = $.isArray(descriptionEvents) ? descriptionEvents : String(descriptionEvents).split(/\s+/);
 
 			// 
 			descriptionEvents.push('submit');
-
+console.log(descriptionEvents)
 			// 
 			for(var item in status) {
 
