@@ -317,6 +317,12 @@
 
 			customDescription = $.isPlainObject(customDescription[fieldDescription]) ? customDescription[fieldDescription] : {};
 
+			var
+
+				descriptionEvents = customDescription.descriptionEvents || description.descriptionEvents || [];
+
+			descriptionEvents = $.isArray(descriptionEvents) ? descriptionEvents : String(descriptionEvents).split(/\s+/);
+
 			// 
 			for(var item in status) {
 
@@ -357,7 +363,7 @@
 				});
 			}
 
-			if(describe !== undefined) {
+			if(describe !== undefined && $.inArray(eventType, descriptionEvents) > -1) {
 
 				if(valid) {
 
@@ -371,12 +377,9 @@
 							describe.html(description.success);
 						}
 					}
-				} else {
+				} else if(message) {
 
-					if(message) {
-
-						describe.html(message);
-					}
+					describe.html(message);
 				}
 			}
 
