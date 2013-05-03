@@ -166,29 +166,6 @@ Or
 ### data-validate
 See [Adding validation shortcuts](#adding-validation-shortcuts).
 
-### data-describedby
-Lorem ipsum dolor sit amet.
-
-#### Example
-
-```html
-<input type="text" data-required data-describedby="desc-name" data-description="name" />
-
-<span id="desc-name"></span>
-```
-
-```javascript
-jQuery('form').validate({
-	description : {
-		name : {
-			required : '<span class="error">A name is required field.</span>',
-			pattern : '<b>Validation error:</b> Invalid format.',
-			valid : 'Correct.'
-		}
-	}
-});
-```
-
 ## Using `jQuery.data` to attributes declare
 
 ### Example

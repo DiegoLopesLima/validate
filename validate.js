@@ -147,9 +147,6 @@
 				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
 
 				// 
-				fieldDescribedby = $('#' + ifExist(data.describedby, currentValidation.describedby)),
-
-				// 
 				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
 
 				// Current field value.
@@ -310,29 +307,41 @@
 
 			var
 
-				description = ($.isPlainObject(options.description) ? options.description[fieldDescription] : undefined) || {},
+				description = $.isPlainObject(options.description) ? options.description : {},
 
-				error = description.error || {};
+				customDescription = $.isPlainObject(description.custom) ? description.custom : {},
+
+				message,
+
+				describe;
+
+			customDescription = $.isPlainObject(customDescription[fieldDescription]) ? customDescription[fieldDescription] : {};
 
 			// 
 			for(var item in status) {
 
 				if(!status[item]) {
 
-					////////////////////////////////////////////////////////////////
+					if($.isPlainObject(customDescription.error)) {
 
-					if(fieldDescribedby.length > 0) {
+						message = customDescription.error[item] || customDescription.error.message;
+					} else {
 
-						if(typeof error === 'string') {
+						message = $.isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error;
+					}
 
-							fieldDescribedby.html(error);
-						} else if($.isPlainObject(error)) {
+					if(!message) {
 
-							fieldDescribedby.html();
+						if($.isPlainObject(description.error)) {
+
+							message = description.error[item] || description.error.message;
+						} else {
+
+							message = $.isFunction(description.error) ? description.error.call(element, fieldValue) : description.error;
 						}
 					}
 
-					///////////////////////////////////////////////////////////////*/
+					message = $.isFunction(message) ? message.call(element, fieldValue) : message;
 
 					valid = false;
 
@@ -340,10 +349,35 @@
 				}
 			}
 
-			// 
-			if(valid && description.success) {
+			if(element.is('[id]')) {
 
-				fieldDescribedby.html(description.success);
+				describe = $('*').filter(function() {
+
+					return $(this).data('describe') === element.prop('id');
+				});
+			}
+
+			if(describe !== undefined) {
+
+				if(valid) {
+
+					if(description.success) {
+
+						if($.isFunction(description.success)) {
+
+							describe.html(description.success.call(element, fieldValue));
+						} else {
+
+							describe.html(description.success);
+						}
+					}
+				} else {
+
+					if(message) {
+
+						describe.html(message);
+					}
+				}
 			}
 
 			// 
