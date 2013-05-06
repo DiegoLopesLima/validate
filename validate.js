@@ -310,21 +310,25 @@
 
 				customDescription = $.isPlainObject(description.custom) ? description.custom : {},
 
+				events = options.events,
+
 				message,
 
 				describe;
+
+			events = $.isArray(events) ? events : String(events).split(/\s+/);
 
 			customDescription = $.isPlainObject(customDescription[fieldDescription]) ? customDescription[fieldDescription] : {};
 
 			var
 
-				descriptionEvents = customDescription.events || description.events || [];
+				descriptionEvents = customDescription.events || description.events || events;
 
 			descriptionEvents = $.isArray(descriptionEvents) ? descriptionEvents : String(descriptionEvents).split(/\s+/);
 
 			// 
 			descriptionEvents.push('submit');
-console.log(descriptionEvents)
+
 			// 
 			for(var item in status) {
 
