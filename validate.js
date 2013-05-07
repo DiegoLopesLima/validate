@@ -61,12 +61,12 @@
 			clause : null
 		},
 
-		writable = 'input:not([type]),input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select',
+		writable = 'input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select,input:not([type])',
 
 		checkable = 'input[type=checkbox],input[type=radio]',
 
 		// Fields selector.
-		types = writable + ',' + checkable,
+		types = checkable + ',' + writable,
 
 		// Extensions.
 		validate = {},
