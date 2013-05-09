@@ -420,6 +420,8 @@
 			},
 			validate : function(event, callbacks) {
 
+				callbacks = callbacks !== undefined ? callbacks : true;
+
 				var
 
 					// Current form.
@@ -454,7 +456,7 @@
 
 					var
 
-						response = validateField.call(this, data, event, true),
+						response = validateField.call(this, data, event, callbacks),
 
 						status = response.status;
 
@@ -484,12 +486,9 @@
 						}
 					}
 
-					if(callbacks) {
+					if(callbacks && $.isFunction(data.eachField)) {
 
-						if($.isFunction(data.eachField)) {
-
-							data.eachField.call(this, status);
-						}
+						data.eachField.call(this, status);
 					}
 				});
 
@@ -659,7 +658,7 @@
 					// 
 					element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
 
-						methods.validate.call(this, event, true);
+						methods.validate.call(this, event);
 					});
 
 					var
