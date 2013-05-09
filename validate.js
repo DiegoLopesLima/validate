@@ -205,13 +205,7 @@
 			fieldValue = String(fieldValue);
 
 			// 
-			if($.type(fieldPattern) === 'regex') {
-
-				fieldPattern = new RegExp(fieldPattern.source, patternModifier);
-			} else {
-
-				fieldPattern = new RegExp(fieldPattern, patternModifier);
-			}
+			fieldPattern = new RegExp($.type(fieldPattern) === 'regexp' ? fieldPattern.source : fieldPattern, patternModifier);
 
 			// 
 			if(element.is(checkable)) {
@@ -228,18 +222,21 @@
 				status.minlength = fieldLength >= fieldMinlength;
 
 				status.maxlength = fieldLength <= fieldMaxlength;
-
-				status.pattern = fieldPattern.test(fieldValue);
 			}
 
 			// 
 			if(fieldRequired) {
 
 				status.required = filled;
+
+				status.pattern = fieldPattern.test(fieldValue);
+			} else if(filled) {
+
+				status.pattern = fieldPattern.test(fieldValue);
 			}
 
 			// 
-			if(callbacks && eventType !== 'keyup' && status.pattern && data.mask) {
+			if(callbacks && eventType && eventType !== 'keyup' && status.pattern && fieldMask) {
 
 				var
 
@@ -365,7 +362,7 @@
 
 				describe = $('*').filter(function() {
 
-					return $(this).data('describe') === element.prop('id');
+					return $(this).data('describe') === element.attr('id');
 				});
 			}
 
@@ -413,7 +410,7 @@
 				// 
 				if(element.is('[id]')) {
 
-					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
+					fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
 				}
 
 				// 
@@ -449,7 +446,7 @@
 				// 
 				if(element.is('[id]')) {
 
-					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
+					fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
 				}
 
 				// 
@@ -674,7 +671,7 @@
 					// 
 					if(element.is('[id]')) {
 
-						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
+						fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
 					}
 
 					fields = fields.filter(data.filter);
