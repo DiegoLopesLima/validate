@@ -283,6 +283,9 @@ jQuery('input').on('validated', function() {});
 
 ## Options
 
+### clearInvalidFields
+Lorem ipsum dolor sit amet.
+
 ### clause
 Lorem ipsum dolor sit amet.
 
@@ -304,7 +307,7 @@ Lorem ipsum dolor sit amet.
 ### prepare
 Lorem ipsum dolor sit amet.
 
-### valueHook
+### prepareAll
 Lorem ipsum dolor sit amet.
 
 ### description

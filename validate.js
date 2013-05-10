@@ -43,6 +43,9 @@
 			selectFirstInvalid : true,
 
 			// 
+			clearInvalidFields : false,
+
+			// 
 			sendForm : true,
 
 			// 
@@ -52,7 +55,7 @@
 			prepare : {},
 
 			//
-			valueHook : null,
+			prepareAll : null,
 
 			// 
 			description : {},
@@ -60,6 +63,8 @@
 			// 
 			clause : null
 		},
+
+		nameFunction = 'function',
 
 		writable = 'input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select,input:not([type])',
 
@@ -76,6 +81,14 @@
 
 		// 
 		regExpFalse = /^(false|0)$/i,
+
+		callFunction = function() {
+
+			if(typeof arguments[0] === nameFunction) {
+
+				arguments[0].apply(arguments[1], Array.prototype.slice.call(arguments, 2));
+			}
+		},
 
 		// 
 		getParentAttribute = function(element, attribute) {
@@ -183,13 +196,13 @@
 				filled;
 
 			//
-			if($.isFunction(options.valueHook)) {
+			if(typeof options.prepareAll === nameFunction) {
 
-				fieldValue = options.valueHook.call(element, fieldValue);
+				fieldValue = options.prepareAll.call(element, fieldValue);
 			}
 
 			// 
-			if($.isFunction(fieldPrepare)) {
+			if(typeof fieldPrepare === nameFunction) {
 
 				fieldValue = fieldPrepare.call(element, fieldValue);
 			} else {
@@ -198,7 +211,7 @@
 
 					prepare = options.prepare[fieldPrepare];
 
-				fieldValue = $.isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
+				fieldValue = typeof prepare === nameFunction ? prepare.call(element, fieldValue) : fieldValue;
 			}
 
 			// 
@@ -275,14 +288,14 @@
 			}
 
 			// 
-			if($.isFunction(fieldConditional)) {
+			if(typeof fieldConditional === nameFunction) {
 
 				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
 
 				var
 
-					conditionals = $.type(fieldConditional) === 'array' ? fieldConditional : String(fieldConditional).split(/\s+/),
+					conditionals = $.isArray(fieldConditional) ? fieldConditional : String(fieldConditional).split(/\s+/),
 
 					validConditionals = true;
 
@@ -292,7 +305,7 @@
 
 						conditional = options.conditional[conditionals[currentConditional]];
 
-					if($.isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
+					if(typeof conditional === nameFunction && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
@@ -331,26 +344,14 @@
 
 				if(!status[item]) {
 
-					if($.isPlainObject(customDescription.error)) {
-
-						message = customDescription.error[item] || customDescription.error.message;
-					} else {
-
-						message = $.isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error;
-					}
+					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (typeof customDescription.error === nameFunction ? customDescription.error.call(element, fieldValue) : customDescription.error);
 
 					if(!message) {
 
-						if($.isPlainObject(description.error)) {
-
-							message = description.error[item] || description.error.message;
-						} else {
-
-							message = $.isFunction(description.error) ? description.error.call(element, fieldValue) : description.error;
-						}
+						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : (typeof description.error === nameFunction ? description.error.call(element, fieldValue) : description.error);
 					}
 
-					message = $.isFunction(message) ? message.call(element, fieldValue) : message;
+					message = typeof message === nameFunction ? message.call(element, fieldValue) : message;
 
 					valid = false;
 
@@ -360,10 +361,7 @@
 
 			if(element.is('[id]')) {
 
-				describe = $('*').filter(function() {
-
-					return $(this).data('describe') === element.attr('id');
-				});
+				describe = $('[data-describe="' + element.attr('id') + '"]');
 			}
 
 			if(describe !== undefined && $.inArray(eventType, descriptionEvents) > -1) {
@@ -372,7 +370,7 @@
 
 					if(description.success) {
 
-						if($.isFunction(description.success)) {
+						if(typeof description.success === nameFunction) {
 
 							describe.html(description.success.call(element, fieldValue));
 						} else {
@@ -387,7 +385,7 @@
 			}
 
 			// 
-			element.prop('aria-invalid', !valid);
+			element.attr('aria-invalid', !valid);
 
 			return {
 				valid : valid,
@@ -437,12 +435,17 @@
 					valid = true,
 
 					// 
-					first = true;
+					first = true,
 
-				if(callbacks && $.isFunction(data.beforeValidate)) {
+					validatedFields = {
+						invalid : $(),
+						valid : $(),
+						all : $()
+					};
 
-					// 
-					data.beforeValidate.call(element);
+				if(callbacks) {
+
+					callFunction(data.beforeValidate, element);
 				}
 
 				// 
@@ -454,6 +457,8 @@
 				// 
 				fields.filter(data.filter).each(function() {
 
+					validatedFields.all = validatedFields.all.add(this);
+
 					var
 
 						response = validateField.call(this, data, event, callbacks),
@@ -462,20 +467,21 @@
 
 					if(response.valid) {
 
-						if(callbacks && $.isFunction(data.eachValidField)) {
+						validatedFields.valid = validatedFields.valid.add(this);
 
-							data.eachValidField.call(this);
+						if(callbacks) {
+
+							callFunction(data.eachValidField, this);
 						}
 					} else {
+
+						validatedFields.invalid = validatedFields.invalid.add(this);
 
 						valid = false;
 
 						if(callbacks) {
 
-							if($.isFunction(data.eachInvalidField)) {
-
-								data.eachInvalidField.call(this, status);
-							}
+							callFunction(data.eachInvalidField, this, status);
 
 							if(first && data.selectFirstInvalid) {
 
@@ -486,16 +492,16 @@
 						}
 					}
 
-					if(callbacks && $.isFunction(data.eachField)) {
+					if(callbacks) {
 
-						data.eachField.call(this, status);
+						callFunction(data.eachField, this, status);
 					}
 				});
 
 				// 
-				if($.isFunction(data.clause)) {
+				if(typeof data.clause === nameFunction) {
 
-					valid = !data.clause.call(element);
+					valid = !data.clause.call(element, validatedFields);
 				}
 
 				if(callbacks) {
@@ -509,11 +515,7 @@
 							event.preventDefault();
 						}
 
-						if($.isFunction(data.valid)) {
-
-							// 
-							data.valid.call(element);
-						}
+						callFunction(data.valid, element, validatedFields.all);
 
 						// 
 						element.triggerHandler('valid');
@@ -525,19 +527,17 @@
 							event.preventDefault();
 						}
 
-						if($.isFunction(data.invalid)) {
+						if(data.clearInvalidFields) {
 
-							// 
-							data.invalid.call(element);
+							validatedFields.invalid.val('');
 						}
+
+						callFunction(data.invalid, element, validatedFields);
 
 						element.triggerHandler('invalid');
 					}
 
-					if($.isFunction(data.afterValidate)) {
-
-						data.afterValidate.call(element, valid);
-					}
+					callFunction(data.afterValidate, element, valid);
 
 					element.triggerHandler('validated');
 				} else {
