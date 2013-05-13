@@ -443,106 +443,109 @@
 						all : $()
 					};
 
-				if(callbacks) {
+				if(element.is('form')) {
 
-					callFunction(data.beforeValidate, element);
-				}
+					if(callbacks) {
 
-				// 
-				if(element.is('[id]')) {
+						callFunction(data.beforeValidate, element);
+					}
 
-					fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
-				}
+					// 
+					if(element.is('[id]')) {
 
-				// 
-				fields.filter(data.filter).each(function() {
+						fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
+					}
 
-					validatedFields.all = validatedFields.all.add(this);
+					// 
+					fields.filter(data.filter).each(function() {
 
-					var
+						validatedFields.all = validatedFields.all.add(this);
 
-						response = validateField.call(this, data, event, callbacks),
+						var
 
-						status = response.status;
+							response = validateField.call(this, data, event, callbacks),
 
-					if(response.valid) {
+							status = response.status;
 
-						validatedFields.valid = validatedFields.valid.add(this);
+						if(response.valid) {
 
-						if(callbacks) {
+							validatedFields.valid = validatedFields.valid.add(this);
 
-							callFunction(data.eachValidField, this);
-						}
-					} else {
+							if(callbacks) {
 
-						validatedFields.invalid = validatedFields.invalid.add(this);
+								callFunction(data.eachValidField, this);
+							}
+						} else {
 
-						valid = false;
+							validatedFields.invalid = validatedFields.invalid.add(this);
 
-						if(callbacks) {
+							valid = false;
 
-							callFunction(data.eachInvalidField, this, status);
+							if(callbacks) {
 
-							if(first && data.selectFirstInvalid) {
+								callFunction(data.eachInvalidField, this, status);
 
-								$(this).trigger('select');
+								if(first && data.selectFirstInvalid) {
 
-								first = false;
+									$(this).trigger('select');
+
+									first = false;
+								}
 							}
 						}
+
+						if(callbacks) {
+
+							callFunction(data.eachField, this, status);
+						}
+					});
+
+					// 
+					if(typeof data.clause === nameFunction) {
+
+						valid = !data.clause.call(element, validatedFields);
 					}
 
 					if(callbacks) {
 
-						callFunction(data.eachField, this, status);
-					}
-				});
-
-				// 
-				if(typeof data.clause === nameFunction) {
-
-					valid = !data.clause.call(element, validatedFields);
-				}
-
-				if(callbacks) {
-
-					// 
-					if(valid) {
-
 						// 
-						if(!data.sendForm && event) {
+						if(valid) {
 
-							event.preventDefault();
+							// 
+							if(!data.sendForm && event) {
+
+								event.preventDefault();
+							}
+
+							callFunction(data.valid, element, validatedFields.all);
+
+							// 
+							element.triggerHandler('valid');
+						} else {
+
+							// 
+							if(event !== undefined) {
+
+								event.preventDefault();
+							}
+
+							if(data.clearInvalidFields) {
+
+								validatedFields.invalid.val('');
+							}
+
+							callFunction(data.invalid, element, validatedFields);
+
+							element.triggerHandler('invalid');
 						}
 
-						callFunction(data.valid, element, validatedFields.all);
+						callFunction(data.afterValidate, element, valid);
 
-						// 
-						element.triggerHandler('valid');
+						element.triggerHandler('validated');
 					} else {
 
-						// 
-						if(event !== undefined) {
-
-							event.preventDefault();
-						}
-
-						if(data.clearInvalidFields) {
-
-							validatedFields.invalid.val('');
-						}
-
-						callFunction(data.invalid, element, validatedFields);
-
-						element.triggerHandler('invalid');
+						return valid;
 					}
-
-					callFunction(data.afterValidate, element, valid);
-
-					element.triggerHandler('validated');
-				} else {
-
-					return valid;
 				}
 			},
 			option : function(property, value) {
