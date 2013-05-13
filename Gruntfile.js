@@ -25,7 +25,7 @@ module.exports = function(grunt) {
 		},
 		jshint : {
 			dist : {
-				src : [data.name + '.js', 'Gruntfile.js'],
+				src : [data.name + '.js'],
 				options : {
 					camelcase : true,
 					immed : true,
@@ -34,14 +34,13 @@ module.exports = function(grunt) {
 					newcap : true,
 					noarg : true,
 					noempty : true,
-					quotmark : 'single',
+					quotmark : true,
 					undef : true,
 					unused : true,
 					strict : true,
 					trailing : true,
 					globals : {
-						jQuery : true,
-						module : true
+						jQuery : true
 					}
 				}
 			}
