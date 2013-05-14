@@ -82,11 +82,11 @@
 		// 
 		regExpFalse = /^(false|0)$/i,
 
-		callFunction = function() {
+		callFunction = function(foo) {
 
-			if(typeof arguments[0] === nameFunction) {
+			if(typeof foo == nameFunction) {
 
-				arguments[0].apply(arguments[1], Array.prototype.slice.call(arguments, 2));
+				foo.apply(arguments[1], Array.prototype.slice.call(arguments, 2));
 			}
 		},
 
@@ -161,6 +161,9 @@
 				// 
 				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
 
+				// 
+				fieldChars = ifExist(data.chars, currentValidation.chars),
+
 				// Current field value.
 				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
 
@@ -195,14 +198,19 @@
 				// 
 				filled;
 
+			if(eventType == 'keypress' && typeof fieldChars == 'string' && !new RegExp('[' + fieldChars.replace(/([\[\]])/g, '\\$1') + ']').test(String.fromCharCode(event.keyCode))) {
+
+				event.preventDefault();
+			}
+
 			//
-			if(typeof options.prepareAll === nameFunction) {
+			if(typeof options.prepareAll == nameFunction) {
 
 				fieldValue = options.prepareAll.call(element, fieldValue);
 			}
 
 			// 
-			if(typeof fieldPrepare === nameFunction) {
+			if(typeof fieldPrepare == nameFunction) {
 
 				fieldValue = fieldPrepare.call(element, fieldValue);
 			} else {
@@ -211,7 +219,7 @@
 
 					prepare = options.prepare[fieldPrepare];
 
-				fieldValue = typeof prepare === nameFunction ? prepare.call(element, fieldValue) : fieldValue;
+				fieldValue = typeof prepare == nameFunction ? prepare.call(element, fieldValue) : fieldValue;
 			}
 
 			// 
@@ -288,7 +296,7 @@
 			}
 
 			// 
-			if(typeof fieldConditional === nameFunction) {
+			if(typeof fieldConditional == nameFunction) {
 
 				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
@@ -305,7 +313,7 @@
 
 						conditional = options.conditional[conditionals[currentConditional]];
 
-					if(typeof conditional === nameFunction && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
+					if(typeof conditional == nameFunction && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
@@ -344,14 +352,14 @@
 
 				if(!status[item]) {
 
-					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (typeof customDescription.error === nameFunction ? customDescription.error.call(element, fieldValue) : customDescription.error);
+					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (typeof customDescription.error == nameFunction ? customDescription.error.call(element, fieldValue) : customDescription.error);
 
 					if(!message) {
 
 						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : (typeof description.error === nameFunction ? description.error.call(element, fieldValue) : description.error);
 					}
 
-					message = typeof message === nameFunction ? message.call(element, fieldValue) : message;
+					message = typeof message == nameFunction ? message.call(element, fieldValue) : message;
 
 					valid = false;
 
@@ -370,7 +378,7 @@
 
 					if(description.success) {
 
-						if(typeof description.success === nameFunction) {
+						if(typeof description.success == nameFunction) {
 
 							describe.html(description.success.call(element, fieldValue));
 						} else {
@@ -501,7 +509,7 @@
 					});
 
 					// 
-					if(typeof data.clause === nameFunction) {
+					if(typeof data.clause == nameFunction) {
 
 						valid = !data.clause.call(element, validatedFields);
 					}
@@ -668,7 +676,9 @@
 
 						data = element.data(name),
 
-						fields = element.find(types);
+						fields = element.find(types),
+
+						events = data.events;
 
 					// 
 					if(element.is('[id]')) {
@@ -679,21 +689,15 @@
 					fields = fields.filter(data.filter);
 
 					// 
-					fields.on(namespace('keyup change blur'), function(event) {
-
-						var
-
-							data = element.data(name),
-
-							events = data.events;
+					fields.on(namespace('keypress keyup change blur'), function(event) {
 
 						events = $.isArray(events) ? events : String(events).split(/\s+/);
 
-						if($.inArray(event.type, events) > -1) {
+						if($.inArray(event.type, events) > -1 || event.type == 'keypress') {
 
 							var
 
-								response = validateField.call(this, data, event, true),
+								response = validateField.call(this, data, event, event.type != 'keypress'),
 
 								status = response.status;
 

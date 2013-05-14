@@ -49,6 +49,9 @@ jQuery('form').validate({
 });
 ```
 
+### data-chars
+Lorem ipsum dolor sit amet.
+
 ### data-confirm
 Lorem ipsum dolor sit amet.
 
