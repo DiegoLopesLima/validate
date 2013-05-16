@@ -355,7 +355,7 @@
 
 					if(!message) {
 
-						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : ($.ifFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
+						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : ($.isFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
 					}
 
 					message = $.isFunction(message) ? message.call(element, fieldValue) : message;
