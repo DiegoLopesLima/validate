@@ -154,10 +154,10 @@
 				fieldPrepare = ifExist(data.prepare, currentValidation.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required) || getParentAttribute(element, 'required')),
+				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
 
 				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim) || getParentAttribute(element, 'trim')),
+				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
 
 				// 
 				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
