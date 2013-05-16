@@ -64,8 +64,6 @@
 			clause : null
 		},
 
-		nameFunction = 'function',
-
 		writable = 'input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select,input:not([type])',
 
 		checkable = 'input[type=checkbox],input[type=radio]',
@@ -85,7 +83,7 @@
 		// 
 		callFunction = function(foo) {
 
-			if(typeof foo == nameFunction) {
+			if($.isFunction(foo)) {
 
 				foo.apply(arguments[1], [].slice.call(arguments, 2));
 			}
@@ -205,13 +203,13 @@
 			}
 
 			//
-			if(typeof options.prepareAll == nameFunction) {
+			if($.isFunction(options.prepareAll)) {
 
 				fieldValue = options.prepareAll.call(element, fieldValue);
 			}
 
 			// 
-			if(typeof fieldPrepare == nameFunction) {
+			if($.isFunction(fieldPrepare)) {
 
 				fieldValue = fieldPrepare.call(element, fieldValue);
 			} else {
@@ -220,7 +218,7 @@
 
 					prepare = options.prepare[fieldPrepare];
 
-				fieldValue = typeof prepare == nameFunction ? prepare.call(element, fieldValue) : fieldValue;
+				fieldValue = $.isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
 			}
 
 			// 
@@ -297,7 +295,7 @@
 			}
 
 			// 
-			if(typeof fieldConditional == nameFunction) {
+			if($.isFunction(fieldConditional)) {
 
 				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
@@ -314,7 +312,7 @@
 
 						conditional = options.conditional[conditionals[currentConditional]];
 
-					if(typeof conditional == nameFunction && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
+					if($.isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
@@ -353,14 +351,14 @@
 
 				if(!status[item]) {
 
-					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (typeof customDescription.error == nameFunction ? customDescription.error.call(element, fieldValue) : customDescription.error);
+					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : ($.isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error);
 
 					if(!message) {
 
-						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : (typeof description.error === nameFunction ? description.error.call(element, fieldValue) : description.error);
+						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : ($.ifFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
 					}
 
-					message = typeof message == nameFunction ? message.call(element, fieldValue) : message;
+					message = $.isFunction(message) ? message.call(element, fieldValue) : message;
 
 					valid = false;
 
@@ -379,7 +377,7 @@
 
 					if(description.success) {
 
-						if(typeof description.success == nameFunction) {
+						if($.isFunction(description.success)) {
 
 							describe.html(description.success.call(element, fieldValue));
 						} else {
@@ -510,7 +508,7 @@
 					});
 
 					// 
-					if(typeof data.clause == nameFunction) {
+					if($.isFunction(data.clause)) {
 
 						valid = !data.clause.call(element, validatedFields);
 					}
