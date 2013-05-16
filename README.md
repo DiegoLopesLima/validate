@@ -52,15 +52,21 @@ jQuery('form').validate({
 ### data-chars
 Lorem ipsum dolor sit amet.
 
+#### Example
+
+```html
+<input type="number" name="age" data-chars="0-9" />
+```
+
 ### data-confirm
 Lorem ipsum dolor sit amet.
 
 #### Example
 
 ```html
-<input type="text" id="password" />
+<input type="password" id="password" />
 
-<input type="text" data-confirm="password" />
+<input type="password" data-confirm="password" />
 ```
 
 ### data-pattern
@@ -69,7 +75,7 @@ Lorem ipsum dolor sit amet.
 #### Example
 
 ```html
-<input type="text" data-pattern="^\d+$" />
+<input type="number" data-pattern="^\d+$" />
 ```
 
 ### data-describe
@@ -81,13 +87,7 @@ Lorem ipsum dolor sit amet.
 #### Example
 
 ```html
-<input type="text" data-pattern="^[a-z]+$" data-ignorecase />
-```
-
-Equivalent to
-
-```html
-<input type="text" data-pattern="^[a-zA-Z]+$" />
+<input type="text" data-pattern="^[a-z]+$" data-ignorecase="false" />
 ```
 
 ### data-mask
@@ -96,7 +96,7 @@ Lorem ipsum dolor sit amet.
 #### Example
 
 ```html
-<input type="text" data-pattern="^(?:Mr\.\s+)?([\S\s]+)$" data-mask="Mr. ${1}" />
+<input type="date" data-pattern="^(\d{2})\/?(\d{2})\/?(\d{4})$" data-mask="${1}/${2}/${3}" />
 ```
 
 ### data-maxlength
