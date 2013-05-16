@@ -82,11 +82,12 @@
 		// 
 		regExpFalse = /^(false|0)$/i,
 
+		// 
 		callFunction = function(foo) {
 
 			if(typeof foo == nameFunction) {
 
-				foo.apply(arguments[1], Array.prototype.slice.call(arguments, 2));
+				foo.apply(arguments[1], [].slice.call(arguments, 2));
 			}
 		},
 
@@ -132,7 +133,7 @@
 				fieldConditional = ifExist(data.conditional, currentValidation.conditional),
 
 				// A field id to confirm.
-				fieldConfirm = String(ifExist(data.confirm, currentValidation.confirm)),
+				fieldConfirm = ifExist(data.confirm, currentValidation.confirm),
 
 				// 
 				fieldIgnorecase = regExpFalse.test(getParentAttribute(element, 'ignorecase')) ? false : true,
@@ -153,10 +154,10 @@
 				fieldPrepare = ifExist(data.prepare, currentValidation.pattern),
 
 				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
+				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required) || getParentAttribute(element, 'required')),
 
 				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
+				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim) || getParentAttribute(element, 'trim')),
 
 				// 
 				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
@@ -226,7 +227,7 @@
 			fieldValue = String(fieldValue);
 
 			// 
-			fieldPattern = new RegExp($.type(fieldPattern) === 'regexp' ? fieldPattern.source : fieldPattern, patternModifier);
+			fieldPattern = new RegExp($.type(fieldPattern) == 'regexp' ? fieldPattern.source : fieldPattern, patternModifier);
 
 			// 
 			if(element.is(checkable)) {
@@ -257,7 +258,7 @@
 			}
 
 			// 
-			if(callbacks && eventType && eventType !== 'keyup' && status.pattern && fieldMask) {
+			if(callbacks && eventType && eventType != 'keyup' && status.pattern && fieldMask) {
 
 				var
 
@@ -283,7 +284,7 @@
 			}
 
 			// 
-			if(fieldConfirm.length > 0) {
+			if(String(fieldConfirm).length > 0) {
 
 				var
 
@@ -367,9 +368,9 @@
 				}
 			}
 
-			if(element.is('[id]')) {
+			if(element.prop('id').length > 0) {
 
-				describe = $('[data-describe="' + element.attr('id') + '"]');
+				describe = $('[data-describe="' + element.prop('id') + '"]');
 			}
 
 			if(describe !== undefined && $.inArray(eventType, descriptionEvents) > -1) {
@@ -414,9 +415,9 @@
 					fields = element.find(types);
 
 				// 
-				if(element.is('[id]')) {
+				if(element.prop('id').length > 0) {
 
-					fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
+					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 				}
 
 				// 
@@ -459,9 +460,9 @@
 					}
 
 					// 
-					if(element.is('[id]')) {
+					if(element.prop('id').length > 0) {
 
-						fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
+						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 					}
 
 					// 
@@ -566,7 +567,7 @@
 					// Current form data.
 					data = element.data(name);
 
-				if(typeof property === 'string') {
+				if(typeof property == 'string') {
 
 					if(value !== undefined) {
 
@@ -598,7 +599,7 @@
 
 						var
 
-							form = element.is('[form]') ? $('form[id="' + element.prop('form') + '"]') : element.closest('form'),
+							form = element.prop('form').length > 0 ? $('form[id="' + element.prop('form') + '"]') : element.closest('form'),
 
 							data = form.data(name);
 
@@ -622,7 +623,7 @@
 	// 
 	$[name] = function(property, value) {
 
-		if(typeof property === 'string') {
+		if(typeof property == 'string') {
 
 			if(value !== undefined) {
 
@@ -646,13 +647,13 @@
 
 			param = arguments;
 
-		if(typeof param[0] === 'string' && methods.hasOwnProperty(param[0])) {
+		if(typeof param[0] == 'string' && methods.hasOwnProperty(param[0])) {
 
 			var
 
 				element = $(this),
 
-				response = methods[param[0]].apply(element, Array.prototype.slice.call(param, 1));
+				response = methods[param[0]].apply(element, [].slice.call(param, 1));
 
 			return response !== undefined ? response : element;
 		} else {
@@ -681,9 +682,9 @@
 						events = data.events;
 
 					// 
-					if(element.is('[id]')) {
+					if(element.prop('id').length > 0) {
 
-						fields = fields.add($(types).filter('[form="' + element.attr('id') + '"]'));
+						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
 					}
 
 					fields = fields.filter(data.filter);
@@ -726,7 +727,7 @@
 	// A function to add validation shortcuts (data-validate="shortcut").
 	$[name].add = function(property, value) {
 
-		if(typeof property === 'string') {
+		if(typeof property == 'string') {
 
 			if(value !== undefined) {
 
@@ -746,7 +747,7 @@
 	// A function to extend the methods.
 	$[name].extend = function(property, value) {
 
-		if(typeof property === 'string') {
+		if(typeof property == 'string') {
 
 			if(value !== undefined) {
 
