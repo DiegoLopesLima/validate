@@ -8,30 +8,33 @@
 		name = 'validate',
 
 		// Empty function.
-		noop = $.noop,
+		emptyFunction = $.noop,
+
+		// 
+		isFunction = $.isFunction,
 
 		// Default properties.
 		defaults = {
 			// A function called when the form is valid.
-			valid : noop,
+			valid : emptyFunction,
 
 			// A function called when the form is invalid.
-			invalid : noop,
+			invalid : emptyFunction,
 
 			// A function called before validate form.
-			beforeValidate : noop,
+			beforeValidate : emptyFunction,
 
 			// A function called after validate form.
-			afterValidate : noop,
+			afterValidate : emptyFunction,
 
 			// A function called for each invalid field.
-			eachInvalidField : noop,
+			eachInvalidField : emptyFunction,
 
 			// A function called for each valid field.
-			eachValidField : noop,
+			eachValidField : emptyFunction,
 
 			// A function called for each field.
-			eachField : noop,
+			eachField : emptyFunction,
 
 			// 
 			filter : '*',
@@ -83,7 +86,7 @@
 		// 
 		callFunction = function(foo) {
 
-			if($.isFunction(foo)) {
+			if(isFunction(foo)) {
 
 				foo.apply(arguments[1], [].slice.call(arguments, 2));
 			}
@@ -140,10 +143,10 @@
 				fieldMask = data.mask || currentValidation.mask,
 
 				// 
-				fieldMaxlength = ifExist(Number(data.maxlength), currentValidation.maxlength) || Infinity,
+				fieldMaxlength = ifExist(Number(data.maxlength), currentValidation.maxlength) || Number(getParentAttribute(element, 'maxlength')) || Infinity,
 
 				// 
-				fieldMinlength = ifExist(Number(data.minlength), currentValidation.minlength) || 0,
+				fieldMinlength = ifExist(Number(data.minlength), currentValidation.minlength) || Number(getParentAttribute(element, 'minlength')) || 0,
 
 				// A regular expression to validate the field value.
 				fieldPattern = ifExist(data.pattern, currentValidation.pattern) || '',
@@ -202,14 +205,14 @@
 				event.preventDefault();
 			}
 
-			//
-			if($.isFunction(options.prepareAll)) {
+			// 
+			if(isFunction(options.prepareAll)) {
 
 				fieldValue = options.prepareAll.call(element, fieldValue);
 			}
 
 			// 
-			if($.isFunction(fieldPrepare)) {
+			if(isFunction(fieldPrepare)) {
 
 				fieldValue = fieldPrepare.call(element, fieldValue);
 			} else {
@@ -218,7 +221,7 @@
 
 					prepare = options.prepare[fieldPrepare];
 
-				fieldValue = $.isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
+				fieldValue = isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
 			}
 
 			// 
@@ -295,7 +298,7 @@
 			}
 
 			// 
-			if($.isFunction(fieldConditional)) {
+			if(isFunction(fieldConditional)) {
 
 				status.conditional = !!fieldConditional.call(element, fieldValue);
 			} else {
@@ -312,7 +315,7 @@
 
 						conditional = options.conditional[conditionals[currentConditional]];
 
-					if($.isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
+					if(isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
 
 						validConditionals = false;
 					}
@@ -351,14 +354,14 @@
 
 				if(!status[item]) {
 
-					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : ($.isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error);
+					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error);
 
 					if(!message) {
 
-						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : ($.isFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
+						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : (isFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
 					}
 
-					message = $.isFunction(message) ? message.call(element, fieldValue) : message;
+					message = isFunction(message) ? message.call(element, fieldValue) : message;
 
 					valid = false;
 
@@ -377,7 +380,7 @@
 
 					if(description.success) {
 
-						if($.isFunction(description.success)) {
+						if(isFunction(description.success)) {
 
 							describe.html(description.success.call(element, fieldValue));
 						} else {
@@ -508,7 +511,7 @@
 					});
 
 					// 
-					if($.isFunction(data.clause)) {
+					if(isFunction(data.clause)) {
 
 						valid = !data.clause.call(element, validatedFields);
 					}
@@ -639,19 +642,19 @@
 	};
 
 	// 
-	$.fn[name] = function() {
+	$.fn[name] = function(options) {
 
 		var
 
 			param = arguments;
 
-		if(typeof param[0] == 'string' && methods.hasOwnProperty(param[0])) {
+		if(typeof options == 'string' && methods.hasOwnProperty(options)) {
 
 			var
 
 				element = $(this),
 
-				response = methods[param[0]].apply(element, [].slice.call(param, 1));
+				response = methods[options].apply(element, [].slice.call(param, 1));
 
 			return response !== undefined ? response : element;
 		} else {
@@ -666,7 +669,7 @@
 				if(element.is('form')) {
 
 					// 
-					element.data(name, $.extend({}, defaults, param[0])).on(namespace('submit'), function(event) {
+					element.data(name, $.extend({}, defaults, options)).on(namespace('submit'), function(event) {
 
 						methods.validate.call(this, event);
 					});

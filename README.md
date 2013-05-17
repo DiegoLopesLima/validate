@@ -519,4 +519,4 @@ You can use a element to wrap the fields.
 </div>
 ```
 
-> You can use the attributes `data-required`, `data-trim` and `data-ignorecase`.
+> You can use the attributes `data-required`, `data-trim`, `data-minlength`, `data-maxlength` and `data-ignorecase`.
