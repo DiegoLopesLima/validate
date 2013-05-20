@@ -447,12 +447,14 @@
 					// 
 					first = true,
 
+					// 
 					validatedFields = {
 						invalid : $(),
 						valid : $(),
 						all : $()
 					};
 
+				// 
 				if(element.is('form')) {
 
 					if(callbacks) {
