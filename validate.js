@@ -78,17 +78,17 @@
 		validate = {},
 
 		// 
-		regExpTrue = /^(true|1|)$/i,
+		regExpTrue = /^(true|)$/i,
 
 		// 
-		regExpFalse = /^(false|0)$/i,
+		regExpFalse = /^false$/i,
 
 		// 
 		callFunction = function(foo) {
 
 			if(isFunction(foo)) {
 
-				foo.apply(arguments[1], [].slice.call(arguments, 2));
+				foo.apply(arguments[1], Array.prototype.slice.call(arguments, 2));
 			}
 		},
 
@@ -650,13 +650,13 @@
 
 			param = arguments;
 
-		if(typeof options == 'string' && methods.hasOwnProperty(options)) {
+		if(typeof options == 'string' && isFunction(methods[options])) {
 
 			var
 
 				element = $(this),
 
-				response = methods[options].apply(element, [].slice.call(param, 1));
+				response = methods[options].apply(element, Array.prototype.slice.call(param, 1));
 
 			return response !== undefined ? response : element;
 		} else {

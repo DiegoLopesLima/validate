@@ -345,24 +345,27 @@ jQuery('form').validate({
 ```
 
 ## Field description
+Lorem ipsum dolor sit amet.
 
 ### Example
 
-```javascript
-jQuery('form').validate({
-	description : {
-		events : ['keyup', 'blur', 'change'],
-		default : 'Fill in the field correctly.',
-		custom : {
-			email : {
-				events : ['blur', 'change'],
-				conditional : 'This email has already been registered.',
-				required : 'This field is required.',
-				pattern : function(value) {
+```html
+<input type="number" id="age" data-required />
 
-					return '"' + valid + '" is not a valid email.';
-				},
-				default : 'Invalid value.'
+<span data-describe="age" data-description="intenger"></span>
+```
+
+```javascript
+$('form').validate({
+	description : {
+		events : 'keyup blur change',
+		error : {
+			message : 'Fill in the field correctly.'
+		},
+		success : 'Ok.',
+		custom : {
+			intenger : {
+				error : 'Fill your age correctly.'
 			}
 		}
 	}
