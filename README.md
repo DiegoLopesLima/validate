@@ -27,7 +27,7 @@ jQuery('form').validate();
 ## Attributes
 Lorem ipsum dolor sit amet.
 
-### data-conditional
+### `data-conditional`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -49,7 +49,7 @@ jQuery('form').validate({
 });
 ```
 
-### data-chars
+### `data-chars`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -58,7 +58,7 @@ Lorem ipsum dolor sit amet.
 <input type="number" name="age" data-chars="0-9" />
 ```
 
-### data-confirm
+### `data-confirm`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -69,7 +69,7 @@ Lorem ipsum dolor sit amet.
 <input type="password" data-confirm="password" />
 ```
 
-### data-pattern
+### `data-pattern`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -78,10 +78,10 @@ Lorem ipsum dolor sit amet.
 <input type="number" data-pattern="^\d+$" />
 ```
 
-### data-describe
+### `data-describe`
 Lorem ipsum dolor sit amet.
 
-### data-ignorecase
+### `data-ignorecase`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -90,7 +90,7 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-pattern="^[a-z]+$" data-ignorecase="false" />
 ```
 
-### data-mask
+### `data-mask`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -99,7 +99,7 @@ Lorem ipsum dolor sit amet.
 <input type="date" data-pattern="^(\d{2})\/?(\d{2})\/?(\d{4})$" data-mask="${1}/${2}/${3}" />
 ```
 
-### data-maxlength
+### `data-maxlength`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -108,7 +108,7 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-maxlength="10" />
 ```
 
-### data-minlength
+### `data-minlength`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -117,7 +117,7 @@ Lorem ipsum dolor sit amet.
 <input type="text" data-minlength="10" />
 ```
 
-### data-prepare
+### `data-prepare`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -139,7 +139,7 @@ jQuery('form').validate({
 });
 ```
 
-### data-required
+### `data-required`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -154,7 +154,7 @@ Or
 <input type="text" data-required="true" />
 ```
 
-### data-trim
+### `data-trim`
 Lorem ipsum dolor sit amet.
 
 #### Example
@@ -169,7 +169,7 @@ Or
 <input type="text" data-trim="true" />
 ```
 
-### data-validate
+### `data-validate`
 See [Adding validation shortcuts](#adding-validation-shortcuts).
 
 ## Using `jQuery.data` to attributes declare
@@ -350,9 +350,11 @@ Lorem ipsum dolor sit amet.
 ### Example
 
 ```html
-<input type="number" id="age" data-required />
+<form>
+	<input type="number" id="age" data-required />
 
-<span data-describe="age" data-description="intenger"></span>
+	<span data-describe="age" data-description="intenger"></span>
+</form>
 ```
 
 ```javascript
