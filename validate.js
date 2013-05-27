@@ -4,585 +4,378 @@
 
 	var
 
-		// The plugin name.
+		// Plugin name.
 		name = 'validate',
-
-		// Empty function.
-		emptyFunction = $.noop,
-
-		// 
-		isFunction = $.isFunction,
-
-		// Default properties.
-		defaults = {
-			// A function called when the form is valid.
-			valid : emptyFunction,
-
-			// A function called when the form is invalid.
-			invalid : emptyFunction,
-
-			// A function called before validate form.
-			beforeValidate : emptyFunction,
-
-			// A function called after validate form.
-			afterValidate : emptyFunction,
-
-			// A function called for each invalid field.
-			eachInvalidField : emptyFunction,
-
-			// A function called for each valid field.
-			eachValidField : emptyFunction,
-
-			// A function called for each field.
-			eachField : emptyFunction,
-
-			// 
-			filter : '*',
-
-			// 
-			events : [],
-
-			// 
-			selectFirstInvalid : true,
-
-			// 
-			clearInvalidFields : false,
-
-			// 
-			sendForm : true,
-
-			// 
-			conditional : {},
-
-			// 
-			prepare : {},
-
-			//
-			prepareAll : null,
-
-			// 
-			description : {},
-
-			// 
-			clause : null
-		},
 
 		writable = 'input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select,input:not([type])',
 
 		checkable = 'input[type=checkbox],input[type=radio]',
 
-		// Fields selector.
-		types = checkable + ',' + writable,
+		parentAttributes = 'trim required minlength maxlength prepare conditional ignorecase validate description chars',
 
-		// Extensions.
-		validate = {},
+		booleanAttributes = 'trim required ignorecase',
 
-		// 
-		regExpTrue = /^(true|)$/i,
+		fieldTypes = checkable + ',' + writable,
 
-		// 
-		regExpFalse = /^false$/i,
+		emptyFunction = $.noop,
 
-		// 
-		callFunction = function(foo) {
+		emptyString = '',
 
-			if(isFunction(foo)) {
+		isFunction = $.isFunction,
 
-				foo.apply(arguments[1], Array.prototype.slice.call(arguments, 2));
-			}
+		isPlainObject = $.isPlainObject,
+
+		isArray = $.isArray,
+
+		reSpace = /[\s\uFEFF\xA0]+/,
+
+		reTrue = /^(true|)$/,
+
+		reFalse = /^false$/,
+
+		// Default properties.
+		defaults = {
+			valid : emptyFunction,
+			invalid : emptyFunction,
+			validated : emptyFunction,
+			eachValid : emptyFunction,
+			eachInvalid : emptyFunction,
+			events : [],
+			filter : '*',
+			sendForm : true,
+			selectFirstInvalid : true,
+			clearInvalidFields : false,
+			conditional : {},
+			prepare : {},
+			description : {},
+			prepareAll : null
 		},
 
-		// 
-		getParentAttribute = function(element, attribute) {
-
-			return $(element).parents('*').filter(function() {
-
-				return $(this).data(attribute) !== undefined;
-			}).filter(':first').data(attribute);
-		},
-
-		// 
-		ifExist = function(value, substitute) {
-
-			return !/^(undefined|null|NaN)$/.test(value) ? value : substitute;
-		},
-
-		// 
 		namespace = function(events) {
 
 			return events.replace(/(\s+|$)/g, '.' + name + '$1');
 		},
 
-		// A function to validate fields.
-		validateField = function(options, event, callbacks) {
+		getArray = function(value) {
+
+			return isArray(value) ? value : emptyString.split.call(value || emptyString, reSpace);
+		},
+
+		getAttr = function(target, attribute) {
 
 			var
 
-				// Current field.
+				value = $.inArray(attribute, parentAttributes.split(reSpace)) > -1 ? target.data(attribute) !== undefined ? target.data(attribute) : target.parents('*').filter(function() {
+
+				return $(this).data(attribute) !== undefined;
+			}).filter(':first').data(attribute) : $(this).data(attribute);
+
+			return $.inArray(attribute, booleanAttributes.split(reSpace)) > -1 ? reTrue.test(value) ? true : (reFalse.test(value) ? false : value) : value;
+		},
+
+		extend = function(target, index, value) {
+
+			if(typeof index == 'string') {
+
+				if(value !== undefined) {
+
+					target[index] = value;
+				} else {
+
+					return target[index];
+				}
+			} else if(isPlainObject(index)) {
+
+				return $.extend(target, index);
+			}
+
+			return target;
+		},
+
+		validate = function(options, event, bool) {
+
+			var
+
 				element = $(this),
 
-				// Current field data.
-				data = element.data(),
+				response = {
+					valid : true
+				};
 
-				// 
-				fieldValidate = data.validate,
+			if(element.is('form')) {
 
-				// 
-				currentValidation = validate[fieldValidate] || {},
+				var
 
-				// A conditional function.
-				fieldConditional = ifExist(data.conditional, currentValidation.conditional),
+					fields = element.find(fieldTypes);
 
-				// A field id to confirm.
-				fieldConfirm = ifExist(data.confirm, currentValidation.confirm),
+				if(element.prop('id').length > 0) {
 
-				// 
-				fieldIgnorecase = regExpFalse.test(getParentAttribute(element, 'ignorecase')) ? false : true,
+					fields = fields.add($(fieldTypes).filter('[form="' + element.prop('id') + '"]'));
+				}
 
-				// A mask to field value.
-				fieldMask = data.mask || currentValidation.mask,
+				fields.each(function() {
 
-				// 
-				fieldMaxlength = ifExist(Number(data.maxlength), currentValidation.maxlength) || Number(getParentAttribute(element, 'maxlength')) || Infinity,
+					if(!validate.call(this, event, options).valid) {
 
-				// 
-				fieldMinlength = ifExist(Number(data.minlength), currentValidation.minlength) || Number(getParentAttribute(element, 'minlength')) || 0,
+						response.valid = false;
 
-				// A regular expression to validate the field value.
-				fieldPattern = ifExist(data.pattern, currentValidation.pattern) || '',
+						return false;
+					}
+				});
 
-				// 
-				fieldPrepare = ifExist(data.prepare, currentValidation.pattern),
+				if(!bool) {
 
-				// 
-				fieldRequired = regExpTrue.test(ifExist(data.required, currentValidation.required)) || regExpTrue.test(getParentAttribute(element, 'required')),
+					if(isFunction(options.valid)) {
 
-				// 
-				fieldTrim = regExpTrue.test(ifExist(data.trim, currentValidation.trim)) || regExpTrue.test(getParentAttribute(element, 'trim')),
+						options.valid.call(element);
+					}
 
-				// 
-				fieldDescription = ifExist(data.describedby, currentValidation.describedby),
+					if(isFunction(options.invalid)) {
 
-				// 
-				fieldChars = ifExist(data.chars, currentValidation.chars),
+						options.invalid.call(element);
+					}
 
-				// Current field value.
-				fieldValue = fieldTrim ? $.trim(element.val()) : element.val(),
+					if(isFunction(options.validated)) {
 
-				// 
-				fieldLength = ifExist(fieldValue, '').length,
+						options.validated.call(element);
+					}
+				}
+			} else if(element.is(fieldTypes)) {
 
-				// Current field name.
-				fieldName = element.prop('name'),
-
-				// 
-				sameName = $('[name="' + fieldName + '"]'),
-
-				// Current field status.
-				status = {
+				response.status = {
 					required : true,
 					minlength : true,
 					maxlength : true,
 					pattern : true,
 					confirm : true,
 					conditional : true
-				},
-
-				// 
-				valid = true,
-
-				// 
-				eventType = event ? event.type : null,
-
-				// 
-				patternModifier = fieldIgnorecase ? 'i' : undefined,
-
-				// 
-				filled;
-
-			if(eventType == 'keypress' && typeof fieldChars == 'string' && !new RegExp('[' + fieldChars.replace(/([\[\]])/g, '\\$1') + ']').test(String.fromCharCode(event.keyCode))) {
-
-				event.preventDefault();
-			}
-
-			// 
-			if(isFunction(options.prepareAll)) {
-
-				fieldValue = options.prepareAll.call(element, fieldValue);
-			}
-
-			// 
-			if(isFunction(fieldPrepare)) {
-
-				fieldValue = fieldPrepare.call(element, fieldValue);
-			} else {
+				};
 
 				var
 
-					prepare = options.prepare[fieldPrepare];
+					form = element.closest('form');
 
-				fieldValue = isFunction(prepare) ? prepare.call(element, fieldValue) : fieldValue;
-			}
+				if(form.length === 0 && element.prop('form').length > 0) {
 
-			// 
-			fieldValue = String(fieldValue);
-
-			// 
-			fieldPattern = new RegExp($.type(fieldPattern) == 'regexp' ? fieldPattern.source : fieldPattern, patternModifier);
-
-			// 
-			if(element.is(checkable)) {
-
-				filled = fieldName.length > 0 ? sameName.filter(':checked').length > 0 : false;
-
-				status.minlength = sameName.filter(':checked').length >= fieldMinlength;
-
-				status.maxlength = sameName.filter(':checked').length <= fieldMaxlength;
-			} else if(element.is(writable)) {
-
-				filled = fieldLength > 0;
-
-				status.minlength = fieldLength >= fieldMinlength;
-
-				status.maxlength = fieldLength <= fieldMaxlength;
-			}
-
-			// 
-			if(fieldRequired) {
-
-				status.required = filled;
-
-				status.pattern = fieldPattern.test(fieldValue);
-			} else if(filled) {
-
-				status.pattern = fieldPattern.test(fieldValue);
-			}
-
-			// 
-			if(callbacks && eventType && eventType != 'keyup' && status.pattern && fieldMask) {
-
-				var
-
-					parts = fieldValue.match(fieldPattern) || [],
-
-					newValue = String(fieldMask);
-
-				for(var currentPart = 0, sharesLength = parts.length; currentPart < sharesLength; currentPart++) {
-
-					var
-
-						part = parts[currentPart];
-
-					newValue = newValue.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentPart + '(?::`([^`]*)`)?\\}'), part ? '$1' + part.replace(/\$/g, '$$') : '$1$2');
+					form = $('form#' + element.prop('form'));
 				}
 
-				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
-
-				if(fieldPattern.test(newValue)) {
-
-					element.val(newValue);
-				}
-			}
-
-			// 
-			if(String(fieldConfirm).length > 0) {
-
 				var
 
-					confirmation =  $('#' + fieldConfirm);
+					value = element.val(),
 
-				if(confirmation.length > 0) {
+					fieldName = element.prop('name'),
 
-					status.confirm = confirmation.val() === fieldValue;
-				}
-			}
+					trim = getAttr(element, 'trim'),
 
-			// 
-			if(isFunction(fieldConditional)) {
+					prepare = getAttr(element, 'prepare'),
 
-				status.conditional = !!fieldConditional.call(element, fieldValue);
-			} else {
+					conditional = getAttr(element, 'conditional'),
 
-				var
+					ignoreCase = getAttr(element, 'ignoreCase') === false ? false : true,
 
-					conditionals = $.isArray(fieldConditional) ? fieldConditional : String(fieldConditional).split(/\s+/),
+					pattern = getAttr(element, 'pattern'),
 
-					validConditionals = true;
+					minlength = Number(getAttr(element, 'minlength')) || 0,
 
-				for(var currentConditional = 0, conditionalLength = conditionals.length; currentConditional < conditionalLength; currentConditional++) {
+					maxlength = Number(getAttr(element, 'maxlength')) || Infinity,
 
-					var
+					mask = getAttr(element, 'mask'),
 
-						conditional = options.conditional[conditionals[currentConditional]];
+					description = getAttr(element, 'description'),
 
-					if(isFunction(conditional) && !options.conditional[conditionals[currentConditional]].call(element, fieldValue)) {
+					filled = false,
 
-						validConditionals = false;
+					status = {};
+
+				if(isFunction(prepare)) {
+
+					value = String(prepare.call(element, value));
+				} else if(typeof prepare == 'string') {
+
+					prepare = getArray(prepare);
+
+					for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) {
+
+						var
+
+							currentPrepareFunction = options.prepare[prepare[currentPrepare]];
+
+						value = isFunction(currentPrepareFunction) ? String(currentPrepareFunction.call(element, value)) : value;
 					}
 				}
 
-				status.conditional = validConditionals;
-			}
+				value = trim ? $.trim(value) : value;
 
-			var
+				pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, ignoreCase ? 'i' : undefined);
 
-				description = $.isPlainObject(options.description) ? options.description : {},
+				// Verifies if field is filled.
+				if(element.is(writable)) {
 
-				customDescription = $.isPlainObject(description.custom) ? description.custom : {},
+					filled = value.length > 0;
 
-				events = options.events,
+					status.minlength = value.length >= minlength;
 
-				message,
+					status.maxlength = value.length >= maxlength;
+				} else if(name.length > 0) {
 
-				describe;
+					var
 
-			events = $.isArray(events) ? events : String(events).split(/\s+/);
+						checked = $('[name="' + fieldName + '"]:checked');
 
-			customDescription = $.isPlainObject(customDescription[fieldDescription]) ? customDescription[fieldDescription] : {};
+					filled = checked.length > 0;
 
-			var
+					status.minlength = checked.length >= minlength;
 
-				descriptionEvents = customDescription.events || description.events || events;
-
-			descriptionEvents = $.isArray(descriptionEvents) ? descriptionEvents : String(descriptionEvents).split(/\s+/);
-
-			// 
-			descriptionEvents.push('submit');
-
-			// 
-			for(var item in status) {
-
-				if(!status[item]) {
-
-					message = $.isPlainObject(customDescription.error) ? (customDescription.error[item] || customDescription.error.message) : (isFunction(customDescription.error) ? customDescription.error.call(element, fieldValue) : customDescription.error);
-
-					if(!message) {
-
-						message = $.isPlainObject(description.error) ? (description.error[item] || description.error.message) : (isFunction(description.error) ? description.error.call(element, fieldValue) : description.error);
-					}
-
-					message = isFunction(message) ? message.call(element, fieldValue) : message;
-
-					valid = false;
-
-					break;
+					status.maxlength = checked.length >= maxlength;
 				}
-			}
 
-			if(element.prop('id').length > 0) {
+				// Verifies is field is required.
+				if(getAttr(element, 'required')) {
 
-				describe = $('[data-describe="' + element.prop('id') + '"]');
-			}
+					status.required = filled;
 
-			if(describe !== undefined && $.inArray(eventType, descriptionEvents) > -1) {
+					status.pattern = pattern.test(value);
+				} else if(filled) {
 
-				if(valid) {
+					status.pattern = pattern.test(value);
+				}
 
-					if(description.success) {
+				if(isFunction(conditional)) {
 
-						if(isFunction(description.success)) {
+					status.conditional = !!conditional.call(element, value);
+				} else if(typeof conditional == 'string') {
 
-							describe.html(description.success.call(element, fieldValue));
-						} else {
+					conditional = getArray(conditional);
 
-							describe.html(description.success);
+					for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) {
+
+						var
+
+							currentConditionalFunction = options.conditional[conditional[currentConditional]];
+
+						if(isFunction(currentConditionalFunction) && !currentConditionalFunction.call(element, value)) {
+
+							status.conditional = false;
+
+							break;
 						}
 					}
-				} else if(message) {
+				}
 
-					describe.html(message);
+				if(!bool && event && event.type != 'keyup' && status.pattern && typeof mask == 'string') {
+
+					var
+
+						parts = value.match(pattern) || [];
+
+					value = mask;
+
+					for(var currentPart = 0, partLength = parts.length; currentPart < partLength; currentPart++) {
+
+						value = value.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentPart + '(?::`([^`]*)`)?\\}'), parts[currentPart] ? '$1' + parts[currentPart].replace(/\$/g, '$$') : '$1$2');
+					}
+
+					value = value.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
+
+					if(pattern.test(value)) {
+
+						element.val(value);
+					}
+				}
+
+				var
+
+					descriptionIndex = options.description[description],
+
+					descriptionObject = $.extend({}, descriptionIndex, descriptionIndex.custom),
+
+					customDescription = isPlainObject(descriptionObject.custom) ? descriptionObject.custom : {},
+
+					customDescriptionEvents = getArray(customDescription.events),
+
+					events = customDescriptionEvents.length > 0 ? customDescriptionEvents : getArray(options.events),
+
+					message,
+
+					describe;
+
+				if(!bool) {
+
+					element.attr('aria-invalid', !response.valid);
 				}
 			}
 
-			// 
-			element.attr('aria-invalid', !valid);
+			if(!bool) {
 
-			return {
-				valid : valid,
-				status : status
-			};
+				if(response.valid) {
+
+					element.triggerHandler('valid');
+				} else {
+
+					element.triggerHandler('invalid');
+				}
+
+				element.triggerHandler('validated');
+			}
+
+			return bool ? response.valid : response;
 		},
 
-		// 
-		methods = {
+		plugin = {
+			init : function() {
+
+				var
+
+					element = $(this);
+
+				if(element.is('form')) {
+
+					var
+
+						options = element.data(name),
+
+						fields = element.find(fieldTypes);
+
+					if(element.prop('id').length > 0) {
+
+						fields = fields.add($(fieldTypes).filter('[form="' + element.prop('id') + '"]'));
+					}
+
+					element.on(namespace('submit'), function(event) {
+
+						validate.call(this, event, options);
+					});
+
+					fields.on(namespace('keyup blur change'), function(event) {
+
+						if($.inArray(event.type, getArray(options.events)) > -1) {
+
+							validate.call(this, event, options);
+						}
+					}).on(namespace('keypress'), function(event) {
+
+						if(!new RegExp('[' + emptyString.replace.call($(this).data('chars') || '.', /([\[\]])/g, '\\$1') + ']').test(String.fromCharCode(event.keyCode))) {
+
+							event.preventDefault();
+						}
+					});
+				}
+			},
 			destroy : function() {
 
 				var
 
-					// 
 					element = $(this),
 
-					// 
-					fields = element.find(types);
+					fields = element.find(fieldTypes);
 
-				// 
 				if(element.prop('id').length > 0) {
 
-					fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
+					fields = fields.add($(fieldTypes).filter('[form="' + element.prop('id') + '"]'));
 				}
 
-				// 
-				element.add(fields.filter(element.data(name).filter)).removeData(name).off('.' + name);
-
-				return element;
-			},
-			validate : function(event, callbacks) {
-
-				callbacks = callbacks !== undefined ? callbacks : true;
-
-				var
-
-					// Current form.
-					element = $(this),
-
-					// Current form data.
-					data = element.data(name),
-
-					// 
-					fields = element.find(types),
-
-					// 
-					valid = true,
-
-					// 
-					first = true,
-
-					// 
-					validatedFields = {
-						invalid : $(),
-						valid : $(),
-						all : $()
-					};
-
-				// 
-				if(element.is('form')) {
-
-					if(callbacks) {
-
-						callFunction(data.beforeValidate, element);
-					}
-
-					// 
-					if(element.prop('id').length > 0) {
-
-						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
-					}
-
-					// 
-					fields.filter(data.filter).each(function() {
-
-						validatedFields.all = validatedFields.all.add(this);
-
-						var
-
-							response = validateField.call(this, data, event, callbacks),
-
-							status = response.status;
-
-						if(response.valid) {
-
-							validatedFields.valid = validatedFields.valid.add(this);
-
-							if(callbacks) {
-
-								callFunction(data.eachValidField, this);
-							}
-						} else {
-
-							validatedFields.invalid = validatedFields.invalid.add(this);
-
-							valid = false;
-
-							if(callbacks) {
-
-								callFunction(data.eachInvalidField, this, status);
-
-								if(first && data.selectFirstInvalid) {
-
-									$(this).trigger('select');
-
-									first = false;
-								}
-							}
-						}
-
-						if(callbacks) {
-
-							callFunction(data.eachField, this, status);
-						}
-					});
-
-					// 
-					if(isFunction(data.clause)) {
-
-						valid = !data.clause.call(element, validatedFields);
-					}
-
-					if(callbacks) {
-
-						// 
-						if(valid) {
-
-							// 
-							if(!data.sendForm && event) {
-
-								event.preventDefault();
-							}
-
-							callFunction(data.valid, element, validatedFields.all);
-
-							// 
-							element.triggerHandler('valid');
-						} else {
-
-							// 
-							if(event !== undefined) {
-
-								event.preventDefault();
-							}
-
-							if(data.clearInvalidFields) {
-
-								validatedFields.invalid.val('');
-							}
-
-							callFunction(data.invalid, element, validatedFields);
-
-							element.triggerHandler('invalid');
-						}
-
-						callFunction(data.afterValidate, element, valid);
-
-						element.triggerHandler('validated');
-					} else {
-
-						return valid;
-					}
-				}
-			},
-			option : function(property, value) {
-
-				var
-
-					// Current form.
-					element = $(this),
-
-					// Current form data.
-					data = element.data(name);
-
-				if(typeof property == 'string') {
-
-					if(value !== undefined) {
-
-						element.data(name)[property] = value;
-					} else {
-
-						return data[property];
-					}
-				} else {
-
-					return element.data(name, $.extend({}, data, property));
-				}
+				element.add(fields).off('.' + name).removeData(name);
 
 				return element;
 			},
@@ -590,32 +383,19 @@
 
 				var
 
+					element = $(this),
+
+					options = element.data(name),
+
 					valid = true;
 
-				$(this).each(function() {
+				element.each(function() {
 
-					var
+					if(!validate.call(this, null, options, true)) {
 
-						element = $(this);
+						valid = false;
 
-					if(element.is(types)) {
-
-						var
-
-							form = element.prop('form').length > 0 ? $('form[id="' + element.prop('form') + '"]') : element.closest('form'),
-
-							data = form.data(name);
-
-						if(!validateField.call(element, data, null, false).valid) {
-
-							valid = false;
-						}
-					} else if(element.is('form')) {
-
-						if(!methods.validate.call(element, null, false)) {
-
-							valid = false;
-						}
+						return false;
 					}
 				});
 
@@ -623,150 +403,26 @@
 			}
 		};
 
-	// 
-	$[name] = function(property, value) {
-
-		if(typeof property == 'string') {
-
-			if(value !== undefined) {
-
-				defaults[property] = value;
-			} else {
-
-				return defaults[property];
-			}
-		} else {
-
-			return $.extend(defaults, property);
-		}
-
-		return defaults;
-	};
-
-	// 
 	$.fn[name] = function(options) {
 
-		var
+		return isFunction(plugin[options]) ? plugin[options].apply(this, Array.prototype.slice.call(arguments, 1)) : $(this).each(function() {
 
-			param = arguments;
-
-		if(typeof options == 'string' && isFunction(methods[options])) {
-
-			var
-
-				element = $(this),
-
-				response = methods[options].apply(element, Array.prototype.slice.call(param, 1));
-
-			return response !== undefined ? response : element;
-		} else {
-
-			return $(this).each(function() {
-
-				var
-
-					element = $(this);
-
-				// Verifies if the current element is a form.
-				if(element.is('form')) {
-
-					// 
-					element.data(name, $.extend({}, defaults, options)).on(namespace('submit'), function(event) {
-
-						methods.validate.call(this, event);
-					});
-
-					var
-
-						data = element.data(name),
-
-						fields = element.find(types),
-
-						events = data.events;
-
-					// 
-					if(element.prop('id').length > 0) {
-
-						fields = fields.add($(types).filter('[form="' + element.prop('id') + '"]'));
-					}
-
-					fields = fields.filter(data.filter);
-
-					// 
-					fields.on(namespace('keypress keyup change blur'), function(event) {
-
-						events = $.isArray(events) ? events : String(events).split(/\s+/);
-
-						if($.inArray(event.type, events) > -1 || event.type == 'keypress') {
-
-							var
-
-								response = validateField.call(this, data, event, event.type != 'keypress'),
-
-								status = response.status;
-
-							if(response.valid) {
-
-								data.eachValidField.call(this);
-
-								$(this).triggerHandler('valid');
-							} else {
-
-								data.eachInvalidField.call(this, status);
-
-								$(this).triggerHandler('invalid');
-							}
-
-							data.eachField.call(this, status);
-
-							$(this).triggerHandler('validated');
-						}
-					});
-				}
-			});
-		}
+			plugin.init.call($(plugin.destroy.call(this)).data(name, $.extend({}, defaults, options)));
+		});
 	};
 
-	// A function to add validation shortcuts (data-validate="shortcut").
-	$[name].add = function(property, value) {
+	$[name] = $.extend(function(index, value) {
 
-		if(typeof property == 'string') {
+		return extend(defaults, index, value);
+	}, {
+		add : function(index, value) {
 
-			if(value !== undefined) {
+			return extend(validate, index, value);
+		},
+		extend : function(index, value) {
 
-				validate[property] = value;
-			} else {
-
-				return validate[property];
-			}
-		} else {
-
-			return $.extend(validate, property);
-		}
-
-		return validate;
-	};
-
-	// A function to extend the methods.
-	$[name].extend = function(property, value) {
-
-		if(typeof property == 'string') {
-
-			if(value !== undefined) {
-
-				methods[property] = value;
-			} else {
-
-				return methods[property];
-			}
-		} else {
-
-			return $.extend(methods, property);
-		}
-
-		return methods;
-	};
-
-	// Stores the plugin version.
-	$[name].version = '1.2.0';
+			return extend(plugin, index, value);
+		},
+		version : '1.2.0'
+	});
 })(jQuery);
