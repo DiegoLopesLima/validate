@@ -11,10 +11,6 @@
 
 		checkable = 'input[type=checkbox],input[type=radio]',
 
-		parentAttributes = 'trim required minlength maxlength prepare conditional ignorecase validate description chars',
-
-		booleanAttributes = 'trim required ignorecase',
-
 		fieldTypes = checkable + ',' + writable,
 
 		emptyFunction = $.noop,
@@ -24,14 +20,6 @@
 		isFunction = $.isFunction,
 
 		isPlainObject = $.isPlainObject,
-
-		isArray = $.isArray,
-
-		reSpace = /[\s\uFEFF\xA0]+/,
-
-		reTrue = /^(true|)$/,
-
-		reFalse = /^false$/,
 
 		// Default properties.
 		defaults = {
@@ -51,26 +39,310 @@
 			prepareAll : null
 		},
 
-		namespace = function(events) {
+		getBoolean = function(value) {
 
-			return events.replace(/(\s+|$)/g, '.' + name + '$1');
+			return (/^(true|)$/).test(value);
 		},
 
 		getArray = function(value) {
 
-			return isArray(value) ? value : emptyString.split.call(value || emptyString, reSpace);
+			return $.isArray(value) ? value : emptyString.split.call(value || emptyString, /[\s\uFEFF\xA0]+/);
 		},
 
-		getAttr = function(target, attribute) {
+		attributes = {
+			chars : function(value) {
+
+				return emptyString.replace.call(value || '.', /([\[\]])/g, '\\$1');
+			},
+			conditional : function(value) {
+
+				return;
+			},
+			confirm : function(value) {
+
+				return;
+			},
+			ignorecase : function(value) {
+
+				return !getBoolean(value) ? undefined : 'i';
+			},
+			mask : function(value) {
+
+				return;
+			},
+			maxlength : function(value) {
+
+				return Math.round(value) || Infinity;
+			},
+			minlength : function(value) {
+
+				return Math.round(value) || 0;
+			},
+			pattern : function(value) {
+
+				return (/^(regexp|string)$/).test($.type(value)) ? value : /(?:)/;
+			},
+			prepare : function(value) {
+
+				return;
+			},
+			required : function(value) {
+
+				return;
+			},
+			trim : function(value) {
+
+				return;
+			}
+		},
+
+		validate = {},
+
+		getFieldAttribute = function(target, attribute) {
 
 			var
 
-				value = $.inArray(attribute, parentAttributes.split(reSpace)) > -1 ? target.data(attribute) !== undefined ? target.data(attribute) : target.parents('*').filter(function() {
+				response = target.data(attribute);
 
-				return $(this).data(attribute) !== undefined;
-			}).filter(':first').data(attribute) : $(this).data(attribute);
+			if(response === undefined && /^trim|required|m(in|ax)length|prepare|conditional|ignorecase|validate|description|chars$/.test(attribute)) {
 
-			return $.inArray(attribute, booleanAttributes.split(reSpace)) > -1 ? reTrue.test(value) ? true : (reFalse.test(value) ? false : value) : value;
+				var
+
+					parent = target.parents('*').filter(function() {
+
+						return $(this).data(attribute) !== undefined;
+					}).filter(':first');
+
+				if(parent.length === 1) {
+
+					response = parent.data(attribute);
+				}
+			}
+
+			if(response === undefined && typeof target.data(name) == 'string') {
+
+				response = validate[target.data(name)];
+			}
+
+			if(attributes.hasOwnProperty(attribute)) {
+
+				attributes[attribute].call(target, response);
+			}
+
+			return response;
+		},
+
+		namespace = function(events) {
+
+			return events.replace(/([\s\uFEFF\xA0]+|$)/g, '.' + name + '$1');
+		},
+
+		validateField = function(event, bool) {
+
+			var
+
+				field = $(this),
+
+				form = field.prop('form').length > 0 ? $('#' + field.prop('form')) : field.closest('form'),
+
+				options = form.data(name),
+
+				response = {
+					valid : true,
+					status : {
+						required : true,
+						minlength : true,
+						maxlength : true,
+						pattern : true,
+						confirm : true,
+						conditional : true
+					}
+				},
+
+				minlength = getFieldAttribute(field, 'minlength'),
+
+				maxlength = getFieldAttribute(field, 'maxlength'),
+
+				pattern = getFieldAttribute(field, 'pattern'),
+
+				mask = getFieldAttribute(field, 'mask'),
+
+				prepare = getFieldAttribute(field, 'prepare'),
+
+				fieldName = field.prop('nome'),
+
+				fieldType = field.prop('type'),
+
+				value = getFieldAttribute(field, 'trim') ? $.trim(field.val()) : field.val(),
+
+				valueLength = value.length,
+
+				filled = false;
+
+			if(isFunction(options.prepareAll)) {
+
+				value = String(options.prepareAll.call(field, value));
+			}
+
+			if(isFunction(prepare)) {
+
+				value = String(prepare.call(field, value));
+			}
+
+			pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, getFieldAttribute(field, 'ignorecase'));
+
+			if(field.is(writable)) {
+
+				filled = valueLength > 0;
+
+				response.status.minlength = valueLength >= minlength;
+
+				response.status.maxlength = valueLength <= maxlength;
+			} else {
+
+				if(fieldName.length > 0) {
+
+					var
+
+						checked = $('[type="' + fieldType + '"][name="' + fieldName + '"]:checked');
+
+					filled = checked.length > 0;
+
+					response.status.minlength = checked.length >= minlength;
+
+					response.status.maxlength = checked.length <= maxlength;
+				}
+			}
+
+			if(getFieldAttribute(field, 'required')) {
+
+				response.status.required = filled;
+
+				response.status.pattern = pattern.test(value);
+			} else if(filled) {
+
+				response.status.pattern = pattern.test(value);
+			}
+
+			if(!bool && event && event.type != 'keyup' && response.status.pattern && typeof mask == 'string') {
+
+				var
+
+					parts = value.match(pattern) || [],
+
+					newValue = mask;
+
+				for(var currentPart = 0, partLength = parts.length; currentPart < partLength; currentPart++) {
+
+					newValue = newValue.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentPart + '(?::`([^`]*)`)?\\}'), parts[currentPart] ? '$1' + parts[currentPart].replace(/\$/g, '$$') : '$1$2');
+				}
+
+				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
+
+				if(pattern.test(newValue)) {
+
+					field.val(newValue);
+				}
+			}
+
+			if(bool) {
+
+				return response.valid;
+			} else {
+
+				if(response.valid) {
+
+					if(isFunction(options.valid)) {
+
+						options.eachValid.call(field);
+					}
+
+					field.triggerHandler('valid');
+				} else {
+
+					if(isFunction(options.invalid)) {
+
+						options.eachInvalid.call(field);
+					}
+
+					field.triggerHandler('invalid');
+				}
+
+				if(isFunction(options.validated)) {
+
+					options.eachField.call(field);
+				}
+
+				field.triggerHandler('validated');
+
+				return response;
+			}
+		},
+
+		validateForm = function(event, bool) {
+
+			var
+
+				form = $(this),
+
+				options = form.data(name),
+
+				fields = form.find(fieldTypes),
+
+				valid = true;
+
+			if(form.prop('id').length > 0) {
+
+				fields = fields.add($(fieldTypes).filter('[form="' + form.prop('id') + '"]'));
+			}
+
+			fields.each(function() {
+
+				if(!validateField.call(this, event, bool).valid) {
+
+					valid = false;
+
+					return false;
+				}
+			});
+
+			if(bool) {
+
+				return valid;
+			} else {
+
+				if(valid) {
+
+					if(!options.sendForm) {
+
+						event.preventDefault();
+					}
+
+					if(isFunction(options.valid)) {
+
+						options.valid.call(form);
+					}
+
+					form.triggerHandler('valid');
+				} else {
+
+					event.preventDefault();
+
+					if(isFunction(options.invalid)) {
+
+						options.invalid.call(form);
+					}
+
+					form.triggerHandler('invalid');
+				}
+
+				if(isFunction(options.validated)) {
+
+					options.validated.call(form);
+				}
+
+				form.triggerHandler('validated');
+			}
 		},
 
 		extend = function(target, index, value) {
@@ -90,236 +362,6 @@
 			}
 
 			return target;
-		},
-
-		validate = function(options, event, bool) {
-
-			var
-
-				element = $(this),
-
-				response = {
-					valid : true
-				};
-
-			if(element.is('form')) {
-
-				var
-
-					fields = element.find(fieldTypes);
-
-				if(element.prop('id').length > 0) {
-
-					fields = fields.add($(fieldTypes).filter('[form="' + element.prop('id') + '"]'));
-				}
-
-				fields.each(function() {
-
-					if(!validate.call(this, event, options).valid) {
-
-						response.valid = false;
-
-						return false;
-					}
-				});
-
-				if(!bool) {
-
-					if(isFunction(options.valid)) {
-
-						options.valid.call(element);
-					}
-
-					if(isFunction(options.invalid)) {
-
-						options.invalid.call(element);
-					}
-
-					if(isFunction(options.validated)) {
-
-						options.validated.call(element);
-					}
-				}
-			} else if(element.is(fieldTypes)) {
-
-				response.status = {
-					required : true,
-					minlength : true,
-					maxlength : true,
-					pattern : true,
-					confirm : true,
-					conditional : true
-				};
-
-				var
-
-					form = element.closest('form');
-
-				if(form.length === 0 && element.prop('form').length > 0) {
-
-					form = $('form#' + element.prop('form'));
-				}
-
-				var
-
-					value = element.val(),
-
-					fieldName = element.prop('name'),
-
-					trim = getAttr(element, 'trim'),
-
-					prepare = getAttr(element, 'prepare'),
-
-					conditional = getAttr(element, 'conditional'),
-
-					ignoreCase = getAttr(element, 'ignoreCase') === false ? false : true,
-
-					pattern = getAttr(element, 'pattern'),
-
-					minlength = Number(getAttr(element, 'minlength')) || 0,
-
-					maxlength = Number(getAttr(element, 'maxlength')) || Infinity,
-
-					mask = getAttr(element, 'mask'),
-
-					description = getAttr(element, 'description'),
-
-					filled = false,
-
-					status = {};
-
-				if(isFunction(prepare)) {
-
-					value = String(prepare.call(element, value));
-				} else if(typeof prepare == 'string') {
-
-					prepare = getArray(prepare);
-
-					for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) {
-
-						var
-
-							currentPrepareFunction = options.prepare[prepare[currentPrepare]];
-
-						value = isFunction(currentPrepareFunction) ? String(currentPrepareFunction.call(element, value)) : value;
-					}
-				}
-
-				value = trim ? $.trim(value) : value;
-
-				pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, ignoreCase ? 'i' : undefined);
-
-				// Verifies if field is filled.
-				if(element.is(writable)) {
-
-					filled = value.length > 0;
-
-					status.minlength = value.length >= minlength;
-
-					status.maxlength = value.length >= maxlength;
-				} else if(name.length > 0) {
-
-					var
-
-						checked = $('[name="' + fieldName + '"]:checked');
-
-					filled = checked.length > 0;
-
-					status.minlength = checked.length >= minlength;
-
-					status.maxlength = checked.length >= maxlength;
-				}
-
-				// Verifies is field is required.
-				if(getAttr(element, 'required')) {
-
-					status.required = filled;
-
-					status.pattern = pattern.test(value);
-				} else if(filled) {
-
-					status.pattern = pattern.test(value);
-				}
-
-				if(isFunction(conditional)) {
-
-					status.conditional = !!conditional.call(element, value);
-				} else if(typeof conditional == 'string') {
-
-					conditional = getArray(conditional);
-
-					for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) {
-
-						var
-
-							currentConditionalFunction = options.conditional[conditional[currentConditional]];
-
-						if(isFunction(currentConditionalFunction) && !currentConditionalFunction.call(element, value)) {
-
-							status.conditional = false;
-
-							break;
-						}
-					}
-				}
-
-				if(!bool && event && event.type != 'keyup' && status.pattern && typeof mask == 'string') {
-
-					var
-
-						parts = value.match(pattern) || [];
-
-					value = mask;
-
-					for(var currentPart = 0, partLength = parts.length; currentPart < partLength; currentPart++) {
-
-						value = value.replace(new RegExp('(^|[^\\\\])\\$\\{' + currentPart + '(?::`([^`]*)`)?\\}'), parts[currentPart] ? '$1' + parts[currentPart].replace(/\$/g, '$$') : '$1$2');
-					}
-
-					value = value.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
-
-					if(pattern.test(value)) {
-
-						element.val(value);
-					}
-				}
-
-				var
-
-					descriptionIndex = options.description[description],
-
-					descriptionObject = $.extend({}, descriptionIndex, descriptionIndex.custom),
-
-					customDescription = isPlainObject(descriptionObject.custom) ? descriptionObject.custom : {},
-
-					customDescriptionEvents = getArray(customDescription.events),
-
-					events = customDescriptionEvents.length > 0 ? customDescriptionEvents : getArray(options.events),
-
-					message,
-
-					describe;
-
-				if(!bool) {
-
-					element.attr('aria-invalid', !response.valid);
-				}
-			}
-
-			if(!bool) {
-
-				if(response.valid) {
-
-					element.triggerHandler('valid');
-				} else {
-
-					element.triggerHandler('invalid');
-				}
-
-				element.triggerHandler('validated');
-			}
-
-			return bool ? response.valid : response;
 		},
 
 		plugin = {
@@ -344,40 +386,52 @@
 
 					element.on(namespace('submit'), function(event) {
 
-						validate.call(this, event, options);
+						validateForm.call(this, event, options);
 					});
 
 					fields.on(namespace('keyup blur change'), function(event) {
 
 						if($.inArray(event.type, getArray(options.events)) > -1) {
 
-							validate.call(this, event, options);
+							validateField.call(this, event);
 						}
 					}).on(namespace('keypress'), function(event) {
 
-						if(!new RegExp('[' + emptyString.replace.call($(this).data('chars') || '.', /([\[\]])/g, '\\$1') + ']').test(String.fromCharCode(event.keyCode))) {
+						if(!new RegExp('[' + getFieldAttribute.call(this, 'chars') + ']').test(String.fromCharCode(event.keyCode))) {
 
 							event.preventDefault();
 						}
 					});
+				} else {
+
+					$.error('This is not a form.');
 				}
 			},
 			destroy : function() {
 
 				var
 
-					element = $(this),
+					form = $(this);
 
-					fields = element.find(fieldTypes);
 
-				if(element.prop('id').length > 0) {
+				if(form.is('form')) {
 
-					fields = fields.add($(fieldTypes).filter('[form="' + element.prop('id') + '"]'));
+					var
+
+						fields = form.find(fieldTypes);
+
+					if(form.prop('id').length > 0) {
+
+						fields = fields.add($(fieldTypes).filter('[form="' + form.prop('id') + '"]'));
+					}
+
+					form.add(fields).off('.' + name).removeData(name);
+
+					return form;
+				} else {
+
+					$.error('This is not a form.');
 				}
-
-				element.add(fields).off('.' + name).removeData(name);
-
-				return element;
 			},
 			valid : function() {
 
@@ -385,17 +439,16 @@
 
 					element = $(this),
 
-					options = element.data(name),
-
 					valid = true;
 
 				element.each(function() {
 
-					if(!validate.call(this, null, options, true)) {
+					if(element.is('form')) {
 
-						valid = false;
+						validateForm.call(element, null, true);
+					} else if(element.is(fieldTypes)) {
 
-						return false;
+						validateField.call(element, null, true);
 					}
 				});
 
@@ -407,7 +460,7 @@
 
 		return isFunction(plugin[options]) ? plugin[options].apply(this, Array.prototype.slice.call(arguments, 1)) : $(this).each(function() {
 
-			plugin.init.call($(plugin.destroy.call(this)).data(name, $.extend({}, defaults, options)));
+			plugin.init.call($(this).data(name, $.extend({}, defaults, options)));
 		});
 	};
 
@@ -423,6 +476,6 @@
 
 			return extend(plugin, index, value);
 		},
-		version : '1.2.0'
+		version : '2.0.0'
 	});
 })(jQuery);
