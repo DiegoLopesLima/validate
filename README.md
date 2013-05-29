@@ -189,9 +189,6 @@ jQuery('input[name="age"]').data({
 
 ## Callbacks
 
-### beforeValidate
-Accepts a function called before validation.
-
 ### valid
 Lorem ipsum dolor sit amet.
 
@@ -211,10 +208,6 @@ Lorem ipsum dolor sit amet.
 
 ```javascript
 jQuery('form').validate({
-	beforeValidate : function() {
-
-		console.log('Before validate');
-	},
 	eachInvalidField : function() {
 
 		console.log('Each invalid field');
