@@ -15,8 +15,6 @@
 
 		emptyFunction = $.noop,
 
-		emptyString = '',
-
 		isFunction = $.isFunction,
 
 		isPlainObject = $.isPlainObject,
@@ -51,6 +49,45 @@
 
 		validate = {},
 
+		attributes = {
+			chars : function(attribute) {
+
+				return typeof attribute == 'string' ? new RegExp('[' + attribute.replace(/([\[\]])/g, '\\$1') + ']') : /./;
+			},
+			conditional : function(attribute) {
+
+				return isFunction(attribute) ? attribute : (typeof attribute == 'string' ? getArray(attribute) : []);
+			},
+			confirm : function(attribute) {
+
+				return typeof attribute == 'string' ? $(fieldTypes).filter('#' + attribute).val() : undefined;
+			},
+			ignorecase : function(attribute) {
+
+				return !getBoolean(attribute) ? undefined : 'i';
+			},
+			mask : function(attribute) {
+
+				return typeof attribute == 'string' ? attribute : undefined;
+			},
+			maxlength : function(attribute) {
+
+				return Math.round(attribute) || Infinity;
+			},
+			minlength : function(attribute) {
+
+				return Math.round(attribute) || 0;
+			},
+			pattern : function(attribute) {
+
+				return (/^(regexp|string)$/).test($.type(attribute)) ? attribute : /(?:)/;
+			},
+			prepare : function(attribute) {
+
+				return isFunction(attribute) ? attribute : getArray(attribute);
+			}
+		},
+
 		getFieldAttribute = function(target, attribute) {
 
 			target = $(target);
@@ -79,52 +116,9 @@
 				response = (validate[target.data(name)] || {})[attribute];
 			}
 
-			switch(attribute) {
+			if(isFunction(attributes[attribute])) {
 
-				case 'chars' :
-
-					response = typeof response == 'string' ? new RegExp('[' + response.replace(/([\[\]])/g, '\\$1') + ']') : /./;
-				break;
-
-				case 'conditional' :
-
-					response = isFunction(response) ? response : (typeof response == 'string' ? getArray(response) : []);
-				break;
-
-				case 'confirm' :
-
-					response = typeof response == 'string' ? $(fieldTypes).filter('#' + response).val() : undefined;
-				break;
-
-				case 'ignorecase' :
-
-					response = !getBoolean(response) ? undefined : 'i';
-				break;
-
-				case 'mask' :
-
-					response = typeof response == 'string' ? response : undefined;
-				break;
-
-				case 'maxlength' :
-
-					response = Math.round(response) || Infinity;
-				break;
-
-				case 'minlength' :
-
-					response = Math.round(response) || 0;
-				break;
-
-				case 'pattern' :
-
-					response = (/^(regexp|string)$/).test($.type(response)) ? response : /(?:)/;
-				break;
-
-				case 'prepare' :
-
-					response = isFunction(response) ? response : getArray(response);
-				break;
+				response = attributes[attribute].call(target, attribute);
 			}
 
 			return response;
