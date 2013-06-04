@@ -296,6 +296,11 @@
 					field.triggerHandler('valid');
 				} else {
 
+					if(options.clearInvalidFields) {
+
+						field.val('');
+					}
+
 					if(isFunction(options.invalid)) {
 
 						options.eachInvalid.call(field, response);
@@ -325,18 +330,27 @@
 
 				fields = form.find(fieldTypes),
 
-				valid = true;
+				valid = true,
+
+				first = true;
 
 			if(form.prop('id').length > 0) {
 
 				fields = fields.add($(fieldTypes).filter('[form="' + form.prop('id') + '"]'));
 			}
 
-			fields.each(function() {
+			fields.filter(options.filter).each(function() {
 
 				if(!validateField.call(this, event, bool).valid) {
 
 					valid = false;
+
+					if(first) {
+
+						$(this).trigger('focus');
+
+						first = false;
+					}
 				}
 			});
 
@@ -423,7 +437,7 @@
 						validateForm.call(this, event);
 					});
 
-					fields.on(namespace('keyup blur change'), function(event) {
+					fields.filter(options.filter).on(namespace('keyup blur change'), function(event) {
 
 						if($.inArray(event.type, getArray(options.events)) > -1) {
 
@@ -445,7 +459,9 @@
 
 				var
 
-					form = $(this);
+					form = $(this),
+
+					options = form.data(name);
 
 				if(form.is('form')) {
 
@@ -458,7 +474,7 @@
 						fields = fields.add($(fieldTypes).filter('[form="' + form.prop('id') + '"]'));
 					}
 
-					form.add(fields).off('.' + name).removeData(name);
+					form.add(fields.filter(options.filter)).off('.' + name).removeData(name);
 
 					return form;
 				} else {
