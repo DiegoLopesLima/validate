@@ -1,7 +1,7 @@
 # jQuery Validate <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank" title="Creative Commons License"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 
 [![NPM version](https://badge.fury.io/js/grunt.png)](http://badge.fury.io/js/grunt)
-[![Build Status](https://travis-ci.org/DiegoLopesLima/Validate.png?branch=development)](https://travis-ci.org/DiegoLopesLima/Validate)
+[![Build Status](https://travis-ci.org/DiegoLopesLima/Validate.png)](https://travis-ci.org/DiegoLopesLima/Validate)
 
 > License: <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Validate</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
 
@@ -12,12 +12,11 @@
 > Author: [Diego Lopes Lima](https://github.com/DiegoLopesLima)
 
 ## Demos
-* [Required fields](#)
-* [Conditional validation](#)
-* [Confirmation field](#)
-* [Regular expressions](#)
-* [Field masks](#)
-* [Extending jQuery Validate](#)
+* [Lorem ipsum](#)
+* [Lorem ipsum](#)
+* [Lorem ipsum](#)
+* [Lorem ipsum](#)
+* [Lorem ipsum](#)
 
 ## Usage
 
