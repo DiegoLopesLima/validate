@@ -1,8 +1,8 @@
-# jQuery Validate
+# jQuery Validate <a rel="license" href="http://creativecommons.org/licenses/by/3.0/" target="_blank" title="Creative Commons License"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by/3.0/80x15.png" /></a>
 
-> License: <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">_MIT_</a>
+> License: <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Validate</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
 
-> Version: _1.2.0_
+> Version: _2.0.0_
 
 > Requires: _jQuery 1.7+_
 
