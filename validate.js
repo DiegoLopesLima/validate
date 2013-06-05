@@ -50,41 +50,41 @@
 		validate = {},
 
 		attributes = {
-			chars : function(attribute) {
+			chars : function(value) {
 
-				return typeof attribute == 'string' ? new RegExp('[' + attribute.replace(/([\[\]])/g, '\\$1') + ']') : /./;
+				return typeof value == 'string' ? new RegExp('[' + value.replace(/([\[\]])/g, '\\$1') + ']') : /./;
 			},
-			conditional : function(attribute) {
+			conditional : function(value) {
 
-				return isFunction(attribute) ? attribute : (typeof attribute == 'string' ? getArray(attribute) : []);
+				return isFunction(value) ? value : (typeof value == 'string' ? getArray(value) : []);
 			},
-			confirm : function(attribute) {
+			confirm : function(value) {
 
-				return typeof attribute == 'string' ? $(fieldTypes).filter('#' + attribute).val() : undefined;
+				return typeof value == 'string' ? $(fieldTypes).filter('#' + value).val() : undefined;
 			},
-			ignorecase : function(attribute) {
+			ignorecase : function(value) {
 
-				return !getBoolean(attribute) ? undefined : 'i';
+				return !getBoolean(value) ? undefined : 'i';
 			},
-			mask : function(attribute) {
+			mask : function(value) {
 
-				return typeof attribute == 'string' ? attribute : undefined;
+				return typeof value == 'string' ? value : undefined;
 			},
-			maxlength : function(attribute) {
+			maxlength : function(value) {
 
-				return Math.round(attribute) || Infinity;
+				return Math.round(value) || Infinity;
 			},
-			minlength : function(attribute) {
+			minlength : function(value) {
 
-				return Math.round(attribute) || 0;
+				return Math.round(value) || 0;
 			},
-			pattern : function(attribute) {
+			pattern : function(value) {
 
-				return (/^(regexp|string)$/).test($.type(attribute)) ? attribute : /(?:)/;
+				return (/^(regexp|string)$/).test($.type(value)) ? value : /(?:)/;
 			},
-			prepare : function(attribute) {
+			prepare : function(value) {
 
-				return isFunction(attribute) ? attribute : getArray(attribute);
+				return isFunction(value) ? value : getArray(value);
 			}
 		},
 
@@ -118,7 +118,7 @@
 
 			if(isFunction(attributes[attribute])) {
 
-				response = attributes[attribute].call(target, attribute);
+				response = attributes[attribute].call(target, response);
 			}
 
 			return response;
@@ -459,9 +459,7 @@
 
 				var
 
-					form = $(this),
-
-					options = form.data(name);
+					form = $(this);
 
 				if(form.is('form')) {
 
@@ -474,7 +472,7 @@
 						fields = fields.add($(fieldTypes).filter('[form="' + form.prop('id') + '"]'));
 					}
 
-					form.add(fields.filter(options.filter)).off('.' + name).removeData(name);
+					form.add(fields).off('.' + name).removeData(name);
 
 					return form;
 				} else {
