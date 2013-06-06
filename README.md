@@ -12,6 +12,7 @@
 > Author: [Diego Lopes Lima](https://github.com/DiegoLopesLima)
 
 ## Demos
+
 * [Lorem ipsum](#)
 * [Lorem ipsum](#)
 * [Lorem ipsum](#)
@@ -52,7 +53,7 @@ jQuery('form').validate({
 ```
 
 ### data-chars
-Lorem ipsum dolor sit amet.
+Prevent invalid keys.
 
 #### Example
 
