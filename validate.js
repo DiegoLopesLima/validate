@@ -7,17 +7,18 @@
 		// Plugin name.
 		name = 'validate',
 
+		// Writable fields.
 		writable = 'input[type=color],input[type=date],input[type=datetime],input[type=datetime-local],input[type=email],input[type=file],input[type=hidden],input[type=month],input[type=number],input[type=password],input[type=range],input[type=search],input[type=tel],input[type=text],input[type=time],input[type=url],input[type=week],textarea,select,input:not([type])',
 
+		// Checkable fields.
 		checkable = 'input[type=checkbox],input[type=radio]',
 
+		// All field types.
 		fieldTypes = checkable + ',' + writable,
 
 		emptyFunction = $.noop,
 
 		isFunction = $.isFunction,
-
-		isPlainObject = $.isPlainObject,
 
 		// Default properties.
 		defaults = {
@@ -37,11 +38,13 @@
 			prepareAll : null
 		},
 
+		// A function to get a boolean value.
 		getBoolean = function(value) {
 
 			return (/^(true|)$/).test(value);
 		},
 
+		// A function to get an array.
 		getArray = function(value) {
 
 			return $.isArray(value) ? value : (typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : []);
@@ -404,7 +407,7 @@
 
 					return target[index];
 				}
-			} else if(isPlainObject(index)) {
+			} else if($.isPlainObject(index)) {
 
 				return $.extend(target, index);
 			}
