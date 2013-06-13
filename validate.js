@@ -336,10 +336,7 @@
 				if(value !== undefined) {
 
 					target[index] = value;
-				} else {
-
-					return target[index];
-				}
+				} else return target[index];
 			} else if($.isPlainObject(index)) return $.extend(target, index);
 
 			return target;
