@@ -318,6 +318,8 @@
 
 					event.preventDefault();
 
+					event.stopImmediatePropagation();
+
 					if(isFunction(options.invalid)) options.invalid.call(form);
 
 					form.triggerHandler('invalid');
@@ -369,7 +371,12 @@
 						if($.inArray(event.type, getArray(options.events)) > -1) validateField.call(this, event);
 					}).on(namespace('keypress'), function(event) {
 
-						if(!getFieldAttribute(this, 'chars').test(String.fromCharCode(event.keyCode))) event.preventDefault();
+						if(!getFieldAttribute(this, 'chars').test(String.fromCharCode(event.keyCode))) {
+
+							event.preventDefault();
+
+							event.stopImmediatePropagation();
+						}
 					});
 				} else $.error('This is not a form.');
 			},
