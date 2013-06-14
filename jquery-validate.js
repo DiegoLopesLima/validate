@@ -374,6 +374,7 @@
 							} else {
 
 								event.preventDefault();
+                event.stopImmediatePropagation();
 
 								// Is a function?
 								if($.isFunction(options.invalid)) {
