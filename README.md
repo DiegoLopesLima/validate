@@ -4,19 +4,20 @@
 
 > License: <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Validate</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/3.0/">Creative Commons Attribution 3.0 Unported License</a>.
 
-> Version: _2.0.0_
+> Version: 2.0.0
 
-> Requires: _jQuery 1.7+_
+> Requires: jQuery 1.7+
 
 > Author: [Diego Lopes Lima](https://github.com/DiegoLopesLima)
 
 ## Demos
 
-* [Lorem ipsum](#)
-* [Lorem ipsum](#)
-* [Lorem ipsum](#)
-* [Lorem ipsum](#)
-* [Lorem ipsum](#)
+* [Required field](#)
+* [Conditional](#)
+* [Pattern (Regular expression)](#)
+* [Confirm](#)
+* [Masks](#)
+* [Praparing field values](#)
 
 ## Usage
 
