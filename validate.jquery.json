@@ -2,7 +2,7 @@
 	"name": "validate",
 	"title": "jQuery Validate",
 	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
-	"keywords": ["jquery", "validate", "validation", "form", "data", "input", "field", "mask", "pattern", "required", "conditional"],
+	"keywords": ["jquery", "validate", "validation", "form", "data", "input", "field", "mask"],
 	"version": "2.0.0",
 	"author": {
 		"name": "Diego Lopes Lima",
