@@ -99,7 +99,7 @@ Lorem ipsum dolor sit amet.
 #### Example
 
 ```html
-<input type="date" data-pattern="^(\d{2})\/?(\d{2})\/?(\d{4})$" data-mask="${1}/${2}/${3}" />
+<input data-pattern="^(\d{2})\/?(\d{2})\/?(\d{4})$" data-mask="${1}/${2}/${3}" />
 ```
 
 ### data-maxlength
@@ -127,7 +127,7 @@ Lorem ipsum dolor sit amet.
 
 ```html
 <form>
-	<input type="text" data-prepare="placeholder" placeholder="Lorem ipsum" value="Lorem ipsum" />
+	<input data-prepare="placeholder" placeholder="Lorem ipsum" value="Lorem ipsum" />
 </form>
 ```
 
