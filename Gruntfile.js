@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
 	uglifyFiles[data.name + '.min.js'] = data.name + '.js';
 
-	grunt.initConfig({
+	grunt.config.init({
 		uglify : {
 			dist : {
 				files : uglifyFiles,
@@ -39,15 +39,25 @@ module.exports = function(grunt) {
 					unused : true,
 					strict : true,
 					trailing : true,
+					browser: true,
 					globals : {
 						jQuery : true
 					}
 				}
 			}
 		},
+		qunit : {
+			dist : {
+				options : {
+					urls : [data.name + '.test.html']
+				}
+			}
+		},
 		watch : {
-			files : [data.name + '.js', packageFile],
-			tasks : ['uglify:dist', 'jshint:dist']
+			dist : {
+				files : [data.name + '.js', packageFile],
+				tasks : ['uglify:dist', 'jshint:dist', 'qunit:dist']
+			}
 		}
 	});
 
@@ -55,7 +65,9 @@ module.exports = function(grunt) {
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 
+	grunt.loadNpmTasks('grunt-contrib-qunit');
+
 	grunt.loadNpmTasks('grunt-contrib-watch');
 
-	grunt.registerTask('default', ['uglify', 'jshint']);
+	grunt.registerTask('default', ['uglify:dist', 'jshint:dist', 'qunit:dist']);
 };

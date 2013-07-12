@@ -161,6 +161,8 @@
 
 				fieldName = field.prop('nome'),
 
+				fieldId = field.prop('is'),
+
 				fieldType = field.prop('type'),
 
 				value = field.val(),
@@ -241,6 +243,29 @@
 					break;
 				}
 			}
+
+			////////////////////////////////////////
+
+			var
+
+				target = fieldId.length > 0 ? $('[data-describe="' + fieldId + '"]') : [],
+
+				description = options.description || {},
+
+				custom = description.custom || {};
+
+			if(target.length > 0) {
+
+				$.extend(description, custom[getFieldAttribute(field, 'description')]);
+
+				status.message = description[currentStatus];
+
+				status.message = String(isFunction(status.message) ? status.message.call(field, value) : status.message);
+
+				target.html(status.message);
+			}
+
+			////////////////////////////////////////
 
 			if(bool) {
 
@@ -371,7 +396,11 @@
 						if($.inArray(event.type, getArray(options.events)) > -1) validateField.call(this, event);
 					}).on(namespace('keypress'), function(event) {
 
-						if(!getFieldAttribute(this, 'chars').test(String.fromCharCode(event.keyCode))) {
+						var
+
+							keyCode = event.keyCode;
+
+						if(((keyCode > 47 && keyCode < 91) || (keyCode > 95 && keyCode < 106)) && !getFieldAttribute(this, 'chars').test(String.fromCharCode(keyCode))) {
 
 							event.preventDefault();
 
