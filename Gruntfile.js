@@ -8,8 +8,6 @@ module.exports = function(grunt) {
 
 		data = grunt.file.readJSON(packageFile),
 
-		jQueryData = grunt.file.readJSON(data.name + '.jquery.json'),
-
 		uglifyFiles = {};
 
 	uglifyFiles[data.name + '.min.js'] = data.name + '.js';
@@ -19,7 +17,7 @@ module.exports = function(grunt) {
 			dist : {
 				files : uglifyFiles,
 				options : {
-					banner : '/* ' + jQueryData.title + ' ' + jQueryData.version + ' - http://plugins.jquery.com/' + jQueryData.name + '/' + jQueryData.version + ' */\n;'
+					banner : '/* ' + data.title + ' ' + data.version + ' - http://plugins.jquery.com/' + data.name + '/' + data.version + ' */\n;'
 				}
 			}
 		},
