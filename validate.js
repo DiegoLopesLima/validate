@@ -244,8 +244,6 @@
 				}
 			}
 
-			////////////////////////////////////////
-
 			var
 
 				target = fieldId.length > 0 ? $('[data-describe="' + fieldId + '"]') : [],
@@ -264,8 +262,6 @@
 
 				target.html(status.message);
 			}
-
-			////////////////////////////////////////
 
 			if(bool) {
 
