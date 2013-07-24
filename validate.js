@@ -18,6 +18,8 @@
 
 		emptyFunction = $.noop,
 
+		emptyArray = emptyArray,
+
 		isFunction = $.isFunction,
 
 		// Default properties.
@@ -27,7 +29,7 @@
 			validated : emptyFunction,
 			eachValid : emptyFunction,
 			eachInvalid : emptyFunction,
-			events : [],
+			events : emptyArray,
 			filter : '*',
 			sendForm : true,
 			selectFirstInvalid : true,
@@ -47,7 +49,7 @@
 		// A function to get an array.
 		getArray = function(value) {
 
-			return $.isArray(value) ? value : (typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : []);
+			return $.isArray(value) ? value : (typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : emptyArray);
 		},
 
 		validate = {},
@@ -59,7 +61,7 @@
 			},
 			conditional : function(value) {
 
-				return isFunction(value) ? value : (typeof value == 'string' ? getArray(value) : []);
+				return isFunction(value) ? value : (typeof value == 'string' ? getArray(value) : emptyArray);
 			},
 			confirm : function(value) {
 
@@ -161,7 +163,7 @@
 
 				fieldName = field.prop('nome'),
 
-				fieldId = field.prop('is'),
+				fieldId = field.prop('id'),
 
 				fieldType = field.prop('type'),
 
@@ -216,7 +218,7 @@
 
 				var
 
-					parts = value.match(pattern) || [],
+					parts = value.match(pattern) || emptyArray,
 
 					newValue = mask;
 
@@ -246,7 +248,7 @@
 
 			var
 
-				target = fieldId.length > 0 ? $('[data-describe="' + fieldId + '"]') : [],
+				target = fieldId.length > 0 ? $('[data-describe="' + fieldId + '"]') : emptyArray,
 
 				description = options.description || {},
 
@@ -461,7 +463,7 @@
 
 	$.fn[name] = function(options) {
 
-		return isFunction(plugin[options]) ? plugin[options].apply(this, Array.prototype.slice.call(arguments, 1)) : $(this).each(function() {
+		return isFunction(plugin[options]) ? plugin[options].apply(this, emptyArray.slice.call(arguments, 1)) : $(this).each(function() {
 
 			plugin.init.call($(this).data(name, $.extend({}, defaults, options)));
 		});
