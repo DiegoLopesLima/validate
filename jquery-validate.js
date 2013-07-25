@@ -446,19 +446,19 @@
 	description : {},
 
 	// Callback
-	eachField : $.noop,
+	eachField : jQuery.noop,
 
 	// Callback
-	eachInvalidField : $.noop,
+	eachInvalidField : jQuery.noop,
 
 	// Callback
-	eachValidField : $.noop,
+	eachValidField : jQuery.noop,
 
 	// Callback
-	invalid : $.noop,
+	invalid : jQuery.noop,
 
 	// Callback
-	valid : $.noop,
+	valid : jQuery.noop,
 
 	// A fielter to the fields
 	filter : '*'
