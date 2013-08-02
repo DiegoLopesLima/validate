@@ -101,7 +101,7 @@
 
 				response = target.data(attribute);
 
-			if(response === undefined && /^trim|required|m(in|ax)length|prepare|conditional|ignorecase|validate|description|chars$/.test(attribute)) {
+			if(response === undefined && /^(trim|required|m(in|ax)length|prepare|conditional|ignorecase|validate|description|chars|pattern)$/.test(attribute)) {
 
 				var
 
@@ -110,12 +110,12 @@
 						return $(this).data(attribute) !== undefined;
 					}).filter(':first');
 
-				if(parent.length === 1) response = parent.data(attribute);
+				if(parent.length > 0) response = parent.data(attribute);
 			}
 
-			if(response === undefined && typeof target.data(name) == 'string') response = (validate[target.data(name)] || {})[attribute];
+			if(response === undefined && typeof target.data('validate') == 'string') response = (validate[target.data('validate')] || {})[attribute];
 
-			if(isFunction(attributes[attribute])) response = attributes[attribute].call(target, response);
+			if(isFunction(attributes[attribute])) return attributes[attribute].call(target, response);
 
 			return response;
 		},
@@ -180,7 +180,7 @@
 			if(isFunction(prepare)) {
 
 				value = String(prepare.call(field, value));
-			} else if(prepare.length > 0) for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) if(isFunction(options.prepare[currentPrepare])) value = String(options.prepare[currentPrepare].call(field, value));
+			} else if(prepare.length) for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) if(isFunction(options.prepare[currentPrepare])) value = String(options.prepare[currentPrepare].call(field, value));
 
 			pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, getFieldAttribute(field, 'ignorecase'));
 
@@ -465,7 +465,7 @@
 
 		return isFunction(plugin[options]) ? plugin[options].apply(this, emptyArray.slice.call(arguments, 1)) : $(this).each(function() {
 
-			plugin.init.call($(this).data(name, $.extend({}, defaults, options)));
+			plugin.init.call(plugin.destroy.call(this).data(name, $.extend({}, defaults, options)));
 		});
 	};
 

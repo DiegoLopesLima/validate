@@ -47,7 +47,7 @@ module.exports = function(grunt) {
 		qunit : {
 			dist : {
 				options : {
-					timeout : Infinity,
+					timeout : 999999,
 					urls : [data.name + '.test.html']
 				}
 			}
