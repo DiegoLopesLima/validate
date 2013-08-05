@@ -49,7 +49,7 @@
 		// A function to get an array.
 		getArray = function(value) {
 
-			return $.isArray(value) ? value : (typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : emptyArray);
+			return typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : $.isArray(value) ? value : [];
 		},
 
 		validate = {},
@@ -61,7 +61,7 @@
 			},
 			conditional : function(value) {
 
-				return isFunction(value) ? value : (typeof value == 'string' ? getArray(value) : emptyArray);
+				return isFunction(value) ? value : getArray(value);
 			},
 			confirm : function(value) {
 

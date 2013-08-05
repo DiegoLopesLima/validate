@@ -17,7 +17,7 @@ module.exports = function(grunt) {
 			dist : {
 				files : uglifyFiles,
 				options : {
-					banner : '/* ' + data.title + ' ' + data.version + ' - http://plugins.jquery.com/' + data.name + '/' + data.version + ' */\n;'
+					banner : '/*! jQuery Validate ' + data.version + ' | http://plugins.jquery.com/' + data.name + '/' + data.version + ' */\n;'
 				}
 			}
 		},
