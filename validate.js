@@ -44,12 +44,14 @@
 		getBoolean = function(value) {
 
 			return (/^(true|)$/).test(value);
+
 		},
 
 		// A function to get an array.
 		getArray = function(value) {
 
 			return typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : $.isArray(value) ? value : [];
+
 		},
 
 		validate = {},
@@ -58,38 +60,47 @@
 			chars : function(value) {
 
 				return typeof value == 'string' ? new RegExp('[' + value.replace(/([\[\]])/g, '\\$1') + ']') : /./;
+
 			},
 			conditional : function(value) {
 
 				return isFunction(value) ? value : getArray(value);
+
 			},
 			confirm : function(value) {
 
 				return typeof value == 'string' ? $(fieldTypes).filter('#' + value).val() : undefined;
+
 			},
 			ignorecase : function(value) {
 
 				return !getBoolean(value) ? undefined : 'i';
+
 			},
 			mask : function(value) {
 
 				return typeof value == 'string' ? value : undefined;
+
 			},
 			maxlength : function(value) {
 
 				return Math.round(value) || Infinity;
+
 			},
 			minlength : function(value) {
 
 				return Math.round(value) || 0;
+
 			},
 			pattern : function(value) {
 
 				return (/^(regexp|string)$/).test($.type(value)) ? value : /(?:)/;
+
 			},
 			prepare : function(value) {
 
 				return isFunction(value) ? value : getArray(value);
+
 			}
 		},
 
@@ -108,9 +119,11 @@
 					parent = target.parents('*').filter(function() {
 
 						return $(this).data(attribute) !== undefined;
+
 					}).filter(':first');
 
 				if(parent.length > 0) response = parent.data(attribute);
+
 			}
 
 			if(response === undefined && typeof target.data('validate') == 'string') response = (validate[target.data('validate')] || {})[attribute];
@@ -118,11 +131,13 @@
 			if(isFunction(attributes[attribute])) return attributes[attribute].call(target, response);
 
 			return response;
+
 		},
 
 		namespace = function(events) {
 
 			return events.replace(/([\s\uFEFF\xA0]+|$)/g, '.' + name + '$1');
+
 		},
 
 		validateField = function(event, bool) {
@@ -180,6 +195,7 @@
 			if(isFunction(prepare)) {
 
 				value = String(prepare.call(field, value));
+
 			} else if(prepare.length) for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) if(isFunction(options.prepare[currentPrepare])) value = String(options.prepare[currentPrepare].call(field, value));
 
 			pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, getFieldAttribute(field, 'ignorecase'));
@@ -191,6 +207,7 @@
 				response.status.minlength = valueLength >= minlength;
 
 				response.status.maxlength = valueLength <= maxlength;
+
 			} else {
 
 				if(fieldName) {
@@ -204,7 +221,9 @@
 					response.status.minlength = checked.length >= minlength;
 
 					response.status.maxlength = checked.length <= maxlength;
+
 				}
+
 			}
 
 			if(getBoolean(getFieldAttribute(field, 'required'))) {
@@ -212,6 +231,7 @@
 				response.status.required = filled;
 
 				response.status.pattern = pattern.test(value);
+
 			} else if(filled) response.status.pattern = pattern.test(value);
 
 			if(!bool && event && event.type != 'keyup' && response.status.pattern && mask !== undefined) {
@@ -227,11 +247,13 @@
 				newValue = newValue.replace(/(?:^|[^\\])\$\{\d+(?::`([^`]*)`)?\}/g, '$1');
 
 				if(pattern.test(newValue)) field.val(newValue);
+
 			}
 
 			if(isFunction(conditional)) {
 
 				response.status.conditional = !!conditional.call(field, value);
+
 			} else if(conditional.length > 0) for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) if(isFunction(options.conditional[currentConditional]) && !options.conditional[currentConditional].call(field, value)) response.status.conditional = false;
 
 			if(confirm !== undefined) response.status.confirm = getFieldAttribute(field, 'confirm') === value;
@@ -243,7 +265,9 @@
 					response.valid = false;
 
 					break;
+
 				}
+
 			}
 
 			var
@@ -263,11 +287,13 @@
 				status.message = String(isFunction(status.message) ? status.message.call(field, value) : status.message);
 
 				target.html(status.message);
+
 			}
 
 			if(bool) {
 
 				return response.valid;
+
 			} else {
 
 				field.attr('aria-invalid', !response.valid);
@@ -277,6 +303,7 @@
 					if(isFunction(options.valid)) options.eachValid.call(field, response);
 
 					field.triggerHandler('valid');
+
 				} else {
 
 					if(options.clearInvalidFields) field.val('');
@@ -284,6 +311,7 @@
 					if(isFunction(options.invalid)) options.eachInvalid.call(field, response);
 
 					field.triggerHandler('invalid');
+
 				}
 
 				if(isFunction(options.eachField)) options.eachField.call(field, response);
@@ -291,7 +319,9 @@
 				field.triggerHandler('validated');
 
 				return response;
+
 			}
+
 		},
 
 		validateForm = function(event, bool) {
@@ -321,13 +351,17 @@
 						$(this).trigger('focus');
 
 						first = false;
+
 					}
+
 				}
+
 			});
 
 			if(bool) {
 
 				return valid;
+
 			} else {
 
 				if(valid) {
@@ -337,6 +371,7 @@
 					if(isFunction(options.valid)) options.valid.call(form);
 
 					form.triggerHandler('valid');
+
 				} else {
 
 					event.preventDefault();
@@ -346,12 +381,15 @@
 					if(isFunction(options.invalid)) options.invalid.call(form);
 
 					form.triggerHandler('invalid');
+
 				}
 
 				if(isFunction(options.validated)) options.validated.call(form);
 
 				form.triggerHandler('validated');
+
 			}
+
 		},
 
 		extend = function(target, index, value) {
@@ -361,10 +399,13 @@
 				if(value !== undefined) {
 
 					target[index] = value;
+
 				} else return target[index];
+
 			} else if($.isPlainObject(index)) return $.extend(target, index);
 
 			return target;
+
 		},
 
 		plugin = {
@@ -387,11 +428,13 @@
 					element.on(namespace('submit'), function(event) {
 
 						validateForm.call(this, event);
+
 					});
 
 					fields.filter(options.filter).on(namespace('keyup blur change'), function(event) {
 
 						if($.inArray(event.type, getArray(options.events)) > -1) validateField.call(this, event);
+
 					}).on(namespace('keypress'), function(event) {
 
 						var
@@ -403,9 +446,12 @@
 							event.preventDefault();
 
 							event.stopImmediatePropagation();
+
 						}
 					});
+
 				} else $.error('This is not a form.');
+
 			},
 			destroy : function() {
 
@@ -424,7 +470,9 @@
 					form.add(fields).off('.' + name).removeData(name);
 
 					return form;
+
 				} else $.error('This is not a form.');
+
 			},
 			valid : function() {
 
@@ -445,7 +493,9 @@
 							valid = false;
 
 							return false;
+
 						}
+
 					} else if(element.is(fieldTypes)) {
 
 						if(!validateField.call(element, null, true)) {
@@ -453,11 +503,14 @@
 							valid = false;
 
 							return false;
+
 						}
+
 					}
 				});
 
 				return valid;
+
 			}
 		};
 
@@ -466,21 +519,27 @@
 		return isFunction(plugin[options]) ? plugin[options].apply(this, emptyArray.slice.call(arguments, 1)) : $(this).each(function() {
 
 			plugin.init.call(plugin.destroy.call(this).data(name, $.extend({}, defaults, options)));
+
 		});
+
 	};
 
 	$[name] = $.extend(function(index, value) {
 
 		return extend(defaults, index, value);
+
 	}, {
 		add : function(index, value) {
 
 			return extend(validate, index, value);
+
 		},
 		extend : function(index, value) {
 
 			return extend(plugin, index, value);
+
 		},
 		version : '2.0.0'
 	});
+
 })(jQuery);
