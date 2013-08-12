@@ -31,6 +31,7 @@
 			eachInvalid : emptyFunction,
 			events : emptyArray,
 			filter : '*',
+			ajax : false,
 			sendForm : true,
 			selectFirstInvalid : true,
 			clearInvalidFields : false,
@@ -346,9 +347,9 @@
 
 					valid = false;
 
-					if(first) {
+					if(first && options.selectFirstInvalid) {
 
-						$(this).trigger('focus');
+						$(this).trigger('select');
 
 						first = false;
 
@@ -368,7 +369,13 @@
 
 					if(!options.sendForm) event.preventDefault();
 
-					if(isFunction(options.valid)) options.valid.call(form);
+					if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
+						$.extend({
+							url : form.prop('action'),
+							type : form.attr('method'),
+							data : form.serialize()
+						}, options.ajax)
+					) : undefined);
 
 					form.triggerHandler('valid');
 
