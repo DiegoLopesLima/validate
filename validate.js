@@ -18,7 +18,7 @@
 
 		emptyFunction = $.noop,
 
-		emptyArray = emptyArray,
+		emptyArray = [],
 
 		isFunction = $.isFunction,
 
@@ -33,7 +33,8 @@
 			filter : '*',
 			ajax : false,
 			sendForm : true,
-			selectFirstInvalid : true,
+			selectInvalid : true,
+			scrollToInvalid : true,
 			clearInvalidFields : false,
 			conditional : {},
 			prepare : {},
@@ -113,7 +114,7 @@
 
 				response = target.data(attribute);
 
-			if(response === undefined && /^(trim|required|m(in|ax)length|prepare|conditional|ignorecase|validate|description|chars|pattern)$/.test(attribute)) {
+			if(response === undefined && /^(trim|required|m(in|ax)length|prepare|conditional|ignorecase|validate|description|chars)$/.test(attribute)) {
 
 				var
 
@@ -137,7 +138,7 @@
 
 		namespace = function(events) {
 
-			return events.replace(/([\s\uFEFF\xA0]+|$)/g, '.' + name + '$1');
+			return events.replace(/(\s|$)/g, '.' + name + '$1');
 
 		},
 
@@ -179,10 +180,6 @@
 
 				fieldName = field.prop('nome'),
 
-				fieldId = field.prop('id'),
-
-				fieldType = field.prop('type'),
-
 				value = field.val(),
 
 				valueLength = value.length,
@@ -209,21 +206,17 @@
 
 				response.status.maxlength = valueLength <= maxlength;
 
-			} else {
+			} else if(fieldName) {
 
-				if(fieldName) {
+				var
 
-					var
+					checked = $('[name="' + fieldName + '"]:checked');
 
-						checked = $('[type="' + fieldType + '"][name="' + fieldName + '"]:checked');
+				filled = checked.length > 0;
 
-					filled = checked.length > 0;
+				response.status.minlength = checked.length >= minlength;
 
-					response.status.minlength = checked.length >= minlength;
-
-					response.status.maxlength = checked.length <= maxlength;
-
-				}
+				response.status.maxlength = checked.length <= maxlength;
 
 			}
 
@@ -273,13 +266,13 @@
 
 			var
 
-				target = fieldId.length > 0 ? $('[data-describe="' + fieldId + '"]') : emptyArray,
+				target = field.prop('id').length > 0 ? $('[data-describe="' + field.prop('id') + '"]') : emptyArray,
 
 				description = options.description || {},
 
 				custom = description.custom || {};
 
-			if(target.length > 0) {
+			if(target.length) {
 
 				$.extend(description, custom[getFieldAttribute(field, 'description')]);
 
@@ -291,11 +284,7 @@
 
 			}
 
-			if(bool) {
-
-				return response.valid;
-
-			} else {
+			if(!bool) {
 
 				field.attr('aria-invalid', !response.valid);
 
@@ -321,7 +310,7 @@
 
 				return response;
 
-			}
+			} else return response.valid;
 
 		},
 
@@ -347,9 +336,27 @@
 
 					valid = false;
 
-					if(first && options.selectFirstInvalid) {
+					if(first) {
 
-						$(this).trigger('select');
+						if(options.selectInvalid) $(this).trigger('select');
+
+						if(options.scrollToInvalid) {
+
+							var
+
+								top = ($(this).offset().top + ($(this).height() / 2)) - ($(window).height() / 2);
+
+							if($(window).scrollTop() !== top) {
+
+								$('body,html').animate({
+									scrollTop : top
+								}, $.extend({
+									duration : 'normal'
+								}, options.scrollToInvalid));
+
+							}
+
+						}
 
 						first = false;
 
@@ -359,15 +366,11 @@
 
 			});
 
-			if(bool) {
-
-				return valid;
-
-			} else {
+			if(!bool) {
 
 				if(valid) {
 
-					if(!options.sendForm) event.preventDefault();
+					if(!options.sendForm || options.ajax) event.preventDefault();
 
 					if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
 						$.extend({
@@ -395,7 +398,7 @@
 
 				form.triggerHandler('validated');
 
-			}
+			} else return valid;
 
 		},
 
@@ -503,15 +506,11 @@
 
 						}
 
-					} else if(element.is(fieldTypes)) {
+					} else if(element.is(fieldTypes) && !validateField.call(element, null, true)) {
 
-						if(!validateField.call(element, null, true)) {
+						valid = false;
 
-							valid = false;
-
-							return false;
-
-						}
+						return false;
 
 					}
 				});
