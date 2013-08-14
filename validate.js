@@ -35,7 +35,7 @@
 			sendForm : true,
 			selectInvalid : true,
 			scrollToInvalid : true,
-			clearInvalidFields : false,
+			clearInvalid : false,
 			conditional : {},
 			prepare : {},
 			description : {},
@@ -174,11 +174,7 @@
 
 				conditional = getFieldAttribute(field, 'conditional'),
 
-				confirm = getFieldAttribute(field, 'confirm'),
-
 				mask = getFieldAttribute(field, 'mask'),
-
-				fieldName = field.prop('nome'),
 
 				value = field.val(),
 
@@ -206,11 +202,11 @@
 
 				response.status.maxlength = valueLength <= maxlength;
 
-			} else if(fieldName) {
+			} else if(field.prop('name')) {
 
 				var
 
-					checked = $('[name="' + fieldName + '"]:checked');
+					checked = $('[name="' + field.prop('name') + '"]:checked');
 
 				filled = checked.length > 0;
 
@@ -248,9 +244,9 @@
 
 				response.status.conditional = !!conditional.call(field, value);
 
-			} else if(conditional.length > 0) for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) if(isFunction(options.conditional[currentConditional]) && !options.conditional[currentConditional].call(field, value)) response.status.conditional = false;
+			} else if(conditional.length > 0) for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) if(isFunction(options.conditional[conditional[currentConditional]]) && !options.conditional[conditional[currentConditional]].call(field, value)) response.status.conditional = false;
 
-			if(confirm !== undefined) response.status.confirm = getFieldAttribute(field, 'confirm') === value;
+			if(getFieldAttribute(field, 'confirm') !== undefined) response.status.confirm = getFieldAttribute(field, 'confirm') === value;
 
 			for(var currentStatus in response.status) {
 
@@ -296,7 +292,7 @@
 
 				} else {
 
-					if(options.clearInvalidFields) field.val('');
+					if(options.clearInvalid) field.val('');
 
 					if(isFunction(options.invalid)) options.eachInvalid.call(field, response);
 
