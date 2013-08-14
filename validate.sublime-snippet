@@ -1,0 +1,24 @@
+<snippet>
+	<content>
+<![CDATA[
+\$(${1:'form'}).validate({
+	eachInvalid : function() {
+
+		${2:\$(this).closest('.form-group').addClass('has-error');}
+
+	},
+	eachValid : function() {
+
+		${3:\$(this).closest('.form-group').removeClass('has-error');}
+
+	}
+});
+]]>
+	</content>
+
+	<tabTrigger>vl</tabTrigger>
+
+	<scope>source.js</scope>
+
+	<description>jQuery.fn.validate</description>
+</snippet>
