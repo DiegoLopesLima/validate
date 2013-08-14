@@ -178,8 +178,6 @@
 
 				value = field.val(),
 
-				valueLength = value.length,
-
 				filled = false;
 
 			if(getBoolean(getFieldAttribute(field, 'trim'))) value = $.trim(value);
@@ -190,17 +188,29 @@
 
 				value = String(prepare.call(field, value));
 
-			} else if(prepare.length) for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) if(isFunction(options.prepare[currentPrepare])) value = String(options.prepare[currentPrepare].call(field, value));
+			} else if(prepare.length > 0) {
+
+				for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) {
+
+					var
+
+						prepareName = prepare[currentPrepare];
+
+					if(isFunction(options.prepare[prepareName])) value = String(options.prepare[prepareName].call(field, value));
+
+				}
+
+			}
 
 			pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, getFieldAttribute(field, 'ignorecase'));
 
 			if(field.is(writable)) {
 
-				filled = valueLength > 0;
+				filled = value.length > 0;
 
-				response.status.minlength = valueLength >= minlength;
+				response.status.minlength = value.length >= minlength;
 
-				response.status.maxlength = valueLength <= maxlength;
+				response.status.maxlength = value.length <= maxlength;
 
 			} else if(field.prop('name')) {
 
@@ -244,7 +254,19 @@
 
 				response.status.conditional = !!conditional.call(field, value);
 
-			} else if(conditional.length > 0) for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) if(isFunction(options.conditional[conditional[currentConditional]]) && !options.conditional[conditional[currentConditional]].call(field, value)) response.status.conditional = false;
+			} else if(conditional.length > 0) {
+
+				for(var currentConditional = 0, conditionalLength = conditional.length; currentConditional < conditionalLength; currentConditional++) {
+
+					var
+
+						conditionalName = conditional[currentConditional];
+
+					if(isFunction(options.conditional[conditionalName])) response.status.conditional = !!options.conditional[conditionalName].call(field, value);
+
+				}
+
+			}
 
 			if(getFieldAttribute(field, 'confirm') !== undefined) response.status.confirm = getFieldAttribute(field, 'confirm') === value;
 
