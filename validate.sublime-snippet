@@ -4,12 +4,12 @@
 \$(${1:'form'}).validate({
 	eachInvalid : function() {
 
-		${2:\$(this).closest('.form-group').addClass('has-error');}
+		\$(this).closest(${2:'.form-group'}).addClass(${3:'has-error'});
 
 	},
 	eachValid : function() {
 
-		${3:\$(this).closest('.form-group').removeClass('has-error');}
+		\$(this).closest(${4:'.form-group'}).removeClass(${5:'has-error'});
 
 	}
 });
@@ -20,5 +20,5 @@
 
 	<scope>source.js</scope>
 
-	<description>jQuery.fn.validate</description>
+	<description>jQuery Validate</description>
 </snippet>
