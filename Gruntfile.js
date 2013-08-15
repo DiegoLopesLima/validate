@@ -25,22 +25,7 @@ module.exports = function(grunt) {
 			dist : {
 				src : [data.name + '.js'],
 				options : {
-					camelcase : true,
-					immed : true,
-					indent : true,
-					latedef : true,
-					newcap : true,
-					noarg : true,
-					noempty : true,
-					quotmark : true,
-					undef : true,
-					unused : true,
-					strict : true,
-					trailing : true,
-					browser: true,
-					globals : {
-						jQuery : true
-					}
+					jshintrc : '.jshintrc'
 				}
 			}
 		},
