@@ -34,10 +34,30 @@
 				</div>
 
 				<div class="control-group input-append">
-					<input type="text" name="age" id="age" data-required data-pattern="^[0-9]+$" />
+					<input type="text" name="age" id="age" data-required data-pattern="^[0-9]+$" 
+		data-description="{&#34;required&#34;:&#34;This field is required&#34;,&#34;pattern&#34; : &#34;Numbers only&#34;}" data-describedby="age-description" />
 
 					<label for="age" class="add-on"><span class="icon-asterisk"></span> Age</label>
+
 				</div>
+
+<div class="control-group input-append">
+                            <label class="control-label">Quality Control</label>
+                            <div class="controls">
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="fast" data-required data-description="{&#34;required&#34;:&#34;This field is required&#34;}" data-describedby="chceck-description" >
+                                    Fast
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="cheap" data-required data-description="{&#34;required&#34;:&#34;This field is required&#34;}" data-describedby="chceck-description" >
+                                    Cheap
+                                </label>
+                                <label class="checkbox">
+                                    <input type="checkbox" name="qualityControl[]" value="good" data-required  data-description="{&#34;required&#34;:&#34;This field is required&#34;}" data-describedby="chceck-description" >
+                                    Good
+                                </label>
+                            </div>
+                        </div>
 
 				<div class="btn-group">
 					<button type="submit" class="btn btn-primary">Send</button>
@@ -53,14 +73,17 @@
 
 		<script>
 			$('form').validate({
-				onKeyup : true,
+				onBlur : true,
+				onChange : true,
 				eachValidField : function() {
 
 					$(this).closest('div').removeClass('error').addClass('success');
+					$(this).closest('label').removeClass('error').addClass('success');
 				},
 				eachInvalidField : function() {
 
 					$(this).closest('div').removeClass('success').addClass('error');
+					$(this).closest('label').removeClass('success').addClass('error');
 				}
 			});
 		</script>
