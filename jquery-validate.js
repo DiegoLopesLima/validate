@@ -3,7 +3,8 @@
 
 	var
 
-		type = ['input:not([type]),input[type="color"],input[type="date"],input[type="datetime"],input[type="datetime-local"],input[type="email"],input[type="file"],input[type="hidden"],input[type="month"],input[type="number"],input[type="password"],input[type="range"],input[type="search"],input[type="tel"],input[type="text"],input[type="time"],input[type="url"],input[type="week"],textarea', 'select', 'input[type="checkbox"],input[type="radio"]'],
+		//input:not([type]), this was causing errors on jQuery 1.8.1 (default jQuery in Joomla)
+		type = ['input[type="hidden"],input[type="color"],input[type="date"],input[type="datetime"],input[type="datetime-local"],input[type="email"],input[type="file"],input[type="hidden"],input[type="month"],input[type="number"],input[type="password"],input[type="range"],input[type="search"],input[type="tel"],input[type="text"],input[type="time"],input[type="url"],input[type="week"],textarea', 'select', 'input[type="checkbox"],input[type="radio"]'],
 
 		// All field types
 		allTypes = type.join(','),
@@ -207,8 +208,18 @@
 
 				log = fieldDescription.valid;
 
-			if(describedby.length > 0 && event.type != 'keyup') {
+			if(typeof(fieldDescribedby) !== "undefined" && options.autoDescribedby != false && describedby.length == 0){
+				describedby = $(options.autoDescribedby).attr('id',fieldDescribedby);
+				if(field.attr('type') == 'checkbox' || field.attr('type') == 'ratio'){
+					$(field).parent().parent().append(describedby); // The first parent in this case is usually the label 
+				}else{
+					$(field).parent().append(describedby);
+				}
 
+			}
+
+			if(describedby.length > 0 && event.type != 'keyup') {
+				describedby.css('display','block');
 				if(!status.required) {
 
 					log = fieldDescription.required;
@@ -218,6 +229,8 @@
 				} else if(!status.conditional) {
 
 					log = fieldDescription.conditional;
+				} else if(!log){ // hide if there is no message
+					describedby.css('display','none');
 				}
 
 				describedby.html(log || '');
@@ -432,6 +445,9 @@
 
 	// Validate on onChange?
 	onChange : false,
+
+	// Create Describedby automatically is missing. Set to false to disable it
+	autoDescribedby : '<div class="validation-advice" />',
 
 	// Default namespace
 	nameSpace : 'validate',
