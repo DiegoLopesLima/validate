@@ -32,7 +32,7 @@
 			events : emptyArray,
 			filter : '*',
 			ajax : false,
-			sendForm : true,
+			send : true,
 			selectInvalid : true,
 			scrollToInvalid : true,
 			clearInvalid : false,
@@ -388,7 +388,7 @@
 
 				if(valid) {
 
-					if(!options.sendForm || options.ajax) event.preventDefault();
+					if(!options.send || options.ajax) event.preventDefault();
 
 					if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
 						$.extend({

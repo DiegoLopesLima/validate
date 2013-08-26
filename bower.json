@@ -1,12 +1,12 @@
 {
-	"name": "jquery-validate",
-	"version": "2.0.0",
-	"ignore": [
-		"**/.*",
-		"*.test.*",
-		"*.sublime-snippet",
-		"bower.json"
-	],
-	"dependencies": {},
-	"devDependencies": {}
+  "name": "validate",
+  "version": "2.0.0",
+  "main": "validate.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
 }
