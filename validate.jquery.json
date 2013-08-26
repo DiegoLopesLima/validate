@@ -1,7 +1,7 @@
 {
 	"name": "validate",
 	"title": "jQuery Validate",
-	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
+	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation using data attributes.",
 	"keywords": ["jquery", "validate", "validation", "form", "data", "input", "field", "mask"],
 	"version": "2.0.0",
 	"author": {
@@ -24,7 +24,7 @@
 	],
 	"bugs": "https://github.com/DiegoLopesLima/Validate/issues",
 	"docs": "https://github.com/DiegoLopesLima/Validate#readme",
-	"download": "https://www.dropbox.com/s/p5xhpb52572xy5b/jQuery%20Validate%201.1.2.zip",
+	"download": "https://github.com/DiegoLopesLima/Validate/archive/master.zip",
 	"dependencies": {
 		"jquery": ">=1.7"
 	}

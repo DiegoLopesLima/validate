@@ -76,7 +76,7 @@
 			},
 			ignorecase : function(value) {
 
-				return !getBoolean(value) ? undefined : 'i';
+				return getBoolean(value) ? 'i' : undefined;
 
 			},
 			mask : function(value) {
