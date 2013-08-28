@@ -188,19 +188,7 @@
 
 				value = String(prepare.call(field, value));
 
-			} else if(prepare.length > 0) {
-
-				for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) {
-
-					var
-
-						prepareName = prepare[currentPrepare];
-
-					if(isFunction(options.prepare[prepareName])) value = String(options.prepare[prepareName].call(field, value));
-
-				}
-
-			}
+			} else if(prepare.length > 0) for(var currentPrepare = 0, prepareLength = prepare.length; currentPrepare < prepareLength; currentPrepare++) if(isFunction(options.prepare[prepare[currentPrepare]])) value = String(options.prepare[prepare[currentPrepare]].call(field, value));
 
 			pattern = new RegExp($.type(pattern) == 'regexp' ? pattern.source : pattern, getFieldAttribute(field, 'ignorecase'));
 
@@ -476,6 +464,7 @@
 							event.stopImmediatePropagation();
 
 						}
+
 					});
 
 				} else $.error('This is not a form.');
