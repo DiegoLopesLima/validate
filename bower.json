@@ -4,9 +4,6 @@
   "main": "validate.js",
   "ignore": [
     "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
+    "node_modules"
   ]
 }

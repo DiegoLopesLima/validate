@@ -34,7 +34,7 @@
 			ajax : false,
 			send : true,
 			selectInvalid : true,
-			scrollToInvalid : true,
+			scroll : true,
 			clearInvalid : false,
 			conditional : {},
 			prepare : {},
@@ -346,7 +346,7 @@
 
 						if(options.selectInvalid) $(this).trigger('select');
 
-						if(options.scrollToInvalid) {
+						if(options.scroll) {
 
 							var
 
@@ -358,7 +358,7 @@
 									scrollTop : top
 								}, $.extend({
 									duration : 'normal'
-								}, options.scrollToInvalid));
+								}, options.scroll));
 
 							}
 
