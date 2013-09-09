@@ -120,7 +120,7 @@
 
 					parent = target.parents('*').filter(function() {
 
-						return $(this).data(attribute) !== undefined;
+						return this.data(attribute) !== undefined;
 
 					}).filter(':first');
 
@@ -344,13 +344,13 @@
 
 					if(first) {
 
-						if(options.selectInvalid) $(this).trigger('select');
+						if(options.selectInvalid) this.trigger('select');
 
 						if(options.scroll) {
 
 							var
 
-								top = ($(this).offset().top + ($(this).height() / 2)) - ($(window).height() / 2);
+								top = (this.offset().top + (this.height() / 2)) - ($(window).height() / 2);
 
 							if($(window).scrollTop() !== top) {
 
@@ -372,39 +372,37 @@
 
 			});
 
-			if(!bool) {
+			if(bool) return valid;
 
-				if(valid) {
+			if(valid) {
 
-					if(!options.send || options.ajax) event.preventDefault();
+				if(!options.send || options.ajax) event.preventDefault();
 
-					if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
-						$.extend({
-							url : form.prop('action'),
-							type : form.attr('method'),
-							data : form.serialize()
-						}, options.ajax)
-					) : undefined);
+				if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
+					$.extend({
+						url : form.prop('action'),
+						type : form.attr('method'),
+						data : form.serialize()
+					}, options.ajax)
+				) : undefined);
 
-					form.triggerHandler('valid');
+				form.triggerHandler('valid');
 
-				} else {
+			} else {
 
-					event.preventDefault();
+				event.preventDefault();
 
-					event.stopImmediatePropagation();
+				event.stopImmediatePropagation();
 
-					if(isFunction(options.invalid)) options.invalid.call(form);
+				if(isFunction(options.invalid)) options.invalid.call(form);
 
-					form.triggerHandler('invalid');
+				form.triggerHandler('invalid');
 
-				}
+			}
 
-				if(isFunction(options.validated)) options.validated.call(form);
+			if(isFunction(options.validated)) options.validated.call(form);
 
-				form.triggerHandler('validated');
-
-			} else return valid;
+			form.triggerHandler('validated');
 
 		},
 
