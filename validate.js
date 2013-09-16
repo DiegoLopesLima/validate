@@ -56,8 +56,10 @@
 
 		},
 
+		// Default validations.
 		validate = {},
 
+		// Attribute hooks.
 		attributes = {
 			chars : function(value) {
 
@@ -106,6 +108,7 @@
 			}
 		},
 
+		// A function to get an attribute.
 		getFieldAttribute = function(target, attribute) {
 
 			target = $(target);
@@ -136,12 +139,14 @@
 
 		},
 
+		// A function to return events with namespaces.
 		namespace = function(events) {
 
 			return events.replace(/(\s|$)/g, '.' + name + '$1');
 
 		},
 
+		// A function to validate a field.
 		validateField = function(event, bool) {
 
 			var
@@ -320,6 +325,7 @@
 
 		},
 
+		// A function to validate a form.
 		validateForm = function(event, bool) {
 
 			var
@@ -406,6 +412,7 @@
 
 		},
 
+		// A function to extend an object.
 		extend = function(target, index, value) {
 
 			if(typeof index == 'string') {
