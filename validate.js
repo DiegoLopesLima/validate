@@ -489,7 +489,7 @@
 				} else $.error('This is not a form.');
 
 			},
-			valid : function() {
+			isValid : function() {
 
 				var
 
@@ -511,13 +511,18 @@
 
 						}
 
-					} else if(element.is(fieldTypes) && !validateField.call(element, null, true)) {
+					} else if(element.is(fieldTypes)) {
 
-						valid = false;
+						if(!validateField.call(element, null, true)) {
 
-						return false;
+							valid = false;
+
+							return false;
+
+						}
 
 					}
+
 				});
 
 				return valid;
