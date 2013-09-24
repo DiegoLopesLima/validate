@@ -123,7 +123,7 @@
 
 					parent = target.parents('*').filter(function() {
 
-						return this.data(attribute) !== undefined;
+						return $(this).data(attribute) !== undefined;
 
 					}).filter(':first');
 
@@ -350,13 +350,13 @@
 
 					if(first) {
 
-						if(options.selectInvalid) this.trigger('select');
+						if(options.selectInvalid) $(this).trigger('select');
 
 						if(options.scroll) {
 
 							var
 
-								top = (this.offset().top + (this.height() / 2)) - ($(window).height() / 2);
+								top = ($(this).offset().top + ($(this).height() / 2)) - ($(window).height() / 2);
 
 							if($(window).scrollTop() !== top) {
 
