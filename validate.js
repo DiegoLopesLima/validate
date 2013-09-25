@@ -543,19 +543,7 @@
 
 				return $(this).each(function() {
 
-					var
-
-						element = $(this);
-
-					if(element.is('form')) {
-
-						validateForm.call(element, null);
-
-					} else if(element.is(fieldTypes)) {
-
-						validateField.call(element, null);
-
-					}
+					if(element.is('form')) validateForm.call(this, null);
 
 				});
 
