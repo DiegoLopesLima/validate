@@ -472,13 +472,7 @@
 
 					});
 
-				} else {
-
-					$.error('This is not a form.');
-
-					return element;
-
-				}
+				} else $.error('This is not a form.');
 
 			},
 			destroy : function() {
@@ -499,16 +493,10 @@
 
 					return form;
 
-				} else {
-
-					$.error('This is not a form.');
-
-					return form;
-
-				}
+				} else $.error('This is not a form.');
 
 			},
-			isValid : function() {
+			is : function(response) {
 
 				var
 
@@ -544,7 +532,32 @@
 
 				});
 
-				return valid;
+				if(response == 'valid') {
+
+					return valid;
+
+				} else if(response == 'invalid') return !valid;
+
+			},
+			trigger : function() {
+
+				return $(this).each(function() {
+
+					var
+
+						element = $(this);
+
+					if(element.is('form')) {
+
+						validateForm.call(element, null);
+
+					} else if(element.is(fieldTypes)) {
+
+						validateField.call(element, null);
+
+					}
+
+				});
 
 			}
 		};
