@@ -472,7 +472,13 @@
 
 					});
 
-				} else $.error('This is not a form.');
+				} else {
+
+					$.error('This is not a form.');
+
+					return element;
+
+				}
 
 			},
 			destroy : function() {
@@ -493,7 +499,13 @@
 
 					return form;
 
-				} else $.error('This is not a form.');
+				} else {
+
+					$.error('This is not a form.');
+
+					return form;
+
+				}
 
 			},
 			isValid : function() {
