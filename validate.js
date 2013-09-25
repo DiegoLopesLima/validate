@@ -547,6 +547,17 @@
 
 				});
 
+			},
+			option : function(index, value) {
+
+				var
+
+					data = $(this).data(name);
+
+				extend(data, index, value);
+
+				return $(this).data(name, data);
+
 			}
 		};
 
