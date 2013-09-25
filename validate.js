@@ -543,7 +543,7 @@
 
 				return $(this).each(function() {
 
-					if(element.is('form')) validateForm.call(this, null);
+					if($(this).is('form')) validateForm.call(this, null);
 
 				});
 
