@@ -2,14 +2,30 @@
 
 	'use strict';
 
-	//
-
 	var
 
 		document = window.document,
 
-		versions = ['1.7.0', '1.7.1', '1.7.2', '1.8.0', '1.8.1', '1.8.2', '1.8.3', '1.9.0', '1.9.1', '1.10.0', '1.10.1', '1.10.2', '2.0.0', '2.0.1', '2.0.2', '2.0.3'];
+		name = 'validate',
 
-	// 
+		form = $('<form>', {
+			appendTo : 'body'
+		});
+
+	QUnit.test('Initialization', function() {
+
+		form.validate();
+
+		ok($.isPlainObject(form.data(name)), 'Verifies if plugin was initialized.');
+
+	});
+
+	QUnit.test('Destroy', function() {
+
+		ok(!$.isPlainObject(form.validate('destroy').data(name)), 'Verifies if plugin was destroyed.');
+
+	});
+
+	form.remove();
 
 })(window);
