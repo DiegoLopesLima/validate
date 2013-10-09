@@ -547,11 +547,7 @@
 
 				});
 
-				if(response == 'valid') {
-
-					return valid;
-
-				} else if(response == 'invalid') return !valid;
+				return response == 'valid' ? valid : (response == 'invalid' ? !valid : null);
 
 			},
 			trigger : function() {
