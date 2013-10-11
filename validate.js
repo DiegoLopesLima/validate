@@ -16,7 +16,7 @@
 		// All field types.
 		fieldTypes = checkable + ',' + writable,
 
-		emptyFunction = $.noop,
+		// emptyFunction = $.noop,
 
 		emptyArray = [],
 
@@ -24,11 +24,11 @@
 
 		// Default properties.
 		defaults = {
-			valid : emptyFunction,
-			invalid : emptyFunction,
-			validated : emptyFunction,
-			eachValid : emptyFunction,
-			eachInvalid : emptyFunction,
+			// valid : emptyFunction,
+			// invalid : emptyFunction,
+			// validated : emptyFunction,
+			// eachValid : emptyFunction,
+			// eachInvalid : emptyFunction,
 			events : emptyArray,
 			filter : '*',
 			ajax : false,
@@ -38,8 +38,8 @@
 			clearInvalid : false,
 			conditional : {},
 			prepare : {},
-			description : {},
-			prepareAll : null
+			description : {}
+			// prepareAll : null
 		},
 
 		// A function to get a boolean value.
@@ -318,7 +318,7 @@
 
 					if(isFunction(options.valid)) options.eachValid.call(field, response);
 
-					field.triggerHandler('valid');
+					field.triggerHandler('valid', [response]);
 
 				} else {
 
@@ -326,13 +326,13 @@
 
 					if(isFunction(options.invalid)) options.eachInvalid.call(field, response);
 
-					field.triggerHandler('invalid');
+					field.triggerHandler('invalid', [response]);
 
 				}
 
 				if(isFunction(options.eachField)) options.eachField.call(field, response);
 
-				field.triggerHandler('validated');
+				field.triggerHandler('validated', [response]);
 
 				return response;
 
@@ -399,15 +399,17 @@
 
 				if(!options.send || options.ajax) event.preventDefault();
 
-				if(isFunction(options.valid)) options.valid.call(form, options.ajax ? $.ajax(
-					$.extend({
+				var
+
+					ajaxResponse = options.ajax ? $.ajax($.extend({
 						url : form.prop('action'),
 						type : form.attr('method'),
 						data : form.serialize()
-					}, options.ajax)
-				) : undefined);
+					}, options.ajax)) : undefined;
 
-				form.triggerHandler('valid');
+				if(isFunction(options.valid)) options.valid.call(form, ajaxResponse);
+
+				form.triggerHandler('valid', [ajaxResponse]);
 
 			} else {
 
@@ -563,11 +565,11 @@
 
 				var
 
-					data = $(this).data(name);
+					data = $(this).data(name),
 
-				extend(data, index, value);
+					response = extend(data, index, value);
 
-				return $(this).data(name, data);
+				return response === undefined ? $(this).data(name, data) : response;
 
 			}
 		};
