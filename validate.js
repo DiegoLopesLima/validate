@@ -569,7 +569,7 @@
 
 					response = extend(data, index, value);
 
-				return response === undefined ? $(this).data(name, data) : response;
+				return value !== undefined ? $(this).data(name, data) : response;
 
 			}
 		};
