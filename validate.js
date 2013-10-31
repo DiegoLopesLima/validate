@@ -316,23 +316,23 @@
 
 				if(response.valid) {
 
-					if(isFunction(options.valid)) options.eachValid.call(field, response);
+					if(isFunction(options.valid)) options.eachValid.call(field, value, response);
 
-					field.triggerHandler('valid', [response]);
+					field.triggerHandler('valid');
 
 				} else {
 
 					if(options.clearInvalid) field.val('');
 
-					if(isFunction(options.invalid)) options.eachInvalid.call(field, response);
+					if(isFunction(options.invalid)) options.eachInvalid.call(field, value, response);
 
-					field.triggerHandler('invalid', [response]);
+					field.triggerHandler('invalid');
 
 				}
 
-				if(isFunction(options.eachField)) options.eachField.call(field, response);
+				if(isFunction(options.eachField)) options.eachField.call(field, value, response);
 
-				field.triggerHandler('validated', [response]);
+				field.triggerHandler('validated');
 
 				return response;
 
