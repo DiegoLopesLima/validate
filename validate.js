@@ -88,7 +88,7 @@
 			},
 			confirm : function(value) {
 
-				return typeof value == 'string' ? $(fieldTypes).filter('#' + value).val() : undefined;
+				return typeof value == 'string' ? $(fieldTypes).filter('#' + value).val() || '' : undefined;
 
 			},
 			ignorecase : function(value) {
@@ -196,7 +196,7 @@
 
 				mask = getFieldAttribute(field, 'mask'),
 
-				value = field.val(),
+				value = field.val() || '',
 
 				filled = false;
 
