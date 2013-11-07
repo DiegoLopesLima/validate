@@ -316,7 +316,7 @@
 
 				if(response.valid) {
 
-					if(isFunction(options.valid)) options.eachValid.call(field, value, response);
+					if(isFunction(options.eachValid)) options.eachValid.call(field, value, response);
 
 					field.triggerHandler('valid');
 
@@ -324,7 +324,7 @@
 
 					if(options.clearInvalid) field.val('');
 
-					if(isFunction(options.invalid)) options.eachInvalid.call(field, value, response);
+					if(isFunction(options.eachInvalid)) options.eachInvalid.call(field, value, response);
 
 					field.triggerHandler('invalid');
 
@@ -363,15 +363,19 @@
 
 					valid = false;
 
+					var
+
+						field = $(this);
+
 					if(first) {
 
-						if(options.selectInvalid) $(this).trigger('select');
+						if(options.selectInvalid) field.trigger('select');
 
-						if(options.scroll) {
+						if(options.scroll && field.is(':visible')) {
 
 							var
 
-								top = ($(this).offset().top + ($(this).height() / 2)) - ($(window).height() / 2);
+								top = (field.offset().top + (field.height() / 2)) - ($(window).height() / 2);
 
 							if($(window).scrollTop() !== top) {
 
