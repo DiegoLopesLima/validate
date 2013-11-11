@@ -1,31 +1,31 @@
 {
-	"name": "validate",
-	"title": "jQuery Validate",
-	"description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation using data attributes.",
-	"keywords": ["jquery", "form", "input", "validate", "validation", "data", "attributes", "mask"],
-	"version": "2.0.0",
-	"author": {
-		"name": "Diego Lopes Lima",
+	"name" : "validate",
+	"title" : "jQuery Validate",
+	"description" : "The jQuery Validate is an advanced plugin for an easily and quickly form validation using data attributes.",
+	"keywords" : ["jquery", "form", "input", "validate", "validation", "data", "attributes", "mask"],
+	"version" : "2.0.0",
+	"author" : {
+		"name" : "Diego Lopes Lima",
 		"email" : "contact.diego.lima@gmail.com",
-		"url": "https://github.com/DiegoLopesLima"
+		"url" : "https://github.com/DiegoLopesLima"
 	},
-	"maintainers": [
+	"maintainers" : [
 		{
-			"name": "Diego Lopes Lima",
-			"email": "contact.diego.lima@gmail.com",
-			"url": "https://github.com/DiegoLopesLima"
+			"name" : "Diego Lopes Lima",
+			"email" : "contact.diego.lima@gmail.com",
+			"url" : "https://github.com/DiegoLopesLima"
 		}
 	],
 	"licenses": [
 		{
-			"type": "CC BY 3.0",
-			"url": "http://creativecommons.org/licenses/by/3.0/"
+			"type" : "CC BY 3.0",
+			"url" : "http://creativecommons.org/licenses/by/3.0/"
 		}
 	],
-	"bugs": "https://github.com/DiegoLopesLima/Validate/issues",
-	"docs": "https://github.com/DiegoLopesLima/Validate#readme",
-	"download": "https://github.com/DiegoLopesLima/Validate/archive/master.zip",
-	"dependencies": {
-		"jquery": ">=1.7"
+	"bugs" : "https://github.com/DiegoLopesLima/Validate/issues",
+	"docs" : "https://github.com/DiegoLopesLima/Validate#readme",
+	"download" : "https://github.com/DiegoLopesLima/Validate/archive/master.zip",
+	"dependencies" : {
+		"jquery" : ">=1.7"
 	}
 }
