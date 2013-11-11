@@ -375,15 +375,13 @@
 
 							var
 
-								top = (field.offset().top + (field.height() / 2)) - ($(window).height() / 2);
+								top = Math.floor((field.offset().top + (field.height() / 2)) - ($(window).height() / 2));
 
 							if($(window).scrollTop() !== top) {
 
 								$('body,html').animate({
 									scrollTop : top
-								}, $.extend({
-									duration : 'normal'
-								}, options.scroll));
+								}, $.extend({}, options.scroll));
 
 							}
 
@@ -407,7 +405,7 @@
 
 					ajaxResponse = options.ajax ? $.ajax($.extend({
 						url : form.prop('action'),
-						type : form.attr('method'),
+						type : form.prop('method'),
 						data : form.serialize()
 					}, options.ajax)) : undefined;
 
@@ -560,7 +558,11 @@
 
 				return $(this).each(function() {
 
-					if($(this).is('form')) validateForm.call(this, null);
+					if($(this).is('form')) {
+
+						validateForm.call(this, null);
+
+					} else if($(this).is(fieldTypes)) validateField.call(this, null);
 
 				});
 
