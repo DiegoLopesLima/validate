@@ -16,6 +16,8 @@
 		// All field types.
 		fieldTypes = checkable + ',' + writable,
 
+		errorIsNotAForm = 'This is not a form.',
+
 		// emptyFunction = $.noop,
 
 		emptyArray = [],
@@ -377,6 +379,8 @@
 
 								top = Math.floor((field.offset().top + (field.height() / 2)) - ($(window).height() / 2));
 
+							top = top < 0 ? 0 : top;
+
 							if($(window).scrollTop() !== top) {
 
 								$('body,html').animate({
@@ -491,7 +495,7 @@
 
 					});
 
-				} else $.error('This is not a form.');
+				} else $.error(errorIsNotAForm);
 
 			},
 			destroy : function() {
@@ -512,7 +516,7 @@
 
 					return form;
 
-				} else $.error('This is not a form.');
+				} else $.error(errorIsNotAForm);
 
 			},
 			is : function(response) {
