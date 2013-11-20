@@ -54,27 +54,12 @@
 		// A function to get an array.
 		getArray = function(value) {
 
-			return typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : $.isArray(value) ? value : [];
+			return typeof value == 'string' ? value.split(/[\s\uFEFF\xA0]+/) : ($.isArray(value) ? value : []);
 
 		},
 
 		// Default validations.
-		validate = {
-			intenger : {
-				pattern : /^[\-\+]?\d+$/,
-				trim : true
-			},
-			number : {
-				pattern : /^[\-\+]?\d+(?:\.\d+)?$/,
-				trim : true
-			},
-			email : {
-				pattern : /(?:)/
-			},
-			url : {
-				pattern : /(?:)/
-			}
-		},
+		validate = {},
 
 		// Attribute hooks.
 		attributes = {
