@@ -356,21 +356,25 @@
 
 					if(first) {
 
-						if(options.selectInvalid) field.trigger('select');
+						if(!bool) {
 
-						if(options.scroll && field.is(':visible')) {
+							if(options.selectInvalid) field.trigger('select');
 
-							var
+							if(options.scroll && field.is(':visible')) {
 
-								top = Math.floor((field.offset().top + (field.height() / 2)) - ($(window).height() / 2));
+								var
 
-							top = top < 0 ? 0 : top;
+									top = Math.floor((field.offset().top + (field.height() / 2)) - ($(window).height() / 2));
 
-							if($(window).scrollTop() !== top) {
+								top = top < 0 ? 0 : top;
 
-								$('body,html').animate({
-									scrollTop : top
-								}, $.extend({}, options.scroll));
+								if($(window).scrollTop() !== top) {
+
+									$('body,html').animate({
+										scrollTop : top
+									}, $.extend({}, options.scroll));
+
+								}
 
 							}
 
