@@ -508,7 +508,7 @@
 				} else $.error(errorIsNotAForm);
 
 			},
-			is : function(response) {
+			isvalid : function() {
 
 				var
 
@@ -544,7 +544,7 @@
 
 				});
 
-				return response == 'valid' ? valid : (response == 'invalid' ? !valid : null);
+				return valid;
 
 			},
 			trigger : function() {
