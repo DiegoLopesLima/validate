@@ -474,7 +474,7 @@
 
 							keyCode = event.keyCode;
 
-						if(((keyCode > 47 && keyCode < 91) || (keyCode > 95 && keyCode < 106)) && !getFieldAttribute(this, 'chars').test(String.fromCharCode(keyCode))) {
+						if(!getFieldAttribute(this, 'chars').test(String.fromCharCode(keyCode))) {
 
 							event.preventDefault();
 
