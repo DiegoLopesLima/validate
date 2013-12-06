@@ -18,19 +18,12 @@
 
 		errorIsNotAForm = 'This is not a form.',
 
-		// emptyFunction = $.noop,
-
 		emptyArray = [],
 
 		isFunction = $.isFunction,
 
 		// Default properties.
 		defaults = {
-			// valid : emptyFunction,
-			// invalid : emptyFunction,
-			// validated : emptyFunction,
-			// eachValid : emptyFunction,
-			// eachInvalid : emptyFunction,
 			events : emptyArray,
 			filter : '*',
 			ajax : false,
@@ -41,7 +34,6 @@
 			conditional : {},
 			prepare : {},
 			description : {}
-			// prepareAll : null
 		},
 
 		// A function to get a boolean value.
