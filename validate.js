@@ -563,6 +563,38 @@
 				return value !== undefined ? $(this).data(name, data) : response;
 
 			}
+		},
+
+		selector = {
+			valid : function() {
+
+				return false;
+
+			},
+
+			invalid : function(filter) {
+
+				return false;
+
+			},
+
+			filled : function() {
+
+				return false;
+
+			},
+
+			empty : function() {
+
+				return false;
+
+			},
+
+			validated : function() {
+
+				return false;
+
+			}
 		};
 
 	$.fn[name] = function(options) {
@@ -590,7 +622,22 @@
 			return extend(plugin, index, value);
 
 		},
+		selector : function(index, value) {
+
+			return extend(selector, index, value);
+
+		},
 		version : '2.0.0'
 	});
+
+	$.expr[':'][name] = function(node, index, params) {
+
+		var
+
+			param = (params[3] || '').split(':');
+
+		return !!selector[param[0]].call(node, $.trim(param[1]));
+
+	};
 
 })(jQuery);
