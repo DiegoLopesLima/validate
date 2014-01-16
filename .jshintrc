@@ -13,6 +13,7 @@
 	"trailing" : true,
 	"browser": true,
 	"globals" : {
-		"jQuery" : true
+		"jQuery" : true,
+		"Event" : true
 	}
 }

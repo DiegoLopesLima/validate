@@ -322,6 +322,8 @@
 		// A function to validate a form.
 		validateForm = function(event, bool) {
 
+			if(!event) event = new Event('validate');
+
 			var
 
 				form = $(this),
@@ -384,7 +386,7 @@
 
 			if(valid) {
 
-				if(!options.send || options.ajax) event.preventDefault();
+				if(!options.send || options.ajax ) event.preventDefault();
 
 				var
 
@@ -592,7 +594,7 @@
 		},
 		version : '2.0.0'
 	});
-
+/*
 	$.expr[':'][name] = function(node, index, params) {
 
 		// node
@@ -602,5 +604,5 @@
 		return false;
 
 	};
-
+*/
 })(jQuery);
