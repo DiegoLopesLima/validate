@@ -340,7 +340,7 @@
 
 			fields.filter(options.filter).each(function() {
 
-				if(!validateField.call(this, event, bool).valid) {
+				if(!(bool ? validateField.call(this, event, bool) : validateField.call(this, event).valid)) {
 
 					valid = false;
 
