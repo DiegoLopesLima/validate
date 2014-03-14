@@ -386,7 +386,7 @@
 
 			if(valid) {
 
-				if(!options.send || options.ajax ) event.preventDefault();
+				if(!options.send || options.ajax) event.preventDefault();
 
 				var
 
@@ -594,15 +594,5 @@
 		},
 		version : '2.0.0'
 	});
-/*
-	$.expr[':'][name] = function(node, index, params) {
 
-		// node
-
-		// params[3]
-
-		return false;
-
-	};
-*/
 })(jQuery);
