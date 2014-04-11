@@ -468,7 +468,7 @@
 
 							keyCodeChar = String.fromCharCode(event.keyCode);
 
-						if(!getFieldAttribute(this, 'chars').test(keyCodeChar) && keyCodeChar !== '') {
+						if((!getFieldAttribute(this, 'chars').test(String.fromCharCode(keyCode))) && keyCode != 13) {
 
 							event.preventDefault();
 
