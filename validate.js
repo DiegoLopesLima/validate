@@ -466,9 +466,9 @@
 
 						var
 
-							keyCode = event.keyCode;
+							keyCodeChar = String.fromCharCode(event.keyCode);
 
-						if(!getFieldAttribute(this, 'chars').test(String.fromCharCode(keyCode))) {
+						if(!getFieldAttribute(this, 'chars').test(keyCodeChar) && keyCodeChar !== '') {
 
 							event.preventDefault();
 
