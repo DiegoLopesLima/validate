@@ -122,15 +122,6 @@
 				value = field.val() || '',
 				filled = false;
 
-			if (jQuery(field).parent().parent().hasClass("selectize-control validate")) {
-				if (jQuery(field).parent().parent().prev().attr("aria-invalid") == "false")
-					jQuery(field).parent().removeClass("invalid").addClass("valid");
-				else {
-					jQuery(field).parent().removeClass("valid").addClass("invalid");
-					jQuery(field).focus();
-				}
-			}
-
 			if (getBoolean(getFieldAttribute(field, 'trim')))
 				value = $.trim(value);
 
@@ -214,6 +205,8 @@
 				target.html(status.message);
 			}
 
+
+
 			if (!bool) {
 				field.attr('aria-invalid', !response.valid);
 				if (response.valid) {
@@ -233,8 +226,31 @@
 					options.eachField.call(field, value, response);
 
 				field.triggerHandler('validated');
-				return response;
 			}
+
+			// Selectize.js Component
+			if (jQuery(field).parent().parent().hasClass("selectize-control validate")) {
+				if (jQuery(field).parent().parent().prev().attr("aria-invalid") == "false")
+					jQuery(field).parent().removeClass("invalid").addClass("valid");
+				else {
+					jQuery(field).parent().removeClass("valid").addClass("invalid");
+					jQuery(field).focus();
+				}
+			}
+			
+			// MaterializeCSS Select Component
+			if (jQuery(field).hasClass("validate initialized") && jQuery(field).prev().prev().hasClass("select-dropdown")) {
+				if (jQuery(field).attr("aria-invalid") == "false") {
+					jQuery(field).prev().prev().removeClass("invalid").addClass("valid");
+				}
+				else {
+					jQuery(field).prev().prev().removeClass("valid").addClass("invalid");
+					jQuery(field).prev().prev().focus();
+				}
+			}
+
+			if(!bool)
+				return response;
 			else
 				return response.valid;
 		},
