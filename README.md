@@ -1,4 +1,4 @@
-> Coming soon: [A library to handle and validate their client side and server side data](https://github.com/Tradusy/Validate).
+> Coming soon: [A library to handle and validate their client side and server side data](https://github.com/Tradusy/Warble).
 
 # jQuery Validate
 
