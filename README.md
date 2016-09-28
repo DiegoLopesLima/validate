@@ -1,3 +1,5 @@
+> Coming soon: [A library to handle and validate their client side and server side data](https://github.com/Tradusy/Validate).
+
 # jQuery Validate
 
 > License: <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">_MIT_</a>.
