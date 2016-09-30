@@ -1,4 +1,4 @@
-> Coming soon: [A library to handle and validate their client side and server side data](https://github.com/Tradusy/Warble).
+> Coming soon: [Warble is a client side and server side library to quickly handle your data writing less and doing more](https://github.com/Tradusy/warble).
 
 # jQuery Validate
 
