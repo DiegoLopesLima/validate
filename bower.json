@@ -1,0 +1,23 @@
+{
+  "name": "Validate",
+  "version": "1.1.2",
+  "homepage": "https://github.com/DiegoLopesLima/Validate",
+  "authors": [
+    "DiegoLopesLima"
+  ],
+  "description": "The jQuery Validate is an advanced plugin for an easily and quickly form validation.",
+  "main": "jquery-validate.js",
+  "keywords": [
+    "jquery",
+    "validate",
+    "validation"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
