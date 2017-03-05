@@ -8,6 +8,10 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+label.error{color:#F00}
+label.success{color:#0F0}
+.validation-advice{color:#F00;font-size:14px;font-weight:bold}
+
 article,
 aside,
 details,
